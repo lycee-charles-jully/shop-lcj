@@ -3,6 +3,7 @@
 }
 
 :root {
+    /* COLORS */
     --white: white;
     --light-gray: #F7F9FB;
     --dark-gray: #E8ECF0;
@@ -11,6 +12,22 @@
     --primary-gradient: #DC2F02;
     --placeholder: rgba(3, 7, 30, .35);
     --blur: rgba(3, 7, 30, .40);
+
+    /* ELEMENTS SIZES */
+    --header-height: 70px;
+
+    /* SPACINGS */
+    --spacing: 10px;
+}
+
+@media all and (min-width: 768px) {
+    :root { /* On PC */
+        /* ELEMENTS SIZES */
+        --header-height: 60px;
+
+        /* SPACINGS */
+        --spacing: 15px;
+    }
 }
 
 body, html {
@@ -19,4 +36,22 @@ body, html {
     font-family: 'Roboto', sans-serif;
     color: var(--black);
     background-color: var(--dark-gray);
+    overflow: hidden;
+}
+
+#svelte {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden auto;
+}
+
+a, a:link, a:visited {
+    color: var(--black);
+    text-decoration: none !important;
+}
+
+.text-gradient {
+    background: -webkit-linear-gradient(var(--primary), var(--primary-gradient));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
