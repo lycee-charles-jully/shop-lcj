@@ -10,7 +10,7 @@ services:
     - 80:80
     - 443:440
     networks:
-    - haproxxy
+    - haproxy
     volumes:
     - ./haproxy:/usr/local/etc/haproxy/
     - certificates:/usr/local/etc/haproxy/certificates
