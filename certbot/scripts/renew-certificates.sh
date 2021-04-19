@@ -11,3 +11,4 @@ if [ -d /etc/letsencrypt/live/shop-lcj.fr ]; then
 else
   #  Execute certificate creation script
   . /etc/scripts/create-certificates.sh
+fi
