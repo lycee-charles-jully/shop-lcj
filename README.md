@@ -17,22 +17,22 @@ Pour déployer ce projet, clonez le repo et effectuez la commande `docker-compos
 
 ### Frontend
 
-Le frontend est géré par [Haproxy](http://www.haproxy.org/), qui office de reverse proxy. 
+Le frontend est géré par [Haproxy](http://www.haproxy.org/), qui fait office de reverse proxy. 
 L'HTTPS est géré par [Let's Encrypt](https://letsencrypt.org/fr/), via [Certbot](https://certbot.eff.org/).
 
 ### Backend
 
 Le backend se divise en deux parties : le shop et le panneau d'admin. Les deux utilisent le framework
-[Svelte kit](https://kit.svelte.dev/)
+[Svelte kit](https://kit.svelte.dev/).
 
 ### Base de données
 
-La base de données utilisée est [MongoDB](https://www.mongodb.com/fr/)
+La base de données utilisée est [MongoDB](https://www.mongodb.com/fr/).
 
 
 ## Design du site
 
-La maquette du site est [disponible ici sur Figma](https://www.figma.com/file/K71mb6RBgB8vV582IlGf71/Shop-LCJ?node-id=29%3A0)
+La maquette du site est [disponible ici sur Figma](https://www.figma.com/file/K71mb6RBgB8vV582IlGf71/Shop-LCJ?node-id=29%3A0).
 
 
 ## Ressources hors repo
@@ -41,7 +41,7 @@ Le nom de domaine `lcj-shop.fr` à été enregistré via [Google Domains](https:
 renouvelé automatiquement aux alentours de début avril.
 
 [Cloudflare](https://www.cloudflare.com/fr-fr/) est utilisé comme DNS, et également pour tous les autres services
-qu'il propose (caching, anti DDOS)
+qu'il propose (caching, anti DDOS).
 
 
 ## Contributeurs
