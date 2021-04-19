@@ -27,6 +27,15 @@ services:
     volumes:
       - certificates:/etc/certificates
 
+  shop:
+    image: shoplcj/shop:latest
+    build: ./shop
+    container_name: shop
+    hostname: shop
+    restart: always
+    networks:
+      - haproxy
+
 
 volumes:
   certificates:
