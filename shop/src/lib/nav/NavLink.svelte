@@ -22,7 +22,7 @@
 
     img {
         height: 40px;
-        width: auto;
+        width: 40px;
     }
 
     span {
