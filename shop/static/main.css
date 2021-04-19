@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --white: white;
+    --light-gray: #F7F9FB;
+    --dark-gray: #E8ECF0;
+    --black: #03071E;
+    --primary: #D00000;
+    --primary-gradient: #DC2F02;
+    --placeholder: rgba(3, 7, 30, .35);
+    --blur: rgba(3, 7, 30, .40);
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    color: var(--black);
+    background-color: var(--dark-gray);
+}
