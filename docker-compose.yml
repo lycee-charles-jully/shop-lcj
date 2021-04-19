@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    hostname: haproxy
+    restart: always
+    ports:
+    - 80:80
+    - 443:440
+    networks:
+    - haproxxy
+    volumes:
+    - ./haproxy:/usr/local/etc/haproxy/
+    - certificates:/usr/local/etc/haproxy/certificates
+
+  certbot:
+    image: shoplcj/certbot:latest
+    build: ./certbot
+    container_name: certbot
+    hostname: certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do . /etc/scripts/renew-certificates.sh ; sleep 12h & wait $${!}; done;'"
+    restart: always
+    networks:
+      - haproxy
+    volumes:
+      - certificates:/etc/certificates
+
+
+volumes:
+  certificates:
+    external: true
+    name: certificates
+
+
+networks:
+  haproxy:
+    external: true
+    name: haproxy
