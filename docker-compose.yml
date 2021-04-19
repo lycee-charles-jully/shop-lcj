@@ -8,7 +8,7 @@ services:
     restart: always
     ports:
     - 80:80
-    - 443:440
+    - 443:443
     networks:
     - haproxy
     volumes:
