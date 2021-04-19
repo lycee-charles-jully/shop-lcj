@@ -10,5 +10,7 @@
 </head>
 <body>
 <div id="svelte">%svelte.body%</div>
+<!--Redirects to edge if using IE-->
+<script>/MSIE \d|Trident.*rv:/.test(navigator.userAgent)&&(window.location="microsoft-edge:"+window.location,setTimeout(function(){window.location="https://go.microsoft.com/fwlink/?linkid=2135547"},1));</script>
 </body>
 </html>
