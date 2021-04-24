@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ProductModule } from './product/product.module';
 
 @Module({
     imports: [
@@ -7,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
             useNewUrlParser: true,
             useUnifiedTopology: true,
         }),
+        ProductModule,
     ],
     controllers: [],
     providers: [],
