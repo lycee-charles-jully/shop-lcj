@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NextFunction, Request, Response } from 'express';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -14,6 +15,11 @@ async function bootstrap() {
             forbidNonWhitelisted: true,
         }),
     );
+
+    app.use((req: Request, res: Response, next: NextFunction) => {
+        res.removeHeader('X-Powered-By');
+        next();
+    });
 
     if (process.env.NODE_ENV === 'development') {
         const config = new DocumentBuilder()
