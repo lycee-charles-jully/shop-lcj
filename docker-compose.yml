@@ -27,6 +27,18 @@ services:
     volumes:
       - certificates:/etc/certificates
 
+  mongo:
+    image: mongo:4.4.5
+    container_name: mongo
+    hostname: mongo
+    restart: always
+    networks:
+      - mongo
+    volumes:
+      - mongo:/data/db
+    env_file:
+      - .env
+
   shop:
     image: shoplcj/shop:latest
     build: ./shop
@@ -41,9 +53,15 @@ volumes:
   certificates:
     external: true
     name: certificates
+  mongo:
+    external: true
+    name: mongo
 
 
 networks:
   haproxy:
     external: true
     name: haproxy
+  mongo:
+    external: false
+    name: mongo
