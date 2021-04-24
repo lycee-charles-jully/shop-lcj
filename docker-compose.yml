@@ -7,13 +7,13 @@ services:
     hostname: haproxy
     restart: always
     ports:
-    - 80:80
-    - 443:443
+      - 80:80
+      - 443:443
     networks:
-    - haproxy
+      - haproxy
     volumes:
-    - ./haproxy:/usr/local/etc/haproxy/
-    - certificates:/usr/local/etc/haproxy/certificates
+      - ./haproxy:/usr/local/etc/haproxy/
+      - certificates:/usr/local/etc/haproxy/certificates
 
   certbot:
     image: shoplcj/certbot:latest
