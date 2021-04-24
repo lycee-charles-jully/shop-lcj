@@ -47,6 +47,20 @@ services:
     restart: always
     networks:
       - haproxy
+      - api
+
+  api:
+    image: shoplcj/api:latest
+    build: ./api
+    container_name: api
+    hostname: api
+    restart: always
+    networks:
+      - haproxy
+      - api
+      - mongo
+    env_file:
+      - .env
 
 
 volumes:
@@ -65,3 +79,6 @@ networks:
   mongo:
     external: false
     name: mongo
+  api:
+    external: false
+    name: api
