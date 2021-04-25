@@ -8,6 +8,8 @@ import { CategoryModule } from './category/category.module';
         MongooseModule.forRoot(process.env.MONGO_URI!, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: true,
         }),
         ProductModule,
         CategoryModule,
