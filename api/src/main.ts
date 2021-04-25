@@ -1,8 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { NextFunction, Request, Response } from 'express';
 import { AppModule } from './app.module';
+import * as helmet from 'helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -16,10 +16,19 @@ async function bootstrap() {
         }),
     );
 
-    app.use((req: Request, res: Response, next: NextFunction) => {
-        res.removeHeader('X-Powered-By');
-        next();
-    });
+    app.use(helmet({
+        contentSecurityPolicy: process.env.NODE_ENV === 'development' ? false : {
+            directives: {
+                defaultSrc: [ `'self'` ],
+                scriptSrc: [ `'self'` ],
+                objectSrc: [ `'none'` ],
+                upgradeInsecureRequests: [],
+            },
+        },
+        referrerPolicy: false,
+        xssFilter: false,
+        ieNoOpen: false,
+    }));
 
     if (process.env.NODE_ENV === 'development') {
         const config = new DocumentBuilder()
