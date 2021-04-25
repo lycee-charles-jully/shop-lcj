@@ -17,6 +17,7 @@
     --header-height: 70px;
 
     /* SPACINGS */
+    --short-spacing: 5px;
     --spacing: 10px;
 
     /* ROUNDINGS */
@@ -57,4 +58,14 @@ a, a:link, a:visited {
     background: linear-gradient(90deg, var(--primary), var(--primary-gradient));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.category-title {
+    font-size: .9rem;
+    text-transform: uppercase;
+    margin: calc(var(--spacing) * 2) 0 var(--spacing);
+}
+
+.category-title:first-child {
+    margin-top: 0;
 }
