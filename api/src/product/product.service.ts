@@ -4,8 +4,7 @@ import { Model } from 'mongoose';
 import { ProductDoc } from '../schemas/product.schema';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
-
-const BASIC_PRODUCT_FIELD = [ '_id', 'name', 'slug', 'coverImageUrl', 'price' ];
+import { basicProductFields } from './entities/basic-product.entity';
 
 @Injectable()
 export class ProductService {
@@ -18,14 +17,14 @@ export class ProductService {
             .limit(filters.limit)
             .skip(filters.offset)
             .sort(`-${filters.sort}`)
-            .select(BASIC_PRODUCT_FIELD)
+            .select(basicProductFields)
             .exec();
     }
 
     async getHomeProducts() {
         const [ popular, latest ] = await Promise.all([
-            this.ProductModel.find().limit(5).sort('-viewCount').select(BASIC_PRODUCT_FIELD).exec(),
-            this.ProductModel.find().limit(5).sort('-createdAt').select(BASIC_PRODUCT_FIELD).exec(),
+            this.ProductModel.find().limit(5).sort('-viewCount').select(basicProductFields).exec(),
+            this.ProductModel.find().limit(5).sort('-createdAt').select(basicProductFields).exec(),
         ]);
         return { popular, latest };
     }

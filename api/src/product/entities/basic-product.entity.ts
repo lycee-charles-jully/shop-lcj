@@ -16,3 +16,5 @@ export class BasicProductEntity {
     @ApiProperty()
     price: number;
 }
+
+export const basicProductFields = [ '_id', 'name', 'slug', 'coverImageUrl', 'price' ];
