@@ -18,6 +18,9 @@
 
     /* SPACINGS */
     --spacing: 10px;
+
+    /* ROUNDINGS */
+    --round: 10px;
 }
 
 @media all and (min-width: 768px) {

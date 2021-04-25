@@ -5,12 +5,18 @@
 
 <style>
     main {
-        padding: var(--spacing) var(--spacing) calc(var(--header-height) + var(--spacing)); /* Bottom spacing */
+        margin: 0 0 var(--header-height); /* Bottom spacing */
+        padding: var(--spacing);
+        width: 100%;
     }
 
     @media all and (min-width: 768px) {
         main {
-            padding: calc(var(--header-height) + var(--spacing)) var(--spacing) var(--spacing); /* Top spacing */
+            margin: calc(var(--header-height) * 2) auto var(--header-height); /* Top spacing */
+            background-color: var(--light-gray);
+            max-width: calc(1024px - var(--header-height) * 2);
+            width: calc(100% - (var(--header-height) * 2));
+            border-radius: var(--round);
         }
     }
 </style>
