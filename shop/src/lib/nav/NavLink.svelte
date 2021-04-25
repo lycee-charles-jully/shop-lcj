@@ -69,6 +69,6 @@
 
 
 <a {href}>
-    <img src="icons/{icon}{isLinkActive ? '-highlight' : ''}.svg">
+    <img src="/icons/{icon}{isLinkActive ? '-highlight' : ''}.svg">
     <span class:text-gradient={isLinkActive}>{label}</span>
 </a>
