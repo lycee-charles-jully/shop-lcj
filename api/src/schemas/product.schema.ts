@@ -37,6 +37,15 @@ export class Product {
 
     @Prop({ default: [], index: 'text' })
     tags: string[];
+
+    @Prop({ default: 0 })
+    orderCount: number;
+
+    @Prop({ default: 0 })
+    viewCount: number;
+
+    @Prop({ default: () => new Date() })
+    createdAt: Date;
 }
 
 export const ProductModel = SchemaFactory.createForClass(Product);
