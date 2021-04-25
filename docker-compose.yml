@@ -49,9 +49,6 @@ services:
     networks:
       - haproxy
       - api
-    environment:
-      - VITE_LOCAL_API_URL
-      - VITE_REMOTE_API_URL
 
   api:
     image: shoplcj/api:latest
