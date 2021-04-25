@@ -18,4 +18,4 @@ ENV VITE_REMOTE_API_URL https://api.shop-lcj.fr
 RUN npm run build
 
 USER node
-CMD npm run start -- --host
+CMD node build
