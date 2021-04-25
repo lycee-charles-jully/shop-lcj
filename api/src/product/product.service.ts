@@ -15,6 +15,8 @@ export class ProductService {
             .find()
             .limit(filters.limit)
             .skip(filters.offset)
+            .sort(`-${filters.sort}`)
+            .select([ '_id', 'name', 'slug', 'coverImageUrl', 'price' ])
             .exec();
     }
 
