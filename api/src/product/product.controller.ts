@@ -16,6 +16,11 @@ export class ProductController {
         return this.productService.getProducts(filters);
     }
 
+    @Get('home')
+    getHomeProducts() {
+        return this.productService.getHomeProducts();
+    }
+
     @Post()
     addProduct(@Body() product: AddProductDto) {
         return this.productService.addProduct(product);
