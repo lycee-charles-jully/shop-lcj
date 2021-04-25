@@ -51,7 +51,7 @@ a, a:link, a:visited {
 }
 
 .text-gradient {
-    background: -webkit-linear-gradient(var(--primary), var(--primary-gradient));
+    background: linear-gradient(90deg, var(--primary), var(--primary-gradient));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
