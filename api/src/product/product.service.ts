@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductDoc } from '../schemas/product.schema';
@@ -19,6 +19,15 @@ export class ProductService {
             .sort(`-${filters.sort}`)
             .select(basicProductFields)
             .exec();
+    }
+
+    async getProduct(slug: string) {
+        const product = await this.ProductModel
+            .findOne({ slug })
+            .exec();
+        if (!product)
+            throw new NotFoundException('Product not found');
+        return product;
     }
 
     async getHomeProducts() {
