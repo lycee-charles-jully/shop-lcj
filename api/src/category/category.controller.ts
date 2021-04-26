@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { AddCategoryDto } from './dto/add-category.dto';
+import { CategoryEntity } from './entities/category.entity';
 
 @ApiTags('category')
 @Controller('category')
@@ -10,11 +11,21 @@ export class CategoryController {
     }
 
     @Get()
+    @ApiResponse({
+        status: 200,
+        description: 'The list of the available categories',
+        type: [ CategoryEntity ],
+    })
     getCategories() {
         return this.categoryService.getCategories();
     }
 
     @Post('new')
+    @ApiResponse({
+        status: 201,
+        description: 'The created category',
+        type: CategoryEntity,
+    })
     addCategory(@Body() category: AddCategoryDto) {
         return this.categoryService.addCategory(category);
     }
