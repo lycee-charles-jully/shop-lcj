@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ProductTypeModule } from './product-type/product-type.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 
@@ -13,6 +14,7 @@ import { CategoryModule } from './category/category.module';
         }),
         ProductModule,
         CategoryModule,
+        ProductTypeModule,
     ],
     controllers: [],
     providers: [],
