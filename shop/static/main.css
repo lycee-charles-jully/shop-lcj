@@ -60,6 +60,11 @@ a, a:link, a:visited {
     -webkit-text-fill-color: transparent;
 }
 
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
 .category-title {
     font-size: .9rem;
     text-transform: uppercase;

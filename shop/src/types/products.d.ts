@@ -6,6 +6,11 @@ export interface BasicProduct {
     price: number;
 }
 
+export interface Product extends BasicProduct {
+    description: string;
+    imagesUrls: string[];
+}
+
 export interface HomeProducts {
     popular: BasicProduct[];
     latest: BasicProduct[];
