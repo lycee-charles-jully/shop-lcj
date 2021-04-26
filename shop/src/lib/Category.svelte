@@ -1,5 +1,6 @@
 <script lang="ts">
     export let title: string;
+    export let smallCards = false;
 </script>
 
 
@@ -7,6 +8,10 @@
     .products-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .small-cards {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
 
     @supports (grid-gap: var(--spacing)) {
@@ -19,6 +24,6 @@
 
 <h2 class="category-title">{title}</h2>
 
-<div class="products-container">
+<div class="products-container" class:small-cards={smallCards}>
     <slot/>
 </div>
