@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
+import { GetSingleProductParamsDto } from './dto/get-single-product-params.dto';
 import { BasicProductEntity } from './entities/basic-product.entity';
 import { HomeProductsEntity } from './entities/home-products.entity';
 import { ProductEntity } from './entities/product.entity';
@@ -44,8 +45,8 @@ export class ProductController {
         status: 404,
         description: 'Product not found',
     })
-    getProduct(@Param('slug') slug: string) {
-        return this.productService.getProduct(slug);
+    getProduct(@Param('slug') slug: string, @Query() { stat }: GetSingleProductParamsDto) {
+        return this.productService.getProduct(slug, stat);
     }
 
     @Post()

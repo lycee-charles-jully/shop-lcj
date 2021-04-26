@@ -1,11 +1,13 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
+    import { browser } from '$app/env';
     import { API_URL } from '$lib/api-url';
 
 
     export const load: Load = async ({ fetch, page }) => {
         const slug = page.params.slug;
-        const product = await fetch(`${API_URL}/v1/product/${slug}`).then(res => res.json());
+        const product = await fetch(`${API_URL}/v1/product/${slug}${browser ? '?stat' : ''}`)
+            .then(res => res.json());
         return {
             props: {
                 product,

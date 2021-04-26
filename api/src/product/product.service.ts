@@ -21,12 +21,14 @@ export class ProductService {
             .exec();
     }
 
-    async getProduct(slug: string) {
+    async getProduct(slug: string, stat = false) {
         const product = await this.ProductModel
             .findOne({ slug })
             .exec();
         if (!product)
             throw new NotFoundException('Product not found');
+        if (stat)
+            product.updateOne({ $inc: { viewCount: 1 } }).exec();
         return product;
     }
 
