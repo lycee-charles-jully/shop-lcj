@@ -21,6 +21,11 @@ export class CategoryService {
     }
 
     addCategory(category: AddCategoryDto) {
-        return new this.CategoryModel(category).save();
+        return new this.CategoryModel(category)
+            .save()
+            .then(doc => doc.populate({
+                path: 'productType',
+                model: this.ProductTypeModel,
+            } as PopulateOptions).execPopulate());
     }
 }
