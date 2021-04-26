@@ -29,7 +29,7 @@
       "$lib/*": [
         "src/lib/*"
       ],
-      "$types": [
+      "$types/*": [
         "src/types/*"
       ]
     }
