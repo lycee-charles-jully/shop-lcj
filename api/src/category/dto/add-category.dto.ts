@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
 export class AddCategoryDto {
     @IsString()
@@ -12,6 +12,7 @@ export class AddCategoryDto {
 
     @IsString()
     @IsNotEmpty()
+    @Matches(/[a-z0-9-]+/)
     @ApiProperty({
         required: true,
         description: 'The category\'s slug to display in the URL',
