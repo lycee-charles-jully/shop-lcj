@@ -24,6 +24,16 @@ export class ProductController {
         return this.productService.getProducts(filters);
     }
 
+    @Get('home')
+    @ApiResponse({
+        status: 200,
+        description: 'A list of popular and latest products',
+        type: HomeProductsEntity,
+    })
+    getHomeProducts() {
+        return this.productService.getHomeProducts();
+    }
+
     @Get(':slug')
     @ApiResponse({
         status: 200,
@@ -36,16 +46,6 @@ export class ProductController {
     })
     getProduct(@Param('slug') slug: string) {
         return this.productService.getProduct(slug);
-    }
-
-    @Get('home')
-    @ApiResponse({
-        status: 200,
-        description: 'A list of popular and latest products',
-        type: HomeProductsEntity,
-    })
-    getHomeProducts() {
-        return this.productService.getHomeProducts();
     }
 
     @Post()
