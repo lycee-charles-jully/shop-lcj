@@ -23,7 +23,10 @@ export class CategoryService {
                 model: this.ProductModel,
                 select: [ 'coverImageUrl' ],
                 options: {
-                    limit: 1,
+                    // TODO: lower the limit to 1. Idk why but there is a freaking bug
+                    // TODO: where there is plenty of products but an empty array is returned,
+                    // TODO: like if the selected product was skipped
+                    limit: 2,
                     sort: { viewCount: -1 },
                 },
             } as PopulateOptions)
