@@ -1,16 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { nanoid } from 'nanoid';
+import { globalConvertOptions } from '../utils/global-convert-options';
 
 export type ProductDoc = Product & mongoose.Document;
 
-const convertOptions: mongoose.ToObjectOptions = {
-    versionKey: false,
-};
+
 
 @Schema({
-    toJSON: convertOptions,
-    toObject: convertOptions,
+    toJSON: globalConvertOptions,
+    toObject: globalConvertOptions,
 })
 export class Product {
     _id: mongoose.Types.ObjectId;
