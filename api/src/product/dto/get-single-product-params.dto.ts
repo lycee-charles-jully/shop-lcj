@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type, Transform } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
 
 export class GetSingleProductParamsDto {

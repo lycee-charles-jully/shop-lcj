@@ -6,7 +6,6 @@ import { globalConvertOptions } from '../utils/global-convert-options';
 export type ProductDoc = Product & mongoose.Document;
 
 
-
 @Schema({
     toJSON: globalConvertOptions,
     toObject: globalConvertOptions,

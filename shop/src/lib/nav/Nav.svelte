@@ -25,9 +25,9 @@
 
 
 <nav>
-    <NavLink icon="home" label="Accueil" href="/"/>
-    <NavLink icon="search" label="Recherche" href="/search"/>
-    <NavLink icon="categories" label="Catégories" href="/categories"/>
-    <NavLink icon="cart" label="Panier" href="/cart"/>
-    <NavLink icon="person" label="Compte" href="/account"/>
+    <NavLink href="/" icon="home" label="Accueil"/>
+    <NavLink href="/search" icon="search" label="Recherche"/>
+    <NavLink href="/categories" icon="categories" label="Catégories"/>
+    <NavLink href="/cart" icon="cart" label="Panier"/>
+    <NavLink href="/account" icon="person" label="Compte"/>
 </nav>
