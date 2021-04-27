@@ -49,7 +49,7 @@
         <span class="name">{product.name}</span>
         <div class="bottom-bar">
             <span class="text-gradient">{currencyFormat(product.price)}</span>
-            <img alt="+" height="20" src="icons/add-cart.svg" width="20"/>
+            <img alt="+" height="20" src="/icons/add-cart.svg" width="20"/>
         </div>
     </div>
 </a>
