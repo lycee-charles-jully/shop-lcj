@@ -48,4 +48,4 @@ export class Product {
     createdAt: Date;
 }
 
-export const ProductModel = SchemaFactory.createForClass(Product);
+export const ProductSchema = SchemaFactory.createForClass(Product);
