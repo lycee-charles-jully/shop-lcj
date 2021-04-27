@@ -20,6 +20,7 @@ export class Product {
     @Prop({ required: true, index: 'text' })
     description: string;
 
+    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'category' })
     category: mongoose.Types.ObjectId;
 
     @Prop({ default: () => nanoid(8) })

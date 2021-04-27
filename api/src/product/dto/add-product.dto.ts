@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import { IsArray, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
 export class AddProductDto {
     @IsString()
@@ -53,4 +53,11 @@ export class AddProductDto {
         default: [],
     })
     tags: string[] = [];
+
+    @IsMongoId()
+    @ApiProperty({
+        required: true,
+        description: 'The ID of the associated category',
+    })
+    category: string;
 }

@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PopulateOptions } from 'mongoose';
+import { CategoryDoc } from '../schemas/category.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
@@ -8,7 +9,10 @@ import { basicProductFields } from './entities/basic-product.entity';
 
 @Injectable()
 export class ProductService {
-    constructor(@InjectModel('product') private readonly ProductModel: Model<ProductDoc>) {
+    constructor(
+        @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
+        @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
+    ) {
     }
 
     getProducts(filters: GetProductsFilterDto) {
@@ -24,6 +28,11 @@ export class ProductService {
     async getProduct(slug: string, stat = false) {
         const product = await this.ProductModel
             .findOne({ slug })
+            .populate({
+                path: 'category',
+                model: this.CategoryModel,
+                select: [ 'name', 'slug', 'productType' ],
+            } as PopulateOptions)
             .exec();
         if (!product)
             throw new NotFoundException('Product not found');
@@ -40,7 +49,10 @@ export class ProductService {
         return { popular, latest };
     }
 
-    addProduct(product: AddProductDto) {
+    async addProduct(product: AddProductDto) {
+        const categoryExists = await this.CategoryModel.exists({ _id: product.category });
+        if (!categoryExists)
+            throw new NotAcceptableException(`Category with ID ${product.category} doesn't exist`);
         return new this.ProductModel(product).save();
     }
 }

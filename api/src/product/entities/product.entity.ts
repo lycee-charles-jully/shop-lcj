@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CategoryEntity } from '../../category/entities/category.entity';
 
 export class ProductEntity {
     @ApiProperty()
@@ -21,4 +22,7 @@ export class ProductEntity {
 
     @ApiProperty()
     tags: string[];
+
+    @ApiProperty()
+    category: CategoryEntity;
 }
