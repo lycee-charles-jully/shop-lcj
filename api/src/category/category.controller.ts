@@ -4,7 +4,7 @@ import { CategoryService } from './category.service';
 import { AddCategoryDto } from './dto/add-category.dto';
 import { CategoryEntity, CategoryWithProductsEntity } from './entities/category.entity';
 
-@ApiTags('category')
+@ApiTags('Category')
 @Controller('category')
 export class CategoryController {
     constructor(private readonly categoryService: CategoryService) {

@@ -8,7 +8,7 @@ import { HomeProductsEntity } from './entities/home-products.entity';
 import { ProductEntity } from './entities/product.entity';
 import { ProductService } from './product.service';
 
-@ApiTags('product')
+@ApiTags('Product')
 @Controller('product')
 export class ProductController {
 
