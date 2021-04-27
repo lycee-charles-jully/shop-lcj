@@ -21,8 +21,9 @@
     }
 </style>
 
-
-<h2 class="category-title">{title}</h2>
+{#if title}
+    <h2 class="category-title">{title}</h2>
+{/if}
 
 <div class="products-container" class:small-cards={smallCards}>
     <slot/>
