@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PopulateOptions } from 'mongoose';
+import { Model, PopulateOptions, FilterQuery } from 'mongoose';
 import { CategoryDoc } from '../schemas/category.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { AddProductDto } from './dto/add-product.dto';
@@ -15,9 +15,18 @@ export class ProductService {
     ) {
     }
 
-    getProducts(filters: GetProductsFilterDto) {
+    async getProducts(filters: GetProductsFilterDto) {
+        let findOptions: FilterQuery<ProductDoc> = {};
+        if (filters.category) {
+            findOptions = {
+                category: await this.CategoryModel
+                    .findOne({ slug: filters.category })
+                    .exec()
+                    .then(res => res?._id),
+            };
+        }
         return this.ProductModel
-            .find()
+            .find(findOptions)
             .limit(filters.limit)
             .skip(filters.offset)
             .sort(`-${filters.sort}`)

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { ProductOrderEnum } from '../enum/product-order.enum';
 
 export class GetProductsFilterDto {
@@ -39,4 +39,12 @@ export class GetProductsFilterDto {
         default: ProductOrderEnum.DATE,
     })
     sort: ProductOrderEnum = ProductOrderEnum.DATE;
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty({
+        required: false,
+        description: 'The slug of the category of the product',
+    })
+    category: string;
 }
