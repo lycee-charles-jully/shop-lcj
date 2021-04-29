@@ -60,6 +60,8 @@ services:
       - haproxy
       - api
       - mongo
+    volumes:
+      - apibackups:/usr/src/app/backups
     environment:
       - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/shoplcj?authSource=admin&appName=shoplcj
       - APP_PORT=5000
@@ -73,6 +75,9 @@ volumes:
   mongo:
     external: true
     name: mongo
+  apibackups:
+    external: true
+    name: apibackups
 
 
 networks:
