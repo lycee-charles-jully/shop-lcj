@@ -19,7 +19,7 @@ export class AccountService {
         try {
             newUser = await new this.UserModel(user).save();
         } catch (e: unknown) {
-            handleMongoError(e);
+            throw handleMongoError(e);
         }
         return newUser;
     }
