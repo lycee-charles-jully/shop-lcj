@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { UserDoc } from '../schemas/user.schema';
 import { handleMongoError } from '../utils/handleMongoError';
-import { RegisterDto } from './dto/register.dto';
+import { RegisterDto } from '../auth/dto/register.dto';
 
 @Injectable()
 export class AccountService {
