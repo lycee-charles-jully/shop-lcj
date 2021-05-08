@@ -4,6 +4,7 @@ import { ProductTypeModule } from './product-type/product-type.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { BackupModule } from './backup/backup.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { BackupModule } from './backup/backup.module';
         CategoryModule,
         ProductTypeModule,
         BackupModule,
+        AccountModule,
     ],
     controllers: [],
     providers: [],
