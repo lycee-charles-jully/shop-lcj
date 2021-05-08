@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RequestWithUserEntity } from './entities/request-with-user.entity';
-import { LocalAuthGuard } from './guards/local-auth';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @ApiTags('Authentification')
 @Controller('auth')
