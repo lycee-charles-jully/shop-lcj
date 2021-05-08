@@ -5,6 +5,7 @@ import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { BackupModule } from './backup/backup.module';
 import { AccountModule } from './account/account.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { AccountModule } from './account/account.module';
         ProductTypeModule,
         BackupModule,
         AccountModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],
