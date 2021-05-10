@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { RoleEnum } from '../auth/enum/role.enum';
 import { CategoryService } from './category.service';
 import { AddCategoryDto } from './dto/add-category.dto';
 import { CategoryEntity, CategoryWithProductsEntity } from './entities/category.entity';
@@ -21,6 +23,7 @@ export class CategoryController {
     }
 
     @Post('new')
+    @Auth(RoleEnum.ADMIN)
     @ApiResponse({
         status: 201,
         description: 'The created category',

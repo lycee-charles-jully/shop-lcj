@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { RoleEnum } from '../auth/enum/role.enum';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { GetSingleProductParamsDto } from './dto/get-single-product-params.dto';
@@ -50,6 +52,7 @@ export class ProductController {
     }
 
     @Post()
+    @Auth(RoleEnum.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'The created product',
