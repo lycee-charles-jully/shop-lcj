@@ -13,6 +13,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: flex-end;
+        z-index: 10;
     }
 
     @media all and (min-width: 768px) {
