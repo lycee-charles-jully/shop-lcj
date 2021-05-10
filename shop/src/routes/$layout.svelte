@@ -16,6 +16,7 @@
             background-color: var(--light-gray);
             max-width: calc(1024px - var(--header-height) * 2);
             width: calc(100% - (var(--header-height) * 2));
+            min-height: calc(100vh - var(--header-height) * 3);
             border-radius: var(--round);
         }
     }
