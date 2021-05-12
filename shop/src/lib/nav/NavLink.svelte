@@ -4,11 +4,13 @@
     export let icon: string;
     export let label: string;
     export let href: string;
-    export let recurrent = false;
+    export let pattern: RegExp;
 
     let isLinkActive: boolean;
 
-    $: isLinkActive = recurrent ? $page.path.startsWith(href) : $page.path === href;
+    $: isLinkActive = pattern
+        ? $page.path.match(pattern)
+        : $page.path === href;
 </script>
 
 

@@ -28,7 +28,7 @@
 <nav>
     <NavLink href="/" icon="home" label="Accueil"/>
     <NavLink href="/search" icon="search" label="Recherche"/>
-    <NavLink href="/categories" icon="categories" label="Catégories" recurrent/>
+    <NavLink href="/categories" icon="categories" label="Catégories" pattern={/^\/categories(\/|$)/}/>
     <NavLink href="/cart" icon="cart" label="Panier"/>
     <NavLink href="/account" icon="person" label="Compte" recurrent/>
 </nav>
