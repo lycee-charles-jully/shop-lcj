@@ -1,10 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Promise } from 'mongoose';
-import { CategoryDoc } from '../schemas/category.schema';
-import { ProductTypeDoc } from '../schemas/product-type.schema';
-import { ProductDoc } from '../schemas/product.schema';
-import { UserDoc } from '../schemas/user.schema';
+import { Model, Document } from 'mongoose';
+import { Category, CategoryDoc } from '../schemas/category.schema';
+import { ProductType, ProductTypeDoc } from '../schemas/product-type.schema';
+import { Product, ProductDoc } from '../schemas/product.schema';
+import { User, UserDoc } from '../schemas/user.schema';
 import { RestoreBackupDto } from './dto/restore-backup.dto';
 import { BackupData } from './entities/backup.entity';
 import { BackupOrigin } from './enum/BackupOrigin';
@@ -79,12 +79,16 @@ export class BackupService {
         };
     }
 
+    private static changelessTransform(docs: Document[]) {
+        return docs.map(d => d.toObject({ versionKey: true, transform: ((doc, ret) => ret) }));
+    }
+
     private async getDatabaseBackup(): Promise<BackupData> {
         const [ products, productTypes, categories, users ] = await Promise.all([
-            this.ProductModel.find().exec(),
-            this.ProductTypeModel.find().exec(),
-            this.CategoryModel.find().exec(),
-            this.UserModel.find().exec(),
+            this.ProductModel.find().exec().then(BackupService.changelessTransform) as Promise<Product[]>,
+            this.ProductTypeModel.find().exec().then(BackupService.changelessTransform) as Promise<ProductType[]>,
+            this.CategoryModel.find().exec().then(BackupService.changelessTransform) as Promise<Category[]>,
+            this.UserModel.find().exec().then(BackupService.changelessTransform) as Promise<User[]>,
         ]);
         return { products, productTypes, categories, users };
     }
