@@ -4,7 +4,9 @@ import { Model, Promise } from 'mongoose';
 import { CategoryDoc } from '../schemas/category.schema';
 import { ProductTypeDoc } from '../schemas/product-type.schema';
 import { ProductDoc } from '../schemas/product.schema';
+import { UserDoc } from '../schemas/user.schema';
 import { RestoreBackupDto } from './dto/restore-backup.dto';
+import { BackupData } from './entities/backup.entity';
 import { BackupOrigin } from './enum/BackupOrigin';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -16,10 +18,11 @@ export class BackupService {
         @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
         @InjectModel('product-type') private readonly ProductTypeModel: Model<ProductTypeDoc>,
         @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
+        @InjectModel('user') private readonly UserModel: Model<UserDoc>,
     ) {
     }
 
-    private static saveBackupToFile(backupData: Object, origin: BackupOrigin) {
+    private static saveBackupToFile(backupData: BackupData, origin: BackupOrigin) {
         const backupTimestamp = new Date();
         const backupFolder = path.resolve('./backups');
         const backupPath = path.resolve(
@@ -55,6 +58,7 @@ export class BackupService {
                 this.ProductModel.collection.drop(),
                 this.ProductTypeModel.collection.drop(),
                 this.CategoryModel.collection.drop(),
+                this.UserModel.collection.drop(),
             ]);
         } catch {
             drop = false;
@@ -64,6 +68,7 @@ export class BackupService {
                 this.ProductModel.insertMany(backup.data.products),
                 this.ProductTypeModel.insertMany(backup.data.productTypes),
                 this.CategoryModel.insertMany(backup.data.categories),
+                this.UserModel.insertMany(backup.data.users),
             ]);
         } catch (e) {
             throw new InternalServerErrorException(e.message);
@@ -74,12 +79,13 @@ export class BackupService {
         };
     }
 
-    private async getDatabaseBackup() {
-        const [ products, productTypes, categories ] = await Promise.all([
+    private async getDatabaseBackup(): Promise<BackupData> {
+        const [ products, productTypes, categories, users ] = await Promise.all([
             this.ProductModel.find().exec(),
             this.ProductTypeModel.find().exec(),
             this.CategoryModel.find().exec(),
+            this.UserModel.find().exec(),
         ]);
-        return { products, productTypes, categories };
+        return { products, productTypes, categories, users };
     }
 }

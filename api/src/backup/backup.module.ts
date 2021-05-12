@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CategorySchema } from '../schemas/category.schema';
 import { ProductTypeSchema } from '../schemas/product-type.schema';
 import { ProductSchema } from '../schemas/product.schema';
+import { UserSchema } from '../schemas/user.schema';
 import { BackupController } from './backup.controller';
 import { BackupService } from './backup.service';
 
@@ -12,6 +13,7 @@ import { BackupService } from './backup.service';
             { name: 'category', schema: CategorySchema },
             { name: 'product-type', schema: ProductTypeSchema },
             { name: 'product', schema: ProductSchema },
+            { name: 'user', schema: UserSchema },
         ]),
     ],
     controllers: [ BackupController ],
