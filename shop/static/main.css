@@ -76,3 +76,34 @@ a, a:link, a:visited {
 .category-title:first-child {
     margin-top: 0;
 }
+
+label {
+    display: block;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    background-color: var(--white);
+    padding: var(--spacing);
+    margin: var(--spacing) 0;
+    border: none;
+    border-radius: var(--round);
+    outline: none;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    outline: 1px solid var(--primary);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    background-image: var(--gradient);
+    color: var(--white);
+    padding: var(--spacing);
+    margin: var(--spacing) 0;
+    text-align: center;
+    border: none;
+    border-radius: 50px;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+}

@@ -30,5 +30,5 @@
     <NavLink href="/search" icon="search" label="Recherche"/>
     <NavLink href="/categories" icon="categories" label="Catégories" pattern={/^\/categories(\/|$)/}/>
     <NavLink href="/cart" icon="cart" label="Panier"/>
-    <NavLink href="/account" icon="person" label="Compte" recurrent/>
+    <NavLink href="/account" icon="person" label="Compte" pattern={/^\/(account|login)(\/|$)/}/>
 </nav>
