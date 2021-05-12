@@ -51,7 +51,8 @@ body, html {
 }
 
 a, a:link, a:visited {
-    color: var(--black);
+    color: var(--primary);
+    cursor: pointer;
     text-decoration: none !important;
 }
 
