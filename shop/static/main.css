@@ -12,6 +12,7 @@
     --primary-gradient: #DC2F02;
     --placeholder: rgba(3, 7, 30, .35);
     --blur: rgba(3, 7, 30, .40);
+    --gradient: linear-gradient(90deg, var(--primary), var(--primary-gradient));
 
     /* ELEMENTS SIZES */
     --header-height: 70px;
@@ -55,7 +56,7 @@ a, a:link, a:visited {
 }
 
 .text-gradient {
-    background: linear-gradient(90deg, var(--primary), var(--primary-gradient));
+    background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
