@@ -4,6 +4,15 @@
 
     let email;
     let password;
+
+    let loggingIn = false;
+
+
+    function login() {
+        if (loggingIn)
+            return;
+        loggingIn = true;
+    }
 </script>
 
 
@@ -25,19 +34,19 @@
 
 
 <Center>
-    <form on:submit|preventDefault={() => console.log({email, password})}>
+    <form on:submit|preventDefault={login}>
 
         <h2>Se connecter</h2>
 
         <InputContainer label="Email" let:id>
-            <input bind:value={email} {id} required type="email"/>
+            <input bind:value={email} disabled={loggingIn} {id} required type="email"/>
         </InputContainer>
 
         <InputContainer label="Mot de passe" let:id>
-            <input bind:value={password} {id} required type="password"/>
+            <input bind:value={password} disabled={loggingIn} {id} required type="password"/>
         </InputContainer>
 
-        <button class="btn-primary">Connexion</button>
+        <button class="btn-primary" class:disabled={loggingIn}>Connexion</button>
 
     </form>
 
