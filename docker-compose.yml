@@ -49,6 +49,9 @@ services:
     networks:
       - haproxy
       - api
+    environment:
+      - VITE_LOCAL_API_URL=http://api:5000
+      - VITE_REMOTE_API_URL=https://api.shop-lcj.fr
 
   api:
     image: shoplcj/api:latest
