@@ -1,6 +1,9 @@
 <script lang="ts">
     import InputContainer from '$lib/inputs/InputContainer.svelte';
     import Center from '$lib/Center.svelte';
+    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { session } from '$app/stores';
+    import { goto } from '$app/navigation';
 
     let user = {
         email: '',
@@ -18,6 +21,7 @@
     let registering = false;
 
     function register() {
+        error = null;
         if (registering)
             return;
         if (!checkPassword(user.password))
@@ -27,6 +31,33 @@
             return;
         }
         registering = true;
+
+        fetch(`${REMOTE_ENDPOINT}/v1/auth/register`, {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: [
+                [ 'Content-Type', 'application/json' ],
+            ],
+        })
+            .then(async res => {
+                if (res.status === 409) {
+                    const errorObject = await res.json();
+                    if (errorObject.message.match(/jeunestNumber/))
+                        return error = 'Ce numéro de carte Jeun\'Est est déjà utilisé. Si il vous appartient, veuillez contacter l\'administration pour régler ce problème.';
+                    if (errorObject.message.match(/email/))
+                        return error = 'Cet email est déjà utilisé.';
+                    return error = errorObject.message;
+                }
+                if (res.status.toString().match(/[45]\d{2}/))
+                    return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
+                $session.auth = true;
+                goto('/account', { replaceState: true });
+            })
+            .catch(err => {
+                console.error(err);
+                return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
+            })
+            .finally(() => registering = false);
     }
 
     function checkPassword(pwd: string) {
