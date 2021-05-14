@@ -1,17 +1,44 @@
-<script>
+<script lang="ts">
     import Center from '$lib/Center.svelte';
     import InputContainer from '$lib/inputs/InputContainer.svelte';
+    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { goto } from '$app/navigation';
 
-    let email;
-    let password;
+    let email: string = 'elon.musk@tesla.com';
+    let password: string = 'P@sswOrd';
 
     let loggingIn = false;
+
+    let error: string | null = null;
 
 
     function login() {
         if (loggingIn)
             return;
         loggingIn = true;
+        error = null;
+        fetch(`${REMOTE_ENDPOINT}/v1/auth/login`, {
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+            headers: [
+                [ 'Content-Type', 'application/json' ],
+            ],
+        })
+            .then(res => {
+                if (res.status === 401)
+                    return error = 'Email ou mot de passe invalide.';
+                if (res.status.toString().match(/[45]\d{2}/))
+                    return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
+                goto('/account', { replaceState: true });
+            })
+            .catch(err => {
+                console.error(err);
+                return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
+            })
+            .finally(() => loggingIn = false);
     }
 </script>
 
@@ -37,6 +64,10 @@
     <form on:submit|preventDefault={login}>
 
         <h2>Se connecter</h2>
+
+        {#if error}
+            <p class="error-message">{error}</p>
+        {/if}
 
         <InputContainer label="Email" let:id>
             <input bind:value={email} disabled={loggingIn} {id} required type="email"/>
