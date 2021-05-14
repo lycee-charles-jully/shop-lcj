@@ -1,8 +1,10 @@
 <script>
     import { goto } from '$app/navigation';
+    import { session } from '$app/stores';
     import { onMount } from 'svelte';
 
     onMount(() => {
-        goto('/login', { replaceState: true });
+        if (!$session.auth)
+            goto('/login', { replaceState: true });
     });
 </script>
