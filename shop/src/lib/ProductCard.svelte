@@ -8,6 +8,7 @@
 
 <style>
     .card {
+        color: var(--black);
         background-color: var(--white);
         max-width: 250px;
         border-radius: var(--round);

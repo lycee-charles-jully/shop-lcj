@@ -7,6 +7,7 @@
 
 <style>
     .card {
+        color: var(--black);
         background-color: var(--white);
         border-radius: var(--round);
         display: flex;
