@@ -89,5 +89,5 @@
 
     </form>
 
-    <p>Pas de compte ? <a class="text-gradient">Créer un compte</a></p>
+    <p>Pas de compte ? <a href="/register" class="text-gradient">Créer un compte</a></p>
 </Center>

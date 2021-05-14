@@ -34,5 +34,5 @@
     <NavLink href="/{$session.auth ? 'account' : 'login'}"
              icon="person"
              label={$session.auth ? 'Compte' : 'Connexion'}
-             pattern={/^\/(account|login)(\/|$)/}/>
+             pattern={/^\/(account|login|register)(\/|$)/}/>
 </nav>
