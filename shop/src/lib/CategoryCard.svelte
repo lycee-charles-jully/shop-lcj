@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { CategoryPopulated } from '$lib/categories';
+    import type { CategoryPopulated } from '$types/categories';
 
     export let category: CategoryPopulated;
 </script>

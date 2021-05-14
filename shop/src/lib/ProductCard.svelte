@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { BasicProduct } from '../types/products';
+    import type { BasicProduct } from '$types/products';
     import { currencyFormat } from '$lib/currency-format';
 
     export let product: BasicProduct;

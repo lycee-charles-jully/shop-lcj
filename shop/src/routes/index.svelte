@@ -13,7 +13,7 @@
 
 
 <script lang="ts">
-    import type { HomeProducts } from '../types/products';
+    import type { HomeProducts } from '$types/products';
     import Meta from '$lib/Meta.svelte';
     import Category from '$lib/Category.svelte';
     import ProductCard from '$lib/ProductCard.svelte';
