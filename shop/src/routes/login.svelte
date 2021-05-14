@@ -4,6 +4,7 @@
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { goto } from '$app/navigation';
     import { session } from '$app/stores';
+    import { onMount } from 'svelte';
 
     let email: string;
     let password: string;
@@ -12,6 +13,11 @@
 
     let error: string | null = null;
 
+
+    onMount(() => {
+        if ($session.auth)
+            goto('/account', { replaceState: true });
+    });
 
     function login() {
         if (loggingIn)
