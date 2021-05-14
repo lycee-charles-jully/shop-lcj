@@ -10,11 +10,15 @@
   "devDependencies": {
     "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
+    "@types/cookie": "^0.4.0",
     "svelte": "^3.38.2",
     "svelte-preprocess": "^4.7.3",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4",
     "vite": "^2.3.2"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "cookie": "^0.4.1"
+  }
 }

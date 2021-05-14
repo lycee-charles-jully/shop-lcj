@@ -3,6 +3,7 @@
     import InputContainer from '$lib/inputs/InputContainer.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { goto } from '$app/navigation';
+    import { session } from '$app/stores';
 
     let email: string;
     let password: string;
@@ -32,6 +33,7 @@
                     return error = 'Email ou mot de passe invalide.';
                 if (res.status.toString().match(/[45]\d{2}/))
                     return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
+                $session.auth = true;
                 goto('/account', { replaceState: true });
             })
             .catch(err => {
