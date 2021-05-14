@@ -4,8 +4,8 @@
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { goto } from '$app/navigation';
 
-    let email: string = 'elon.musk@tesla.com';
-    let password: string = 'P@sswOrd';
+    let email: string;
+    let password: string;
 
     let loggingIn = false;
 
