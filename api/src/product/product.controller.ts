@@ -56,7 +56,7 @@ export class ProductController {
     @ApiResponse({
         status: 200,
         description: 'The created product',
-        type: [ BasicProductEntity ],
+        type: ProductEntity,
     })
     addProduct(@Body() product: AddProductDto) {
         return this.productService.addProduct(product);
