@@ -72,7 +72,7 @@ export class ProductService {
             coverImageUrl,
             imagesUrls,
         }).save();
-        await category.update({
+        await category.updateOne({
             $push: {
                 products: newProduct._id,
             },
