@@ -63,15 +63,21 @@ export class ProductService {
     }
 
     async addProduct(product: AddProductDto, images: Express.Multer.File[]) {
-        const categoryExists = await this.CategoryModel.exists({ _id: product.category });
-        if (!categoryExists)
+        const category: CategoryDoc | null = await this.CategoryModel.findById(product.category);
+        if (!category)
             throw new NotAcceptableException(`Category with ID ${product.category} doesn't exist`);
         const [ coverImageUrl, ...imagesUrls ] = await Promise.all(images.map(ProductService.processImage));
-        return new this.ProductModel({
+        const newProduct = await new this.ProductModel({
             ...product,
             coverImageUrl,
             imagesUrls,
         }).save();
+        await category.update({
+            $push: {
+                products: newProduct._id,
+            },
+        });
+        return newProduct;
     }
 
     private static async processImage(image: Express.Multer.File) {
