@@ -1,11 +1,15 @@
 import { Injectable, NotFoundException, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PopulateOptions, FilterQuery } from 'mongoose';
+import { nanoid } from 'nanoid';
 import { CategoryDoc } from '../schemas/category.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { basicProductFields } from './entities/basic-product.entity';
+import * as sharp from 'sharp';
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class ProductService {
@@ -58,10 +62,33 @@ export class ProductService {
         return { popular, latest };
     }
 
-    async addProduct(product: AddProductDto) {
+    async addProduct(product: AddProductDto, images: Express.Multer.File[]) {
         const categoryExists = await this.CategoryModel.exists({ _id: product.category });
         if (!categoryExists)
             throw new NotAcceptableException(`Category with ID ${product.category} doesn't exist`);
-        return new this.ProductModel(product).save();
+        const [ coverImageUrl, ...imagesUrls ] = await Promise.all(images.map(ProductService.processImage));
+        return new this.ProductModel({
+            ...product,
+            coverImageUrl,
+            imagesUrls,
+        }).save();
+    }
+
+    private static async processImage(image: Express.Multer.File) {
+        const imageID = nanoid(20);
+        const storagePath = path.resolve('./storage/');
+        const imagePath = path.resolve(storagePath, `${imageID}.png`);
+        fs.mkdirSync(storagePath, { recursive: true });
+        await sharp(image.buffer)
+            .rotate()
+            .resize({
+                width: 2000,
+                height: 2000,
+                fit: 'contain',
+                withoutEnlargement: true,
+                background: { r: 255, g: 255, b: 255, alpha: 1 },
+            })
+            .toFile(imagePath);
+        return `${imageID}.png`;
     }
 }

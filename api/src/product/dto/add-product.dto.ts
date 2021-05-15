@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsArray, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import { transformCommaListToArray } from '../../utils/transformCommaListToArray';
 
 export class AddProductDto {
     @IsString()
@@ -19,23 +20,6 @@ export class AddProductDto {
     })
     description: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @ApiProperty({
-        required: true,
-        description: 'The product\'s cover image URL',
-    })
-    coverImageUrl: string;
-
-    @IsArray()
-    @IsOptional()
-    @ApiProperty({
-        required: false,
-        description: 'Other images URLs of the product',
-        default: [],
-    })
-    imagesUrls: string[] = [];
-
     @IsNumber()
     @IsPositive()
     @Type(() => Number)
@@ -45,8 +29,8 @@ export class AddProductDto {
     })
     price: number;
 
-    @IsArray()
     @IsOptional()
+    @Transform(transformCommaListToArray)
     @ApiProperty({
         required: false,
         description: 'Product\'s tags',

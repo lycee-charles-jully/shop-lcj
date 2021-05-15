@@ -1,8 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Express } from 'express';
 import { Auth } from '../auth/decorators/auth.decorator';
+import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
 import { RoleEnum } from '../auth/enum/role.enum';
 import { AddProductDto } from './dto/add-product.dto';
+import { AddProductWithImagesDto } from './dto/add-product-with-images.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { GetSingleProductParamsDto } from './dto/get-single-product-params.dto';
 import { BasicProductEntity } from './entities/basic-product.entity';
@@ -53,12 +57,24 @@ export class ProductController {
 
     @Post()
     @Auth(RoleEnum.ADMIN)
+    @UseInterceptors(FilesInterceptor('images', 5, {
+        fileFilter(req: RequestWithUserEntity, file, cb) {
+            cb(null, file.mimetype.startsWith('image/'));
+        },
+    }))
+    @ApiConsumes('multipart/form-data')
     @ApiResponse({
         status: 200,
         description: 'The created product',
         type: ProductEntity,
     })
-    addProduct(@Body() product: AddProductDto) {
-        return this.productService.addProduct(product);
+    @ApiBody({
+        type: AddProductWithImagesDto,
+    })
+    addProduct(
+        @Body() product: AddProductDto,
+        @UploadedFiles() images: Express.Multer.File[],
+    ) {
+        return this.productService.addProduct(product, images);
     }
 }
