@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FileModule } from './file/file.module';
 import { ProductTypeModule } from './product-type/product-type.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
         BackupModule,
         AccountModule,
         AuthModule,
+        FileModule,
     ],
     controllers: [],
     providers: [],
