@@ -7,7 +7,10 @@ const config = {
     kit: {
         adapter: node(),
         target: '#svelte',
-        appDir: 'admin'
+        appDir: 'admin',
+        prerender: {
+            enabled: false,
+        },
     }
 };
 
