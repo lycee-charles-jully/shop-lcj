@@ -7,10 +7,7 @@ const config = {
     kit: {
         adapter: node(),
         target: '#svelte',
-        ssr: false,
-        paths: {
-            base: '/admin',
-        },
+        appDir: 'admin'
     }
 };
 
