@@ -16,7 +16,7 @@
 
 <style>
     a {
-        color: var(--black);
+        color: var(--black) !important;
         flex: 1;
         display: flex;
         align-items: center;
