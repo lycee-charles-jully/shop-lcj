@@ -58,6 +58,7 @@ services:
     restart: always
     networks:
       - haproxy
+      - api
 
   api:
     image: shoplcj/api:latest
