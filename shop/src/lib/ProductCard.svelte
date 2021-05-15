@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { BasicProduct } from '$types/products';
     import { currencyFormat } from '$lib/currency-format';
+    import { imageUrl } from '$lib/image-url';
 
     export let product: BasicProduct;
 </script>
@@ -45,7 +46,7 @@
 
 
 <a class="card" href="/product/{product.slug}">
-    <img alt={product.name} class="cover" src={product.coverImageUrl}/>
+    <img alt={product.name} class="cover" src={imageUrl(product.coverImageUrl)}/>
     <div class="body">
         <span class="name">{product.name}</span>
         <div class="bottom-bar">

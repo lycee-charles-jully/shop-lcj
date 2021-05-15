@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { imageUrl } from '$lib/image-url';
+
     export let images: string[] = [];
     export let productName: string;
 
@@ -63,10 +65,13 @@
 
 
 <div class="container">
-    <img alt={productName} class="main-image" src={selectedImage}/>
+    <img alt={productName} class="main-image" src={imageUrl(selectedImage)}/>
     <div class="side-images">
         {#each images as src}
-            <img {src} on:click={() => selectedImage = src} class:highlight={src === selectedImage} alt={productName}/>
+            <img src={imageUrl(src)}
+                 on:click={() => selectedImage = src}
+                 class:highlight={src === selectedImage}
+                 alt={productName}/>
         {/each}
     </div>
 </div>

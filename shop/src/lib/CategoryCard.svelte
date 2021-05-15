@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { CategoryPopulated } from '$types/categories';
+    import { imageUrl } from '$lib/image-url';
 
     export let category: CategoryPopulated;
 </script>
@@ -28,6 +29,6 @@
 
 
 <a class="card" href="/categories/{category.slug}">
-    <img alt={category.name} src={category?.products[0]?.coverImageUrl}/>
+    <img alt={category.name} src={imageUrl(category?.products[0]?.coverImageUrl)}/>
     <span>{category.name}</span>
 </a>
