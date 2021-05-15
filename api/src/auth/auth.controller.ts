@@ -1,11 +1,13 @@
-import { Controller, Post, UseGuards, Request, HttpCode, Res, Body } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Request as ExpressRequest, Response } from 'express';
 import { AccountService } from '../account/account.service';
 import { AuthService } from './auth.service';
+import { Auth } from './decorators/auth.decorator';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { RequestWithUserEntity } from './entities/request-with-user.entity';
+import { RoleEnum } from './enum/role.enum';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @ApiTags('Authentification')
@@ -23,6 +25,12 @@ export class AuthController {
     async login(@Request() req: RequestWithUserEntity, @Res() res: Response) {
         const jwtData = this.AuthService.login(req.user);
         this.AuthService.applyAuthCookie(req, res, jwtData);
+    }
+
+    @Get('me')
+    @Auth(RoleEnum.USER)
+    getUserData(@Request() { user }: RequestWithUserEntity) {
+        return user;
     }
 
     @Post('register')
