@@ -1,0 +1,1 @@
+<h1 class="text-2xl text-center">Désolé, mais vous n'êtes pas autorisé à accéder à cette page.</h1>
