@@ -50,6 +50,15 @@ services:
       - haproxy
       - api
 
+  admin:
+    image: shoplcj/admin:latest
+    build: ./admin
+    container_name: admin
+    hostname: admin
+    restart: always
+    networks:
+      - haproxy
+
   api:
     image: shoplcj/api:latest
     build: ./api
