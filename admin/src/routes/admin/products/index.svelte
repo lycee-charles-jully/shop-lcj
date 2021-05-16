@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ProductType from '../../../lib/product-type/ProductType.svelte';
+    import ProductType from '$lib/ProductType.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
 
