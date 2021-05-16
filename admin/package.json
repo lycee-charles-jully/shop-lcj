@@ -22,6 +22,10 @@
   "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
-    "cookie": "^0.4.1"
+    "cookie": "^0.4.1",
+    "filepond": "^4.27.1",
+    "filepond-plugin-file-validate-type": "^1.2.6",
+    "filepond-plugin-image-preview": "^4.6.6",
+    "svelte-filepond": "^0.2.0"
   }
 }
