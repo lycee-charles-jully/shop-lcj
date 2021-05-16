@@ -20,7 +20,7 @@ export const handle: Handle = async ({ render, request }) => {
         const response = await render(request);
         return {
             ...response,
-            status: 404,
+            status: 401,
         };
     }
 
