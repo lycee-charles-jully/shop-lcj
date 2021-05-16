@@ -1,0 +1,16 @@
+.input {
+    @apply border-none outline-none px-4 py-2 bg-white rounded;
+}
+
+.input:focus {
+    outline: rgba(59, 130, 246, var(--tw-bg-opacity)) solid 1px;
+    outline-offset: 0;
+}
+
+.btn {
+    @apply border-none outline-none px-4 py-2 bg-blue-500 text-white rounded text-center;
+}
+
+.btn:disabled {
+    @apply cursor-not-allowed filter saturate-50;
+}

@@ -7,5 +7,6 @@
     <span class="h-10 flex items-center px-4">Panneau d'admin</span>
     <nav class="flex justify-end">
         <NavLink label="Accueil"/>
+        <NavLink href="products" label="Produits"/>
     </nav>
 </header>
