@@ -25,7 +25,7 @@
 </h1>
 
 {#each categories as category}
-    <Item href="/admin/products/{productTypeID}/{category._id}"
+    <Item href="/admin/products/{productTypeID}/{category.slug}"
           thumb={category.products[0]?.coverImageUrl}>
         {category.name}
     </Item>
