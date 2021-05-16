@@ -22,7 +22,7 @@ export class CategoryController {
         return this.categoryService.getCategories();
     }
 
-    @Post('new')
+    @Post()
     @Auth(RoleEnum.ADMIN)
     @ApiResponse({
         status: 201,

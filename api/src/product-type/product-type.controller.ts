@@ -22,7 +22,7 @@ export class ProdductTypeController {
         return this.productTypeService.getProductTypes();
     }
 
-    @Post('new')
+    @Post()
     @Auth(RoleEnum.ADMIN)
     @ApiResponse({
         status: 201,
