@@ -1,3 +1,8 @@
+<script>
+    import Nav from '$lib/nav/Nav.svelte';
+</script>
+
+
 <style>
     @tailwind base;
     @tailwind components;
@@ -9,5 +14,7 @@
     <title>Panneau d'admin - Shop-lcj</title>
 </svelte:head>
 
-
-<slot/>
+<Nav/>
+<main class="p-4">
+    <slot/>
+</main>
