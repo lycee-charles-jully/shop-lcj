@@ -26,7 +26,7 @@
 
 {#each categories as category}
     <Item href="/admin/products/{productTypeID}/{category._id}"
-          thumb={category.products[0].coverImageUrl}>
+          thumb={category.products[0]?.coverImageUrl}>
         {category.name}
     </Item>
 {/each}
