@@ -9,7 +9,7 @@
 
     let products = [];
 
-    let caregory: string, productType: string;
+    let category: string, productType: string;
 
     onMount(() => {
         fetch(`${REMOTE_ENDPOINT}/v1/product?limit=20&category=${categorySlug}`)
@@ -19,7 +19,7 @@
             .then(res => res.json())
             .then(categories => {
                 const { name, productType: { name: productTypeName } } = categories.find(c => c.slug === categorySlug);
-                caregory = name;
+                category = name;
                 productType = productTypeName;
             });
     });
@@ -27,9 +27,9 @@
 
 
 <h1 class="text-2xl mb-4">
-    {#if caregory && productType}
+    {#if category && productType}
         <a href="/admin/products">{productType}</a> {'>'}
-        <a href="/admin/products/{productTypeID}">{caregory}</a> {'>'}
+        <a href="/admin/products/{productTypeID}">{category}</a> {'>'}
         produits
     {:else}
         Produits
