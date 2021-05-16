@@ -18,7 +18,7 @@
 
 <h1 class="text-2xl mb-4">
     {#if categories.length}
-        <a href="/admin/products/{productTypeID}">{categories[0].productType.namePluralized}</a> {'>'} catégories
+        <a href="/admin/products">{categories[0].productType.namePluralized}</a> {'>'} catégories
     {:else}
         Catégories
     {/if}
