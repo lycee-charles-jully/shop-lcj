@@ -46,7 +46,7 @@
 
 
 <a class="card" href="/product/{product.slug}">
-    <img alt={product.name} class="cover" src={imageUrl(product.coverImageUrl)}/>
+    <img alt={product.name} class="cover" src={imageUrl(product.coverImageUrl, 200)}/>
     <div class="body">
         <span class="name">{product.name}</span>
         <div class="bottom-bar">

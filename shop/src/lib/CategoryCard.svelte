@@ -29,6 +29,6 @@
 
 
 <a class="card" href="/categories/{category.slug}">
-    <img alt={category.name} src={imageUrl(category?.products[0]?.coverImageUrl)}/>
+    <img alt={category.name} src={imageUrl(category?.products[0]?.coverImageUrl, 200)}/>
     <span>{category.name}</span>
 </a>

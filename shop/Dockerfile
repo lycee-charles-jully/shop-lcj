@@ -15,6 +15,7 @@ ENV NODE_ENV production
 
 ENV VITE_LOCAL_API_URL=http://api:5000/api
 ENV VITE_REMOTE_API_URL=https://shop-lcj.fr/api
+ENV VITE_STATICALLY_CND=https://cdn.statically.io/img/shop-lcj.fr
 
 RUN npm run build
 
