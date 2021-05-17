@@ -1,10 +1,12 @@
 <script>
-    import { onMount } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
 
     export let images = [];
     export let disabled = false;
     export let required = false;
     export let id;
+
+    const dispatch = createEventDispatcher();
 
 
     let FilePond;
@@ -14,17 +16,20 @@
     });
 
 
-    function handleAddFile(_, img) {
+    function handleAddFile(err, img) {
+        if (err)
+            return dispatch('error', err);
         images = [...images, img.file];
     }
 
-    function handleRemoveFile(_, img) {
+    function handleRemoveFile(err, img) {
+        if (err)
+            return dispatch('error', err);
         images = images.filter(i => i.name !== img.file.name && i.size !== img.file.size);
     }
 </script>
 
 <!-- TODO: handle allowReorder -->
-<!-- TODO: handle errors -->
 
 {#if FilePond}
     <svelte:component this={FilePond}

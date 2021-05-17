@@ -89,7 +89,7 @@
     </InputContainer>
 
     <InputContainer label="Images (la première sera utilisée en couverture)">
-        <ImagesPicker bind:images disabled={loading} required/>
+        <ImagesPicker bind:images disabled={loading} required on:error={e => error = e?.detail?.main}/>
     </InputContainer>
 
     <button class="btn w-full mt-4" disabled={loading}>Créer</button>
