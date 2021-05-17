@@ -33,6 +33,10 @@
 
     function createProduct() {
 
+        if (loading)
+            return;
+        loading = true;
+
         const body = new FormData();
         body.append('name', name);
         body.append('description', description);
