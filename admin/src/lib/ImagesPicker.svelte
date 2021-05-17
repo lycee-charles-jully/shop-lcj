@@ -27,19 +27,24 @@
             return dispatch('error', err);
         images = images.filter(i => i.name !== img.file.name && i.size !== img.file.size);
     }
+
+    function handleReorderFiles(files) {
+        images = files.map(img => img.file);
+    }
 </script>
 
-<!-- TODO: handle allowReorder -->
 
 {#if FilePond}
     <svelte:component this={FilePond}
                       maxFiles={5}
                       {disabled}
                       {required}
-                      allowMultiple={true}
+                      allowMultiple
+                      allowReorder
                       acceptedFileTypes={['image/*']}
                       onaddfile={handleAddFile}
-                      onremovefile={handleRemoveFile}/>
+                      onremovefile={handleRemoveFile}
+                      onreorderfiles={handleReorderFiles}/>
 {:else}
     <div class="italic">Chargement du picker...</div>
 {/if}
