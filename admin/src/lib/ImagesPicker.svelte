@@ -35,4 +35,6 @@
                       acceptedFileTypes={['image/*']}
                       onaddfile={handleAddFile}
                       onremovefile={handleRemoveFile}/>
+{:else}
+    <div class="italic">Chargement du picker...</div>
 {/if}
