@@ -33,6 +33,13 @@ export class AuthController {
         return user;
     }
 
+    @Get('refresh')
+    @Auth(RoleEnum.USER)
+    refreshToken(@Request() req: RequestWithUserEntity, @Res() res: Response) {
+        const jwtData = this.AuthService.login(req.user);
+        this.AuthService.applyAuthCookie(req, res, jwtData);
+    }
+
     @Post('register')
     async register(@Body() user: RegisterDto, @Request() req: ExpressRequest, @Res() res: Response) {
         const createdUser = await this.AccountService.createUser(user);

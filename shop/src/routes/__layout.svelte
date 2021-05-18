@@ -1,7 +1,20 @@
 <script lang="ts">
     import Nav from '$lib/nav/Nav.svelte';
     import '../app.css';
+    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { session } from '$app/stores';
+
+
+    function handleAppStart() {
+        if ($session.auth)
+            fetch(`${REMOTE_ENDPOINT}/v1/auth/refresh`, {
+                credentials: 'same-origin',
+            });
+    }
 </script>
+
+
+<svelte:window on:sveltekit:start={handleAppStart}/>
 
 
 <style>
