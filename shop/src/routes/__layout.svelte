@@ -6,7 +6,7 @@
 
 
     function handleAppStart() {
-        if ($session.auth)
+        if ($session.user)
             fetch(`${REMOTE_ENDPOINT}/v1/auth/refresh`, {
                 credentials: 'same-origin',
             });

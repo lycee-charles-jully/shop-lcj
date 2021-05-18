@@ -31,8 +31,8 @@
     <NavLink href="/search" icon="search" label="Recherche"/>
     <NavLink href="/categories" icon="categories" label="Catégories" pattern={/^\/categories(\/|$)/}/>
     <NavLink href="/cart" icon="cart" label="Panier"/>
-    <NavLink href="/{$session.auth ? 'account' : 'login'}"
+    <NavLink href="/{$session.user ? 'account' : 'login'}"
              icon="person"
-             label={$session.auth ? 'Compte' : 'Connexion'}
+             label={$session.user ? 'Compte' : 'Connexion'}
              pattern={/^\/(account|login|register)(\/|$)/}/>
 </nav>

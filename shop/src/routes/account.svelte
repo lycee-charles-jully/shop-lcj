@@ -4,7 +4,7 @@
     import { onMount } from 'svelte';
 
     onMount(() => {
-        if (!$session.auth)
+        if (!$session.user)
             goto('/login', { replaceState: true });
     });
 </script>

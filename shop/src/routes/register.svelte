@@ -39,18 +39,18 @@
                 [ 'Content-Type', 'application/json' ],
             ],
         })
-            .then(async res => {
+            .then(async res => ({ data: await res.json(), res }))
+            .then(async ({ data, res }) => {
                 if (res.status === 409) {
-                    const errorObject = await res.json();
-                    if (errorObject.message.match(/jeunestNumber/))
+                    if (data.message.match(/jeunestNumber/))
                         return error = 'Ce numéro de carte Jeun\'Est est déjà utilisé. Si il vous appartient, veuillez contacter l\'administration pour régler ce problème.';
-                    if (errorObject.message.match(/email/))
+                    if (data.message.match(/email/))
                         return error = 'Cet email est déjà utilisé.';
-                    return error = errorObject.message;
+                    return error = data.message;
                 }
                 if (res.status.toString().match(/[45]\d{2}/))
                     return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
-                $session.auth = true;
+                $session.user = data;
                 goto('/account', { replaceState: true });
             })
             .catch(err => {

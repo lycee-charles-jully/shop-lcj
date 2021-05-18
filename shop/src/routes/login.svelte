@@ -15,7 +15,7 @@
 
 
     onMount(() => {
-        if ($session.auth)
+        if ($session.user)
             goto('/account', { replaceState: true });
     });
 
@@ -34,12 +34,13 @@
                 [ 'Content-Type', 'application/json' ],
             ],
         })
-            .then(res => {
+            .then(async res => ({ data: await res.json(), res }))
+            .then(({ data, res }) => {
                 if (res.status === 401)
                     return error = 'Email ou mot de passe invalide.';
                 if (res.status.toString().match(/[45]\d{2}/))
                     return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
-                $session.auth = true;
+                $session.user = data;
                 goto('/account', { replaceState: true });
             })
             .catch(err => {
