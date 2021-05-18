@@ -41,6 +41,5 @@ export class AuthService {
             secure: req.secure,
             sameSite: 'strict',
         });
-        res.sendStatus(200);
     }
 }

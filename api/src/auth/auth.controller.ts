@@ -25,6 +25,7 @@ export class AuthController {
     async login(@Request() req: RequestWithUserEntity, @Res() res: Response) {
         const jwtData = this.AuthService.login(req.user);
         this.AuthService.applyAuthCookie(req, res, jwtData);
+        res.json(req.user);
     }
 
     @Get('me')
@@ -38,6 +39,7 @@ export class AuthController {
     refreshToken(@Request() req: RequestWithUserEntity, @Res() res: Response) {
         const jwtData = this.AuthService.login(req.user);
         this.AuthService.applyAuthCookie(req, res, jwtData);
+        res.json(req.user);
     }
 
     @Post('register')
@@ -45,6 +47,7 @@ export class AuthController {
         const createdUser = await this.AccountService.createUser(user);
         const jwtData = this.AuthService.login(createdUser);
         this.AuthService.applyAuthCookie(req, res, jwtData);
+        res.json(user);
     }
 
 }
