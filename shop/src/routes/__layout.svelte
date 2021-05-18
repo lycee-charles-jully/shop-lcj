@@ -6,7 +6,7 @@
 
 
     function handleAppStart() {
-        if ($session.user)
+        if ($session.user && (Date.now() - new Date($session.user?.tokenCreatedAt).getTime()) > 86400 * 1000)
             fetch(`${REMOTE_ENDPOINT}/v1/auth/refresh`, {
                 credentials: 'same-origin',
             });
