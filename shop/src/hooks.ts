@@ -18,7 +18,7 @@ export const handle: Handle = async ({ request, render }) => {
     let user = null;
     if (cookies.token)
         try {
-            user = await axios.get(`${LOCAL_ENDPOINT}/v1/auth/me`, {
+            user = await axios.get(`${LOCAL_ENDPOINT}/v1/account/me`, {
                 headers: request.headers,
             })
                 .then(res => res.data);

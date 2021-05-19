@@ -5,7 +5,7 @@ import axios from 'axios';
 export const handle: Handle = async ({ render, request }) => {
 
     try {
-        const me = await axios.get(`${LOCAL_ENDPOINT}/v1/auth/me`, {
+        const me = await axios.get(`${LOCAL_ENDPOINT}/v1/account/me`, {
             headers: request.headers,
         });
         const { role } = me.data;

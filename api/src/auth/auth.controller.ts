@@ -28,12 +28,6 @@ export class AuthController {
         res.json(req.user);
     }
 
-    @Get('me')
-    @Auth(RoleEnum.USER)
-    getUserData(@Request() { user }: RequestWithUserEntity) {
-        return user;
-    }
-
     @Get('refresh')
     @Auth(RoleEnum.USER)
     refreshToken(@Request() req: RequestWithUserEntity, @Res() res: Response) {
