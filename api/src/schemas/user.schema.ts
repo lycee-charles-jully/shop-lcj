@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { RoleEnum } from '../auth/enum/role.enum';
+import { Cart, CartSchema } from './cart.schema';
 
 export type UserDoc = User & mongoose.Document;
 
@@ -37,6 +38,9 @@ export class User {
 
     @Prop({ default: RoleEnum.USER, type: Number })
     role: RoleEnum;
+
+    @Prop({ default: [], type: [ CartSchema ] })
+    cart: Cart[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

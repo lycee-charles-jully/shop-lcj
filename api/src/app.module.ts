@@ -7,6 +7,7 @@ import { CategoryModule } from './category/category.module';
 import { BackupModule } from './backup/backup.module';
 import { AccountModule } from './account/account.module';
 import { AuthModule } from './auth/auth.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
         AccountModule,
         AuthModule,
         FileModule,
+        CartModule,
     ],
     controllers: [],
     providers: [],
