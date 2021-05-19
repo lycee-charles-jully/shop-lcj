@@ -23,7 +23,7 @@ export class Category {
     productType: ProductType;
 
     @Prop({ default: [], type: [ mongoose.Schema.Types.ObjectId ], ref: 'product' })
-    products: [ Product ];
+    products: Product[];
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
