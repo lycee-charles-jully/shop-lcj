@@ -21,8 +21,12 @@
     import type { Product } from '$types/products';
     import ProductImages from '$lib/ProductImages.svelte';
     import { currencyFormat } from '$lib/currency-format';
+    import AddCartBtn from '../../lib/buttons/AddCartBtn.svelte';
+    import ProductAdding from '../../lib/ProductAdding.svelte';
 
     export let product: Product;
+
+    let showBuyPopup = false;
 </script>
 
 
@@ -49,7 +53,6 @@
             grid-gap: var(--spacing);
         }
     }
-
 </style>
 
 
@@ -66,3 +69,11 @@
         <p>{product.description}</p>
     </div>
 </div>
+
+
+<AddCartBtn on:click={() => showBuyPopup = true}/>
+
+
+{#if showBuyPopup}
+    <ProductAdding bind:visible={showBuyPopup} {product}/>
+{/if}
