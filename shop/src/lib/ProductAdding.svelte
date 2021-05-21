@@ -7,6 +7,7 @@
     import QuantitySelector from '$lib/QuantitySelector.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { session } from '$app/stores';
+    import type { CartItem } from '$types/cart';
 
     export let visible = false;
     export let product: Product;
@@ -29,7 +30,7 @@
             body: JSON.stringify({
                 product: product._id,
                 count: quantity,
-            }),
+            } as CartItem),
             credentials: 'same-origin',
             headers: [
                 [ 'Content-Type', 'application/json' ],
