@@ -1,16 +1,17 @@
-<script>
+<script lang="ts">
     export let quantity = 1;
     export let min = 1;
     export let max = 10;
+    export let disabled = false;
 
     function increaseQuantity() {
-        if (quantity >= max)
+        if (quantity >= max || disabled)
             return;
         quantity++;
     }
 
     function decreaseQuantity() {
-        if (quantity <= min)
+        if (quantity <= min || disabled)
             return;
         quantity--;
     }
@@ -33,7 +34,7 @@
 
 
 <div>
-    <img alt="-" height="20" on:click={decreaseQuantity} src="/icons/decrease-btn.svg" width="20"/>
+    <img alt="-" height="20" on:click={decreaseQuantity} src="/icons/decrease-btn.svg" width="20" class:disabled/>
     {quantity}
-    <img alt="+" height="20" on:click={increaseQuantity} src="/icons/increase-btn.svg" width="20"/>
+    <img alt="+" height="20" on:click={increaseQuantity} src="/icons/increase-btn.svg" width="20" class:disabled/>
 </div>

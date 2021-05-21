@@ -1,3 +1,8 @@
+<script lang="ts">
+    export let disabled = false;
+</script>
+
+
 <style>
     .add-cart-container {
         width: 100%;
@@ -23,8 +28,7 @@
 
 
 <div class="add-cart-container">
-    <button class="btn-primary add-cart-btn"
-            on:click>
+    <button class="btn-primary add-cart-btn" on:click class:disabled>
         <img alt="+" height="24" src="/icons/cart-add-white.svg" width="24"/>
         <span class="add-cart-text">Ajouter au panier</span>
     </button>

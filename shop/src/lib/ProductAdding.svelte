@@ -9,6 +9,16 @@
     export let visible = false;
     export let product: Product;
     export let quantity = 1;
+
+    let process = false;
+
+
+    function handleAddProduct() {
+        if (process)
+            return;
+
+        process = true;
+    }
 </script>
 
 
@@ -42,12 +52,12 @@
 </style>
 
 
-<Popup backdrop on:close={() => visible = false}>
+<Popup backdrop on:close={() => !process && (visible = false)}>
     <div class="header">
         <img alt="x"
              class="close-popup-btn"
              height="24"
-             on:click={() => visible = false}
+             on:click={() => !process && (visible = false)}
              src="/icons/cross-highlight.svg"
              width="24"/>
         <h2>Ajouter au panier</h2>
@@ -59,10 +69,10 @@
 
     <p>
         Quantité :
-        <QuantitySelector bind:quantity/>
+        <QuantitySelector bind:quantity disabled={process}/>
     </p>
 
     <p>Prix total : {currencyFormat(product.price * quantity)}</p>
 
-    <AddCartBtn/>
+    <AddCartBtn disabled={process} on:click={handleAddProduct}/>
 </Popup>
