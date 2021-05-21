@@ -3,10 +3,11 @@
     import '../app.css';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { session } from '$app/stores';
+    import type { User } from '../types/user';
 
 
     function handleAppStart() {
-        if ($session.user && (Date.now() - new Date($session.user?.tokenCreatedAt).getTime()) > 86400 * 1000)
+        if ($session.user && (Date.now() - new Date(($session.user as User | null)?.tokenCreatedAt).getTime()) > 86400 * 1000)
             fetch(`${REMOTE_ENDPOINT}/v1/auth/refresh`, {
                 credentials: 'same-origin',
             });

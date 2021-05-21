@@ -8,6 +8,7 @@
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { session } from '$app/stores';
     import type { CartItem } from '$types/cart';
+    import type { User } from '$types/user';
 
     export let visible = false;
     export let product: Product;
@@ -40,7 +41,7 @@
                 if (res.ok) {
                     error = null;
                     visible = false;
-                    $session.user.cart = [
+                    ($session.user as User).cart = [
                         ...$session.user.cart,
                         { product: product._id, count: quantity },
                     ];
