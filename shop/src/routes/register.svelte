@@ -2,8 +2,9 @@
     import InputContainer from '$lib/inputs/InputContainer.svelte';
     import Center from '$lib/Center.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
-    import { session } from '$app/stores';
+    import { session, page } from '$app/stores';
     import { goto } from '$app/navigation';
+    import { getRedirectionUrl } from '../lib/get-redirection-url';
 
     let user = {
         email: '',
@@ -17,6 +18,8 @@
     let passwordConfirm;
 
     let error: string | null = null;
+
+    const redirectionURL = getRedirectionUrl($page.query);
 
     let registering = false;
 
@@ -51,7 +54,7 @@
                 if (res.status.toString().match(/[45]\d{2}/))
                     return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
                 $session.user = data;
-                goto('/account', { replaceState: true });
+                goto(redirectionURL || '/', { replaceState: true });
             })
             .catch(err => {
                 console.error(err);
@@ -185,5 +188,10 @@
 
     </form>
 
-    <p>Déjà un compte ? <a href="/login" class="text-gradient">Se connecter</a></p>
+    <p>
+        Déjà un compte ?
+        <a class="text-gradient" href="/login{redirectionURL ? `?r=${redirectionURL}` : ''}">
+            Se connecter
+        </a>
+    </p>
 </Center>
