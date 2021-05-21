@@ -23,6 +23,7 @@
     import { currencyFormat } from '$lib/currency-format';
     import AddCartBtn from '$lib/buttons/AddCartBtn.svelte';
     import ProductAdding from '$lib/ProductAdding.svelte';
+    import { session } from '$app/stores';
 
     export let product: Product;
 
@@ -71,7 +72,12 @@
 </div>
 
 
-<AddCartBtn on:click={() => showBuyPopup = true}/>
+{#if $session.user?.cart?.find(item => item.product === product._id)}
+    <!-- TODO: more control (view and change count, remove) -->
+    <p>Ce produit est déja dans <a href="/cart">votre panier</a>.</p>
+{:else}
+    <AddCartBtn on:click={() => showBuyPopup = true}/>
+{/if}
 
 
 {#if showBuyPopup}
