@@ -5,6 +5,6 @@
 
     onMount(() => {
         if (!$session.user)
-            goto('/login', { replaceState: true });
+            goto('/login?r=/account');
     });
 </script>
