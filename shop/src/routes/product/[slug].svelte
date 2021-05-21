@@ -25,6 +25,7 @@
     import ProductAdding from '$lib/ProductAdding.svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
+    import Meta from '$lib/Meta.svelte';
 
     export let product: Product;
 
@@ -56,6 +57,9 @@
         }
     }
 </style>
+
+
+<Meta title={product.name}/>
 
 
 <div class="header">

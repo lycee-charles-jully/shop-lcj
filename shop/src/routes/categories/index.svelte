@@ -18,6 +18,7 @@
     import type { CategoryPopulated } from '$types/categories';
     import Category from '$lib/Category.svelte';
     import CategoryCard from '$lib/CategoryCard.svelte';
+    import Meta from '$lib/Meta.svelte';
 
     export let categories: CategoryPopulated[] = [];
 
@@ -26,6 +27,9 @@
         prev.set(cat.productType._id, cat.productType.namePluralized), new Map(),
     );
 </script>
+
+
+<Meta title="Catégories"/>
 
 
 {#each [...productTypes.keys()] as productType}

@@ -4,6 +4,7 @@
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { goto } from '$app/navigation';
     import { session, page } from '$app/stores';
+    import Meta from '$lib/Meta.svelte';
     import { onMount } from 'svelte';
     import { getRedirectionUrl } from '../lib/get-redirection-url';
 
@@ -70,6 +71,9 @@
         width: 100%;
     }
 </style>
+
+
+<Meta title="Connexion"/>
 
 
 <Center>

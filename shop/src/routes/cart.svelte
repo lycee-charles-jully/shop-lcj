@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
     import CartItem from '$lib/CartItem.svelte';
+    import Meta from '$lib/Meta.svelte';
     import { onMount } from 'svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
@@ -29,6 +30,9 @@
             .catch(e => error = e?.message || e);
     });
 </script>
+
+
+<Meta title="Panier"/>
 
 
 {#if error}<p class="error-message">{error}</p>{/if}

@@ -4,6 +4,7 @@
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { session, page } from '$app/stores';
     import { goto } from '$app/navigation';
+    import Meta from '$lib/Meta.svelte';
     import { getRedirectionUrl } from '../lib/get-redirection-url';
 
     let user = {
@@ -106,6 +107,9 @@
         width: 100%;
     }
 </style>
+
+
+<Meta title="Créer un compte"/>
 
 
 <Center>
