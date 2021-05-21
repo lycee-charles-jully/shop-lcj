@@ -5,10 +5,14 @@
     import type { Product } from '$types/products';
     import AddCartBtn from '$lib/buttons/AddCartBtn.svelte';
     import QuantitySelector from '$lib/QuantitySelector.svelte';
+    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { session } from '$app/stores';
 
     export let visible = false;
     export let product: Product;
     export let quantity = 1;
+
+    let error: string | null = null;
 
     let process = false;
 
@@ -18,6 +22,38 @@
             return;
 
         process = true;
+        error = null;
+
+        fetch(`${REMOTE_ENDPOINT}/v1/cart`, {
+            method: 'POST',
+            body: JSON.stringify({
+                product: product._id,
+                count: quantity,
+            }),
+            credentials: 'same-origin',
+            headers: [
+                [ 'Content-Type', 'application/json' ],
+            ],
+        })
+            .then(async res => {
+                if (res.ok) {
+                    error = null;
+                    visible = false;
+                    $session.user.cart = [
+                        ...$session.user.cart,
+                        { product: product._id, count: quantity },
+                    ];
+                    return;
+                }
+
+                return res
+                    .json()
+                    .then(d => {
+                        throw new Error(d.message || JSON.stringify(d));
+                    });
+            })
+            .catch(e => error = e?.message || e)
+            .finally(() => process = false);
     }
 </script>
 
@@ -73,6 +109,8 @@
     </p>
 
     <p>Prix total : {currencyFormat(product.price * quantity)}</p>
+
+    {#if error}<p class="error-message">{error}</p>{/if}
 
     <AddCartBtn disabled={process} on:click={handleAddProduct}/>
 </Popup>
