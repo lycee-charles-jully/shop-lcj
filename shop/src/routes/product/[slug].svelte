@@ -24,6 +24,7 @@
     import AddCartBtn from '$lib/buttons/AddCartBtn.svelte';
     import ProductAdding from '$lib/ProductAdding.svelte';
     import { session } from '$app/stores';
+    import { goto } from '$app/navigation';
 
     export let product: Product;
 
@@ -76,7 +77,9 @@
     <!-- TODO: more control (view and change count, remove) -->
     <p>Ce produit est déja dans <a href="/cart">votre panier</a>.</p>
 {:else}
-    <AddCartBtn on:click={() => showBuyPopup = true}/>
+    <AddCartBtn on:click={() => $session.user
+        ? showBuyPopup = true
+        : goto(`/login?r=/product/${product.slug}`)}/>
 {/if}
 
 
