@@ -34,6 +34,11 @@
 
 <Meta title="Panier"/>
 
+<svelte:head>
+    <link as="image" href="/icons/increase-btn.svg" rel="preload" type="image/svg+xml">
+    <link as="image" href="/icons/decrease-btn.svg" rel="preload" type="image/svg+xml">
+</svelte:head>
+
 
 {#if error}<p class="error-message">{error}</p>{/if}
 
