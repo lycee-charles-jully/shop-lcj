@@ -3,7 +3,7 @@
     import '../app.css';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { session } from '$app/stores';
-    import type { User } from '../types/user';
+    import type { User } from '$types/user';
 
 
     function handleAppStart() {
