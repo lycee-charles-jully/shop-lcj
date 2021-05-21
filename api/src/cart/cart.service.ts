@@ -43,4 +43,25 @@ export class CartService {
         });
     }
 
+    async removeItem(user: UserDoc, product: string) {
+
+        if (!await this.ProductModel.exists({ _id: product }))
+            throw new NotFoundException('Product not found');
+
+        const res = await this.UserModel.updateOne(
+            { _id: user._id },
+            {
+                $pull: {
+                    cart: { product },
+                },
+            },
+        );
+
+        if (res.nModified < 1)
+            throw new NotFoundException('This product is not in cart');
+
+        return { product };
+
+    }
+
 }

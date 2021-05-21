@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Request } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
@@ -23,6 +23,12 @@ export class CartController {
     @Auth(RoleEnum.USER)
     addProductToCart(@Request() { user }: RequestWithUserEntity, @Body() { product, count }: AddProductDto) {
         return this.CartService.addItemToCart(user, product, count);
+    }
+
+    @Delete(':product')
+    @Auth(RoleEnum.USER)
+    removeProductFromCart(@Request() { user }: RequestWithUserEntity, @Param('product') product: string) {
+        return this.CartService.removeItem(user, product);
     }
 
 }
