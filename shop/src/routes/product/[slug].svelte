@@ -26,6 +26,7 @@
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
     import Meta from '$lib/Meta.svelte';
+    import { sanitize } from '$lib/sanitize';
 
     export let product: Product;
 
@@ -72,7 +73,7 @@
 
     <div class="content">
         <span class="title text-gradient">{currencyFormat(product.price)}</span>
-        <p>{product.description}</p>
+        <p>{@html sanitize(product.description).replace(/\n/g, '<br/>')}</p>
     </div>
 </div>
 
