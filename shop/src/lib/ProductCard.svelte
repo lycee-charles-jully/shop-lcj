@@ -2,6 +2,7 @@
     import type { BasicProduct } from '$types/products';
     import { currencyFormat } from '$lib/currency-format';
     import { imageUrl } from '$lib/image-url';
+    import { session } from '$app/stores';
 
     export let product: BasicProduct;
 </script>
@@ -51,7 +52,11 @@
         <span class="name">{product.name}</span>
         <div class="bottom-bar">
             <span class="text-gradient">{currencyFormat(product.price)}</span>
-            <img alt="+" height="20" src="/icons/add-cart.svg" width="20"/>
+            {#if $session.user?.cart?.find(i => i.product === product._id)}
+                <img alt="v" src="/icons/cart-highlight.svg" width="20" height="20"/>
+            {:else}
+                <img alt="+" src="/icons/add-cart.svg" width="20" height="20"/>
+            {/if}
         </div>
     </div>
 </a>
