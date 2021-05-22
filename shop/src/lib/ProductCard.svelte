@@ -62,7 +62,9 @@
         <div class="bottom-bar">
             <span class="text-gradient">{currencyFormat(product.price)}</span>
             {#if $session.user?.cart?.find(i => i.product === product._id)}
-                <img alt="v" src="/icons/cart-highlight.svg" width="20" height="20"/>
+                <a href="/cart">
+                    <img alt="v" src="/icons/cart-highlight.svg" width="20" height="20"/>
+                </a>
             {:else}
                 <img alt="+"
                      src="/icons/add-cart.svg"
