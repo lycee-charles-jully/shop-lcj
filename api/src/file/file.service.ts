@@ -33,7 +33,7 @@ export class FileService {
                 height: 2000,
                 fit: 'contain',
                 withoutEnlargement: true,
-                background: { r: 255, g: 255, b: 255, alpha: 1 },
+                background: { r: 255, g: 255, b: 255, alpha: 0 },
             })
             .toFile(imagePath);
         return `${imageID}.png`;
