@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
+    import type { User } from '$types/user';
     import CartItem from '$lib/CartItem.svelte';
     import Meta from '$lib/Meta.svelte';
     import { onMount } from 'svelte';
@@ -37,6 +38,7 @@
 <svelte:head>
     <link as="image" href="/icons/increase-btn.svg" rel="preload" type="image/svg+xml">
     <link as="image" href="/icons/decrease-btn.svg" rel="preload" type="image/svg+xml">
+    <link as="image" href="/icons/trash-highlight.svg" rel="preload" type="image/svg+xml">
 </svelte:head>
 
 
@@ -49,6 +51,8 @@
     {/each}
 {:else}
     {#each items as item}
-        <CartItem {...item}/>
+        <CartItem {...item}
+                  on:error={ev => error = ev.detail?.message || ev.details}
+                  on:delete={ev => items = items.filter(i => i.product._id !== ev.detail)}/>
     {/each}
 {/if}

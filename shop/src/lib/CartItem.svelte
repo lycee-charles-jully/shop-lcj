@@ -3,9 +3,39 @@
     import QuantitySelector from '$lib/QuantitySelector.svelte';
     import { imageUrl } from '$lib/image-url';
     import { currencyFormat } from '$lib/currency-format';
+    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { session } from '$app/stores';
+    import type { User } from '$types/user';
+    import { createEventDispatcher } from 'svelte';
 
     export let product: BasicProduct | null = null;
     export let count = 1;
+
+
+    const dispatch = createEventDispatcher();
+
+    let deletingItem = false;
+
+    function deleteItem() {
+
+        if (deletingItem)
+            return;
+        deletingItem = true;
+
+        fetch(`${REMOTE_ENDPOINT}/v1/cart/${product._id}`, {
+            method: 'DELETE',
+            credentials: 'same-origin',
+        })
+            .then(async res => ({ res, data: await res.json() }))
+            .then(({ res, data }) => {
+                if (!res.ok)
+                    throw new Error(data.message || data);
+                $session.user.cart = ($session.user as User).cart.filter(i => i.product !== product._id);
+                dispatch('delete', product._id);
+            })
+            .catch(e => dispatch('error', e))
+            .finally(() => deletingItem = false);
+    }
 </script>
 
 
@@ -49,7 +79,13 @@
     .quantity-select {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         flex: 1;
+    }
+
+    .trash-icon {
+        cursor: pointer;
+        transform: translateY(2px);
     }
 
     .gray-bg {
@@ -69,7 +105,7 @@
 
 {#if product}
 
-    <div class="card">
+    <div class="card" class:disabled={deletingItem}>
         <a href="/product/{product.slug}">
             <img src={imageUrl(product.coverImageUrl, 200)} class="thumbnail gray-bg"/>
         </a>
@@ -81,10 +117,11 @@
                 </a>
             </h2>
             <div class="quantity-select" style="transform: translateY(-2px)">
-            <span>
-                Quantité :
-                <QuantitySelector bind:quantity={count}/>
-            </span>
+                <span>
+                    Quantité :
+                    <QuantitySelector bind:quantity={count}/>
+                </span>
+                <img src="/icons/trash-highlight.svg" height="24" width="24" class="trash-icon" on:click={deleteItem}/>
             </div>
             <div>Prix total : {currencyFormat(product.price * count)}</div>
         </div>
