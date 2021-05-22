@@ -3,6 +3,7 @@
     import type { User } from '$types/user';
     import CartItem from '$lib/CartItem.svelte';
     import Meta from '$lib/Meta.svelte';
+    import Center from '../lib/Center.svelte';
     import { onMount } from 'svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
@@ -43,6 +44,13 @@
 
 
 {#if error}<p class="error-message">{error}</p>{/if}
+
+
+{#if !$session.user?.cart?.length}
+    <Center>
+        <h2>Votre panier est vide</h2>
+    </Center>
+{/if}
 
 
 {#if !fetched}
