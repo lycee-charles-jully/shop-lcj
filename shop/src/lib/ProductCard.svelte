@@ -3,8 +3,17 @@
     import { currencyFormat } from '$lib/currency-format';
     import { imageUrl } from '$lib/image-url';
     import { session } from '$app/stores';
+    import ProductAdding from '$lib/ProductAdding.svelte';
 
     export let product: BasicProduct;
+
+    let showBuyPopup = false;
+
+
+    function goToProductPage(ev: CustomEvent) {
+        if ((ev.target as HTMLElement).classList.contains('add-cart-btn'))
+            ev.preventDefault();
+    }
 </script>
 
 
@@ -46,7 +55,7 @@
 </style>
 
 
-<a class="card" href="/product/{product.slug}">
+<a class="card" href="/product/{product.slug}" on:click={goToProductPage}>
     <img alt={product.name} class="cover" src={imageUrl(product.coverImageUrl, 200)}/>
     <div class="body">
         <span class="name">{product.name}</span>
@@ -55,8 +64,17 @@
             {#if $session.user?.cart?.find(i => i.product === product._id)}
                 <img alt="v" src="/icons/cart-highlight.svg" width="20" height="20"/>
             {:else}
-                <img alt="+" src="/icons/add-cart.svg" width="20" height="20"/>
+                <img alt="+"
+                     src="/icons/add-cart.svg"
+                     width="20" height="20"
+                     on:click={() => showBuyPopup = true}
+                     class="add-cart-btn"/>
             {/if}
         </div>
     </div>
 </a>
+
+
+{#if showBuyPopup}
+    <ProductAdding bind:visible={showBuyPopup} {product}/>
+{/if}
