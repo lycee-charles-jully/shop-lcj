@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
-    import type { User } from '$types/user';
     import CartItem from '$lib/CartItem.svelte';
     import Meta from '$lib/Meta.svelte';
     import Center from '../lib/Center.svelte';
@@ -60,6 +59,7 @@
 {:else}
     {#each items as item}
         <CartItem {...item}
+                  on:countchange={ev => item.count = ev.detail}
                   on:error={ev => error = ev.detail?.message || ev.details}
                   on:delete={ev => items = items.filter(i => i.product._id !== ev.detail)}/>
     {/each}

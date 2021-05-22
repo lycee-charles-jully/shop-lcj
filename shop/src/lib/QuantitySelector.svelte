@@ -1,19 +1,27 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+
     export let quantity = 1;
     export let min = 1;
     export let max = 10;
     export let disabled = false;
 
+    const dispatch = createEventDispatcher();
+
     function increaseQuantity() {
         if (quantity >= max || disabled)
             return;
         quantity++;
+        dispatch('increase', quantity);
+        dispatch('update', { type: 'INCREASE', quantity });
     }
 
     function decreaseQuantity() {
         if (quantity <= min || disabled)
             return;
         quantity--;
+        dispatch('decrease', quantity);
+        dispatch('update', { type: 'DECREASE', quantity });
     }
 </script>
 

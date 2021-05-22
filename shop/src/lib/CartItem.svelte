@@ -14,6 +14,39 @@
 
     const dispatch = createEventDispatcher();
 
+
+    function updateProductCount(ev: CustomEvent) {
+        const type = ev.detail.type as 'INCREASE' | 'DECREASE';
+        fetch(`${REMOTE_ENDPOINT}/v1/cart/${product._id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ count }),
+            credentials: 'same-origin',
+            headers: [
+                [ 'Content-Type', 'application/json' ],
+            ],
+        })
+            .then(async res => ({ res, data: await res.json() }))
+            .then(({ res, data }) => {
+                if (!res.ok)
+                    throw new Error(data.message || data);
+                $session.user.cart = ($session.user as User).cart.map(item => {
+                    if (item.product !== product._id)
+                        return item;
+                    item.count = count;
+                    return item;
+                });
+                dispatch('countchange', count);
+            })
+            .catch(err => {
+                if (type === 'INCREASE')
+                    count--;
+                else
+                    count++;
+                dispatch('error', err);
+            })
+            .finally();
+    }
+
     let deletingItem = false;
 
     function deleteItem() {
@@ -119,7 +152,7 @@
             <div class="quantity-select" style="transform: translateY(-2px)">
                 <span>
                     Quantité :
-                    <QuantitySelector bind:quantity={count}/>
+                    <QuantitySelector bind:quantity={count} on:update={updateProductCount}/>
                 </span>
                 <img src="/icons/trash-highlight.svg" height="24" width="24" class="trash-icon" on:click={deleteItem}/>
             </div>
