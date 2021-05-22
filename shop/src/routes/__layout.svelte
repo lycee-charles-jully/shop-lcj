@@ -20,7 +20,7 @@
 
 <style>
     main {
-        margin: 0 0 var(--header-height); /* Bottom spacing */
+        margin: 0 0 calc(var(--header-height) * 2); /* Bottom spacing */
         padding: var(--spacing);
         width: 100%;
     }
