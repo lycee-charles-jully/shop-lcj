@@ -101,7 +101,7 @@
         <h2>Ajouter au panier</h2>
     </div>
 
-    <img alt={product.name} class="product-image" src={imageUrl(product.coverImageUrl, 400)}/>
+    <img alt={product.name} class="product-image" src={imageUrl(product.coverImageUrl, 500)}/>
 
     <h1>{product.name}</h1>
 

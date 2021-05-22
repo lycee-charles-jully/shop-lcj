@@ -65,7 +65,7 @@
 
 
 <div class="container">
-    <img alt={productName} class="main-image" src={imageUrl(selectedImage, 400)}/>
+    <img alt={productName} class="main-image" src={imageUrl(selectedImage, 500)}/>
     <div class="side-images">
         {#each images as src}
             <img src={imageUrl(src, 70)}
