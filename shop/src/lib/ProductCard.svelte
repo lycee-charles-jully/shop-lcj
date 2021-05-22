@@ -4,10 +4,19 @@
     import { imageUrl } from '$lib/image-url';
     import { session } from '$app/stores';
     import ProductAdding from '$lib/ProductAdding.svelte';
+    import { goto } from '$app/navigation';
 
     export let product: BasicProduct;
 
     let showBuyPopup = false;
+
+
+    function handleQuickAdd() {
+        if (!$session.user)
+            goto(`/login?r=/product/${product.slug}`);
+        else
+            showBuyPopup = true;
+    }
 
 
     function goToProductPage(ev: CustomEvent) {
@@ -69,7 +78,7 @@
                 <img alt="+"
                      src="/icons/add-cart.svg"
                      width="20" height="20"
-                     on:click={() => showBuyPopup = true}
+                     on:click={handleQuickAdd}
                      class="add-cart-btn"/>
             {/if}
         </div>
