@@ -85,13 +85,13 @@ input[type="text"], input[type="password"], input[type="email"] {
     background-color: var(--white);
     padding: var(--spacing);
     margin: var(--spacing) 0;
-    border: none;
+    border: 1px solid transparent;
     border-radius: var(--round);
     outline: none;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
-    outline: 1px solid var(--primary);
+    border: 1px solid var(--primary);
 }
 
 .btn-primary {
