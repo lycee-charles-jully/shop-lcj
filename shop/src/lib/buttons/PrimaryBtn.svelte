@@ -5,14 +5,14 @@
 
 
 <style>
-    .add-cart-container {
+    .btn-container {
         width: 100%;
         display: flex;
         justify-content: center;
 
     }
 
-    .add-cart-btn {
+    button {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -21,19 +21,19 @@
         padding: calc(var(--spacing) - 2px) var(--spacing)
     }
 
-    .add-cart-text {
+    .btn-text {
         display: inline-block;
         margin-left: 8px;
     }
 </style>
 
 
-<div class="add-cart-container">
-    <button class="btn-primary add-cart-btn" on:click class:disabled>
+<div class="btn-container">
+    <button class="btn-primary" class:disabled on:click>
         {#if icon}
             <img alt="+" height="24" src="/icons/{icon}" width="24"/>
         {/if}
-        <span class="add-cart-text">
+        <span class="btn-text">
             <slot/>
         </span>
     </button>
