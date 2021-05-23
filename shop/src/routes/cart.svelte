@@ -2,11 +2,13 @@
     import type { CartItemPopulated } from '$types/cart';
     import CartItem from '$lib/CartItem.svelte';
     import Meta from '$lib/Meta.svelte';
+    import PrimaryBtn from '../lib/buttons/PrimaryBtn.svelte';
     import Center from '../lib/Center.svelte';
     import { onMount } from 'svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { currencyFormat } from '$lib/currency-format';
 
     let items: CartItemPopulated[] = [];
     let fetched = false;
@@ -46,21 +48,27 @@
 
 
 {#if !$session.user?.cart?.length}
+
     <Center>
         <h2>Votre panier est vide</h2>
     </Center>
-{/if}
 
-
-{#if !fetched}
-    {#each Array($session.user?.cart?.length || 0).fill() as _}
-        <CartItem/>
-    {/each}
 {:else}
-    {#each items as item}
-        <CartItem {...item}
-                  on:countchange={ev => item.count = ev.detail}
-                  on:error={ev => error = ev.detail?.message || ev.details}
-                  on:delete={ev => items = items.filter(i => i.product._id !== ev.detail)}/>
-    {/each}
+
+    {#if !fetched}
+        {#each Array($session.user?.cart?.length || 0).fill() as _}
+            <CartItem/>
+        {/each}
+    {:else}
+        {#each items as item}
+            <CartItem {...item}
+                      on:countchange={ev => item.count = ev.detail}
+                      on:error={ev => error = ev.detail?.message || ev.details}
+                      on:delete={ev => items = items.filter(i => i.product._id !== ev.detail)}/>
+        {/each}
+        <PrimaryBtn on:click={() => goto('/order')}>
+            Commander ({currencyFormat(items.reduce((prev, val) => prev + val.product.price * val.count, 0))})
+        </PrimaryBtn>
+    {/if}
+
 {/if}
