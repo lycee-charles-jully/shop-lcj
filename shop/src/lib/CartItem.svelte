@@ -17,6 +17,7 @@
 
     function updateProductCount(ev: CustomEvent) {
         const type = ev.detail.type as 'INCREASE' | 'DECREASE';
+        dispatch('countchange', count);
         fetch(`${REMOTE_ENDPOINT}/v1/cart/${product._id}`, {
             method: 'PATCH',
             body: JSON.stringify({ count }),
@@ -35,7 +36,6 @@
                     item.count = count;
                     return item;
                 });
-                dispatch('countchange', count);
             })
             .catch(err => {
                 if (type === 'INCREASE')
@@ -43,8 +43,8 @@
                 else
                     count++;
                 dispatch('error', err);
-            })
-            .finally();
+                dispatch('countchange', count);
+            });
     }
 
     let deletingItem = false;
