@@ -3,7 +3,7 @@
     import { imageUrl } from '$lib/image-url';
     import { currencyFormat } from '$lib/currency-format';
     import type { Product } from '$types/products';
-    import AddCartBtn from '$lib/buttons/AddCartBtn.svelte';
+    import PrimaryBtn from '$lib/buttons/PrimaryBtn.svelte';
     import QuantitySelector from '$lib/QuantitySelector.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { session } from '$app/stores';
@@ -114,5 +114,7 @@
 
     {#if error}<p class="error-message">{error}</p>{/if}
 
-    <AddCartBtn disabled={process} on:click={handleAddProduct}/>
+    <PrimaryBtn disabled={process} icon="cart-add-white.svg" on:click={handleAddProduct}>
+        Ajouter au panier
+    </PrimaryBtn>
 </Popup>

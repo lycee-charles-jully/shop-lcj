@@ -1,5 +1,6 @@
 <script lang="ts">
     export let disabled = false;
+    export let icon: string | null = null;
 </script>
 
 
@@ -29,7 +30,11 @@
 
 <div class="add-cart-container">
     <button class="btn-primary add-cart-btn" on:click class:disabled>
-        <img alt="+" height="24" src="/icons/cart-add-white.svg" width="24"/>
-        <span class="add-cart-text">Ajouter au panier</span>
+        {#if icon}
+            <img alt="+" height="24" src="/icons/{icon}" width="24"/>
+        {/if}
+        <span class="add-cart-text">
+            <slot/>
+        </span>
     </button>
 </div>
