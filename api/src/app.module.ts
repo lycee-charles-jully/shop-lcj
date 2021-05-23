@@ -8,6 +8,7 @@ import { BackupModule } from './backup/backup.module';
 import { AccountModule } from './account/account.module';
 import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
+import { RecommendationModule } from './recommendation/recommendation.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { CartModule } from './cart/cart.module';
         ProductModule,
         CategoryModule,
         ProductTypeModule,
+        RecommendationModule,
         FileModule,
         BackupModule,
     ],
