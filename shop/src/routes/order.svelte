@@ -2,6 +2,7 @@
     import type { CartItemPopulated } from '$types/cart';
     import type { Recommendation } from '$types/recommendation';
     import CartConfirmation from '$lib/order/CartConfirmation.svelte';
+    import Eula from '../lib/order/Eula.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import Meta from '$lib/Meta.svelte';
@@ -48,4 +49,6 @@
 {:else if step === 'CONFIRM_ITEMS'}
     <CartConfirmation {cart} {validatedRecommendations}
                       on:nextstep={() => step = 'EULA'}/>
+{:else if step === 'EULA'}
+    <Eula on:nextstep={() => step = 'CONFIRMATION'}/>
 {/if}
