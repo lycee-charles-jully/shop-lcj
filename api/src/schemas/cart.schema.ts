@@ -10,7 +10,7 @@ export type CartDoc = Cart & mongoose.Document;
     toObject: globalConvertOptions,
 })
 export class Cart {
-    @Prop({ required: true, unique: true, type: mongoose.Schema.Types.ObjectId, ref: 'product' })
+    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'product' })
     product: mongoose.Types.ObjectId;
 
     @Prop({ default: 1 })
