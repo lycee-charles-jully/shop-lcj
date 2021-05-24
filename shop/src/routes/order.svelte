@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
     import type { Recommendation } from '$types/recommendation';
+    import CartConfirmation from '$lib/order/CartConfirmation.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import Meta from '$lib/Meta.svelte';
@@ -44,4 +45,7 @@
             {recommendations}
             on:nextstep={() => step = 'CONFIRM_ITEMS'}
             bind:validatedRecommendations/>
+{:else if step === 'CONFIRM_ITEMS'}
+    <CartConfirmation {cart} {validatedRecommendations}
+                      on:nextstep={() => step = 'EULA'}/>
 {/if}
