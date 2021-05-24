@@ -3,7 +3,7 @@
     import type { CartItemPopulated } from '$types/cart';
     import { imageUrl } from '$lib/image-url';
     import { currencyFormat } from '$lib/currency-format';
-    import PrimaryBtn from '$lib/buttons/PrimaryBtn.svelte';
+    import Button from '$lib/Button.svelte';
     import QuantitySelector from '$lib/QuantitySelector.svelte';
 
     export let recommendation: Recommendation;
@@ -111,7 +111,7 @@
     </div>
     <div class="btn-container">
         {#if count <= 0}
-            <PrimaryBtn nomargin on:click={addProduct}>Ajouter au panier</PrimaryBtn>
+            <Button nomargin on:click={addProduct}>Ajouter au panier</Button>
         {:else}
             <div>
                 Quantité :

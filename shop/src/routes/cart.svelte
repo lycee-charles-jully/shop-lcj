@@ -2,8 +2,8 @@
     import type { CartItemPopulated } from '$types/cart';
     import CartItem from '$lib/CartItem.svelte';
     import Meta from '$lib/Meta.svelte';
-    import PrimaryBtn from '../lib/buttons/PrimaryBtn.svelte';
-    import Center from '../lib/Center.svelte';
+    import Button from '$lib/Button.svelte';
+    import Center from '$lib/Center.svelte';
     import { onMount } from 'svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
@@ -66,9 +66,9 @@
                       on:error={ev => error = ev.detail?.message || ev.details}
                       on:delete={ev => items = items.filter(i => i.product._id !== ev.detail)}/>
         {/each}
-        <PrimaryBtn on:click={() => goto('/order')}>
+        <Button on:click={() => goto('/order')}>
             Commander ({currencyFormat(items.reduce((prev, val) => prev + val.product.price * val.count, 0))})
-        </PrimaryBtn>
+        </Button>
     {/if}
 
 {/if}

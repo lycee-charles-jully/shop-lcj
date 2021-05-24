@@ -108,6 +108,19 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     font-size: 1rem;
 }
 
+.btn-secondary {
+    background-color: transparent;
+    color: var(--black);
+    padding: var(--spacing);
+    margin: var(--spacing) 0;
+    text-align: center;
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    outline: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
 .disabled {
     cursor: not-allowed;
     filter: grayscale(.5) brightness(1.1);

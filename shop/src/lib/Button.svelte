@@ -2,6 +2,7 @@
     export let disabled = false;
     export let icon: string | null = null;
     export let nomargin = false;
+    export let type: 'primary' | 'secondary' = 'primary';
 </script>
 
 
@@ -33,7 +34,7 @@
 
 
 <div class="btn-container">
-    <button class="btn-primary" class:disabled class:nomargin on:click>
+    <button class="btn-{type}" class:disabled class:nomargin on:click>
         {#if icon}
             <img alt="+" height="24" src="/icons/{icon}" width="24"/>
         {/if}
