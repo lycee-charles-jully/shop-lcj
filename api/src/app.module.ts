@@ -9,6 +9,7 @@ import { AccountModule } from './account/account.module';
 import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { RecommendationModule } from './recommendation/recommendation.module';
         AuthModule,
         AccountModule,
         CartModule,
+        OrderModule,
         ProductModule,
         CategoryModule,
         ProductTypeModule,
