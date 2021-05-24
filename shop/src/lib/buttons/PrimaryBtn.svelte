@@ -1,6 +1,7 @@
 <script lang="ts">
     export let disabled = false;
     export let icon: string | null = null;
+    export let nomargin = false;
 </script>
 
 
@@ -9,7 +10,6 @@
         width: 100%;
         display: flex;
         justify-content: center;
-
     }
 
     button {
@@ -21,6 +21,10 @@
         padding: calc(var(--spacing) - 2px) var(--spacing)
     }
 
+    button.nomargin {
+        margin: 0 auto;
+    }
+
     .btn-text {
         display: inline-block;
         margin-left: 8px;
@@ -29,7 +33,7 @@
 
 
 <div class="btn-container">
-    <button class="btn-primary" class:disabled on:click>
+    <button class="btn-primary" class:disabled class:nomargin on:click>
         {#if icon}
             <img alt="+" height="24" src="/icons/{icon}" width="24"/>
         {/if}
