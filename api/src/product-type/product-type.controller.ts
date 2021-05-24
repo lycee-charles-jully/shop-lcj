@@ -8,7 +8,7 @@ import { ProductTypeService } from './product-type.service';
 
 @ApiTags('Product type')
 @Controller('product-type')
-export class ProdductTypeController {
+export class ProductTypeController {
     constructor(private readonly productTypeService: ProductTypeService) {
     }
 
