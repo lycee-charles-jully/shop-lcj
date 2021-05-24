@@ -64,6 +64,9 @@ export class RecommendationService {
                     { onCategories: { $in: cartDeps.categories } },
                     { onProductTypes: { $in: cartDeps.productTypes } },
                 ],
+                recommendedProduct: {
+                    $nin: user.cart.map(item => item.product),
+                },
             })
             .select([ 'message', 'recommendedProduct' ])
             .populate({
