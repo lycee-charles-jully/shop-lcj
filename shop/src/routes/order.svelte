@@ -10,6 +10,7 @@
     import Meta from '$lib/Meta.svelte';
     import Recommendations from '$lib/order/Recommendations.svelte';
     import { session } from '$app/stores';
+    import { goto } from '$app/navigation';
 
     let step: 'LOADING' | 'RECOMMENDATIONS' | 'CONFIRM_ITEMS' | 'EULA' | 'ORDERING' | 'SUCCESS' | 'ERROR' = 'LOADING';
 
@@ -18,6 +19,9 @@
     let validatedRecommendations: CartItemPopulated[] = [];
 
     onMount(() => {
+        if (($session.user as User).cart.length === 0)
+            return goto('/cart');
+
         Promise.all([
             fetch(`${REMOTE_ENDPOINT}/v1/recommendation`, { credentials: 'include' })
                 .then(res => res.json())
