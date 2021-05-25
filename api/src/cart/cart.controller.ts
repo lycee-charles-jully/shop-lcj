@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
+import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
+import { UserDoc } from '../schemas/user.schema';
 import { CartService } from './cart.service';
 import { AddProductDto } from './dto/add-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -16,26 +17,26 @@ export class CartController {
 
     @Get()
     @Auth(RoleEnum.USER)
-    getCart(@Request() { user }: RequestWithUserEntity) {
-        return this.CartService.getCart(user._id);
+    getCart(@User('_id') userID: string) {
+        return this.CartService.getCart(userID);
     }
 
     @Post()
     @Auth(RoleEnum.USER)
-    addProductToCart(@Request() { user }: RequestWithUserEntity, @Body() { product, count }: AddProductDto) {
+    addProductToCart(@User() user: UserDoc, @Body() { product, count }: AddProductDto) {
         return this.CartService.addItemToCart(user, product, count);
     }
 
     @Delete(':product')
     @Auth(RoleEnum.USER)
-    removeProductFromCart(@Request() { user }: RequestWithUserEntity, @Param('product') product: string) {
+    removeProductFromCart(@User() user: UserDoc, @Param('product') product: string) {
         return this.CartService.removeItem(user, product);
     }
 
     @Patch(':product')
     @Auth(RoleEnum.USER)
     updateCartProduct(
-        @Request() { user }: RequestWithUserEntity,
+        @User() user: UserDoc,
         @Param('product') product: string,
         @Body() update: UpdateProductDto,
     ) {

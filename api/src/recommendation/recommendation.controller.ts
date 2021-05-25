@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
+import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
+import { UserDoc } from '../schemas/user.schema';
 import { CreateRecommendationDto } from './dto/create-recommendation.dto';
 import { RecommendationEntity } from './entities/recommendation.entity';
 import { UserRecommendationEntity } from './entities/user-recommendation.entity';
@@ -21,7 +22,7 @@ export class RecommendationController {
         description: 'The list of recommendations for the user\'s cart',
         type: [ UserRecommendationEntity ],
     })
-    getUserCartRecommendations(@Request() { user }: RequestWithUserEntity) {
+    getUserCartRecommendations(@User() user: UserDoc) {
         return this.RecommendationService.userRecommendations(user);
     }
 

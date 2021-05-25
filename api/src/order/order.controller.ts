@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Req, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
-import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
+import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
+import { UserDoc } from '../schemas/user.schema';
 import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderService } from './order.service';
 
@@ -16,13 +17,13 @@ export class OrderController {
 
     @Get('me/pending')
     @Auth(RoleEnum.USER)
-    getUserOrder(@Req() { user }: RequestWithUserEntity) {
-        return this.OrderService.getUserOrder(user._id, 'pending');
+    getUserOrder(@User('_id') userID: string) {
+        return this.OrderService.getUserOrder(userID, 'pending');
     }
 
     @Post('from-cart')
     @Auth(RoleEnum.USER)
-    makeOrder(@Req() { user }: RequestWithUserEntity, @Body() { recommendations }: OrderFromCartDto) {
+    makeOrder(@User() user: UserDoc, @Body() { recommendations }: OrderFromCartDto) {
         return this.OrderService.createOrderFromCart(user, recommendations);
     }
 
