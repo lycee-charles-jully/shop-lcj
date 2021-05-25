@@ -19,7 +19,7 @@
 </label>
 
 <Button disabled={!accepted} on:click={() => accepted && dispatch('nextstep')}>
-    Continuer
+    Commander
 </Button>
 
 <Button nomargin on:click={() => goto('/cart')} type="secondary">
