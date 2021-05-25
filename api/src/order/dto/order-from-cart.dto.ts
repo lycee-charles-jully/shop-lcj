@@ -9,8 +9,9 @@ export class OrderFromCartDto {
     @Type(() => OrderRecommendationDto)
     @ApiProperty({
         required: false,
-        description: 'A list containing the selected recommendation IDs',
+        description: 'A list containing the chosen recommended products IDs and their count',
         default: [],
+        type: [ OrderRecommendationDto ],
     })
     recommendations: OrderRecommendationDto[] = [];
 }
