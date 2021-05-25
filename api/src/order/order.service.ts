@@ -36,7 +36,6 @@ export class OrderService {
         if (user.cart.length < 1)
             throw new UnauthorizedException('Cannot create an order, your cart is empty');
 
-        // TODO: revert changes on fail
         return Promise.all([
             this.UserModel.findByIdAndUpdate(user._id, {
                 cart: [],
@@ -44,9 +43,17 @@ export class OrderService {
             new this.OrderModel({
                 user: user._id,
                 items: user.cart,
-            } as Omit<Order, 'createdAt' | 'status'>).save(),
+            } as Omit<Order, 'createdAt' | 'modifiedAt' | 'status'>).save(),
         ])
-            .then(res => res[1]);
+            .then(res => res[1])
+            .catch(async (e) => {
+                console.error(e);
+                // Reverting changes on error
+                await this.UserModel.findByIdAndUpdate(user._id, {
+                    cart: user.cart,
+                });
+                throw new InternalServerErrorException('Unable to create order');
+            });
     }
 
 }
