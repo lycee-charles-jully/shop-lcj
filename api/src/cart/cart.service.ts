@@ -34,14 +34,20 @@ export class CartService {
         if (user.cart.find(c => c.product.toHexString() === product))
             throw new ConflictException('Product already in cart');
 
-        return this.UserModel.findOneAndUpdate({ _id: user._id }, {
-            $push: {
-                cart: {
-                    product,
-                    count,
+        return this.UserModel.findOneAndUpdate(
+            { _id: user._id },
+            {
+                $push: {
+                    cart: {
+                        product,
+                        count,
+                    },
                 },
             },
-        });
+            { new: true },
+        )
+            .exec()
+            .then(doc => doc?.cart);
     }
 
     async removeItem(user: UserDoc, product: string) {
@@ -61,7 +67,7 @@ export class CartService {
         if (res.nModified < 1)
             throw new NotFoundException('This product is not in cart');
 
-        return { product };
+        return user.cart.filter(item => item.product.toHexString() !== product);
 
     }
 
