@@ -2,8 +2,10 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Document } from 'mongoose';
 import { Category, CategoryDoc } from '../schemas/category.schema';
+import { Order, OrderDoc } from '../schemas/order.schema';
 import { ProductType, ProductTypeDoc } from '../schemas/product-type.schema';
 import { Product, ProductDoc } from '../schemas/product.schema';
+import { Recommendation, RecommendationDoc } from '../schemas/recommendation.schema';
 import { User, UserDoc } from '../schemas/user.schema';
 import { RestoreBackupDto } from './dto/restore-backup.dto';
 import { BackupData } from './entities/backup.entity';
@@ -15,9 +17,11 @@ import * as dayjs from 'dayjs';
 @Injectable()
 export class BackupService {
     constructor(
+        @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
+        @InjectModel('order') private readonly OrderModel: Model<OrderDoc>,
         @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
         @InjectModel('product-type') private readonly ProductTypeModel: Model<ProductTypeDoc>,
-        @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
+        @InjectModel('recommendation') private readonly RecommendationModel: Model<RecommendationDoc>,
         @InjectModel('user') private readonly UserModel: Model<UserDoc>,
     ) {
     }
@@ -55,9 +59,11 @@ export class BackupService {
         BackupService.saveBackupToFile(currentBackup, BackupOrigin.OVERWRITE);
         try {
             if (drop) await Promise.all([
+                this.CategoryModel.collection.drop(),
+                this.OrderModel.collection.drop(),
                 this.ProductModel.collection.drop(),
                 this.ProductTypeModel.collection.drop(),
-                this.CategoryModel.collection.drop(),
+                this.RecommendationModel.collection.drop(),
                 this.UserModel.collection.drop(),
             ]);
         } catch {
@@ -65,9 +71,11 @@ export class BackupService {
         }
         try {
             await Promise.all([
+                this.CategoryModel.insertMany(backup.data.categories),
+                this.OrderModel.insertMany(backup.data.orders),
                 this.ProductModel.insertMany(backup.data.products),
                 this.ProductTypeModel.insertMany(backup.data.productTypes),
-                this.CategoryModel.insertMany(backup.data.categories),
+                this.RecommendationModel.insertMany(backup.data.recommendations),
                 this.UserModel.insertMany(backup.data.users),
             ]);
         } catch (e) {
@@ -84,12 +92,14 @@ export class BackupService {
     }
 
     private async getDatabaseBackup(): Promise<BackupData> {
-        const [ products, productTypes, categories, users ] = await Promise.all([
+        const [ categories, orders, products, productTypes, recommendations, users ] = await Promise.all([
+            this.CategoryModel.find().exec().then(BackupService.changelessTransform) as Promise<Category[]>,
+            this.OrderModel.find().exec().then(BackupService.changelessTransform) as Promise<Order[]>,
             this.ProductModel.find().exec().then(BackupService.changelessTransform) as Promise<Product[]>,
             this.ProductTypeModel.find().exec().then(BackupService.changelessTransform) as Promise<ProductType[]>,
-            this.CategoryModel.find().exec().then(BackupService.changelessTransform) as Promise<Category[]>,
+            this.RecommendationModel.find().exec().then(BackupService.changelessTransform) as Promise<Recommendation[]>,
             this.UserModel.find().exec().then(BackupService.changelessTransform) as Promise<User[]>,
         ]);
-        return { products, productTypes, categories, users };
+        return { categories, orders, products, productTypes, recommendations, users };
     }
 }
