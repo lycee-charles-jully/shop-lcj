@@ -16,7 +16,7 @@ export class Order {
     @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'user' })
     user: mongoose.Types.ObjectId;
 
-    @Prop({ default: OrderStateEnum.WAITING_FOR_ACCEPTATION })
+    @Prop({ default: OrderStateEnum.WAITING_FOR_ACCEPTATION, type: OrderStateEnum })
     status: OrderStateEnum;
 
     @Prop({ default: () => new Date() })

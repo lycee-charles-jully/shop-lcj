@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 
+declare const module: any;
+
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.setGlobalPrefix('api/v1');
@@ -48,6 +50,11 @@ async function bootstrap() {
     }
 
     await app.listen(process.env.API_PORT || 5000);
+
+    if (module.hot) {
+        module.hot.accept();
+        module.hot.dispose(() => app.close());
+    }
 }
 
 bootstrap();
