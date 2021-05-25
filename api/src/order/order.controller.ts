@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Post, Req, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
 import { RoleEnum } from '../auth/enum/role.enum';
+import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderService } from './order.service';
 
 // TODO: docs
@@ -21,9 +22,8 @@ export class OrderController {
 
     @Post('from-cart')
     @Auth(RoleEnum.USER)
-    makeOrder(@Req() { user }: RequestWithUserEntity) {
-        // TODO: add recommendations
-        return this.OrderService.createOrderFromCart(user);
+    makeOrder(@Req() { user }: RequestWithUserEntity, @Body() { recommendations }: OrderFromCartDto) {
+        return this.OrderService.createOrderFromCart(user, recommendations);
     }
 
 }
