@@ -10,7 +10,7 @@
     {#if thumb}
         <img src={imageUrl(thumb)} class="h-14 w-14 rounded-l-md"/>
     {/if}
-    <div class="p-4">
+    <div class="p-4 flex-1">
         <slot/>
     </div>
 </a>

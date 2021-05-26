@@ -8,5 +8,6 @@
     <nav class="flex justify-end">
         <NavLink label="Accueil"/>
         <NavLink href="products" label="Produits"/>
+        <NavLink href="orders" label="Commandes"/>
     </nav>
 </header>
