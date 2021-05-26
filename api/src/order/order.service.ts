@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PopulateOptions } from 'mongoose';
 import { Order, OrderDoc } from '../schemas/order.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
@@ -19,19 +19,34 @@ export class OrderService {
     ) {
     }
 
+    private readonly pendingState = [
+        OrderStateEnum.WAITING_FOR_ACCEPTATION,
+        OrderStateEnum.PREPARATING,
+        OrderStateEnum.DELIVERING,
+    ];
+
     getUserOrder(userID: string, mode: 'pending' | 'completed') {
         return this.OrderModel.find({
             user: userID,
             status: mode === 'pending'
-                ? {
-                    $in: [
-                        OrderStateEnum.WAITING_FOR_ACCEPTATION,
-                        OrderStateEnum.PREPARATING,
-                        OrderStateEnum.DELIVERING,
-                    ],
-                }
+                ? { $in: this.pendingState }
                 : OrderStateEnum.COMPLETED,
         });
+    }
+
+    getAllOrders(mode: 'pending' | 'completed') {
+        return this.OrderModel
+            .find({
+                status: mode === 'pending'
+                    ? { $in: this.pendingState }
+                    : OrderStateEnum.COMPLETED,
+            })
+            .populate({
+                path: 'user',
+                model: this.UserModel,
+                select: [ 'firstname', 'lastname' ],
+            } as PopulateOptions)
+            .sort('-createdAt');
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {

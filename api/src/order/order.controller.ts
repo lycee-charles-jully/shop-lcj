@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { User } from '../auth/decorators/user.decorator';
@@ -36,6 +36,12 @@ export class OrderController {
     })
     makeOrder(@User() user: UserDoc, @Body() { recommendations }: OrderFromCartDto) {
         return this.OrderService.createOrderFromCart(user, recommendations);
+    }
+
+    @Get('all/pending')
+    @Auth(RoleEnum.PREPARATOR)
+    getAllPendingOrders() {
+        return this.OrderService.getAllOrders('pending');
     }
 
 }
