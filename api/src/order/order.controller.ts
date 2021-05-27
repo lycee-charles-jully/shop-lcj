@@ -40,6 +40,11 @@ export class OrderController {
 
     @Get('all/pending')
     @Auth(RoleEnum.PREPARATOR)
+    @ApiResponse({
+        description: 'A list with the pending orders',
+        status: 200,
+        type: [ OrderEntity ],
+    })
     getAllPendingOrders() {
         return this.OrderService.getAllOrders('pending');
     }
