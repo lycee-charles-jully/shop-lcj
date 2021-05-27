@@ -103,7 +103,7 @@ export class OrderService {
         return Promise.all([
             this.UserModel.findByIdAndUpdate(user._id, {
                 cart: [],
-            }),
+            }).exec(),
             new this.OrderModel({
                 user: user._id,
                 items: [
@@ -111,11 +111,25 @@ export class OrderService {
                     ...recommendations,
                 ],
             } as Omit<Order, 'createdAt' | 'modifiedAt' | 'status'>).save(),
+            this.ProductModel.updateMany(
+                {
+                    _id: {
+                        $in: [
+                            ...user.cart.map(i => i.product),
+                            ...recommendations.map(i => i.product),
+                        ],
+                    },
+                },
+                {
+                    $inc: { orderCount: 1 },
+                },
+            ).exec(),
         ])
             .then(res => res[1])
             .catch(async (e) => {
                 console.error(e);
                 // Reverting changes on error
+                // TODO: revert orderCount
                 await this.UserModel.findByIdAndUpdate(user._id, {
                     cart: user.cart,
                 });
