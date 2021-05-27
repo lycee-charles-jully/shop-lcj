@@ -8,6 +8,7 @@ export type CartDoc = Cart & mongoose.Document;
 @Schema({
     toJSON: globalConvertOptions,
     toObject: globalConvertOptions,
+    _id: false,
 })
 export class Cart {
     @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'product' })
