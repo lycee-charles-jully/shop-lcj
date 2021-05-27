@@ -4,6 +4,7 @@ import { Auth } from '../auth/decorators/auth.decorator';
 import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
 import { UserDoc } from '../schemas/user.schema';
+import { ChangeOrderStateDto } from './dto/change-order-state.dto';
 import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderEntity } from './entities/order.entity';
 import { OrderService } from './order.service';
@@ -58,6 +59,16 @@ export class OrderController {
     })
     getOrderDetails(@Param('order') order: string) {
         return this.OrderService.getOrder(order);
+    }
+
+    @Post(':order/state')
+    @Auth(RoleEnum.PREPARATOR)
+    changeOrderState(
+        @Param('order') order: string,
+        @Body() { state, comment }: ChangeOrderStateDto,
+        @User('_id') user: string,
+    ) {
+        return this.OrderService.updateOrderState(order, state, user, comment);
     }
 
 }

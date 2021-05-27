@@ -9,6 +9,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Model, PopulateOptions } from 'mongoose';
 import { basicProductFields } from '../product/entities/basic-product.entity';
+import { OrderHistoryElement } from '../schemas/order-history-element.schema';
 import { Order, OrderDoc } from '../schemas/order.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
@@ -60,29 +61,25 @@ export class OrderService {
             .exec();
     }
 
-    getOrder(orderID: string | mongoose.Types.ObjectId) {
+    private static checkCanUpdateState(currentState: OrderStateEnum, newState: OrderStateEnum) {
 
-        if (!mongoose.isValidObjectId(orderID))
-            throw new BadRequestException('Invalid order ID');
+        if (currentState === OrderStateEnum.USER_CANCELLED || currentState === OrderStateEnum.ADMIN_CANCELLED)
+            throw new UnauthorizedException('The order is cancelled, cannot modify it');
 
-        return this.OrderModel
-            .findById(orderID)
-            .populate({
-                path: 'user',
-                model: this.UserModel,
-                select: '-cart',
-            } as PopulateOptions)
-            .populate({
-                path: 'items.product',
-                model: this.ProductModel,
-                select: basicProductFields,
-            } as PopulateOptions)
-            .exec()
-            .then(doc => {
-                if (!doc)
-                    throw new NotFoundException(`Cannot find order ${orderID}`);
-                return doc;
-            });
+        if (newState === OrderStateEnum.ADMIN_CANCELLED || newState === OrderStateEnum.USER_CANCELLED)
+            return true;
+
+        const stateValues: Map<OrderStateEnum, number> = new Map([
+            [ OrderStateEnum.WAITING_FOR_ACCEPTATION, 0 ],
+            [ OrderStateEnum.PREPARATING, 1 ],
+            [ OrderStateEnum.DELIVERING, 2 ],
+            [ OrderStateEnum.COMPLETED, 3 ],
+        ]);
+
+        if (stateValues.get(currentState)! >= stateValues.get(newState)!)
+            throw new UnauthorizedException('Cannot modify the state to a previous step');
+
+        return true;
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {
@@ -135,6 +132,66 @@ export class OrderService {
                 });
                 throw new InternalServerErrorException('Unable to create order');
             });
+    }
+
+    getOrder(orderID: string | mongoose.Types.ObjectId) {
+
+        if (!mongoose.isValidObjectId(orderID))
+            throw new BadRequestException('Invalid order ID');
+
+        return this.OrderModel
+            .findById(orderID)
+            .populate({
+                path: 'user',
+                model: this.UserModel,
+                select: '-cart',
+            } as PopulateOptions)
+            .populate({
+                path: 'history.user',
+                model: this.UserModel,
+                select: [ 'firstname', 'lastname', 'email' ],
+            } as PopulateOptions)
+            .populate({
+                path: 'items.product',
+                model: this.ProductModel,
+                select: basicProductFields,
+            } as PopulateOptions)
+            .exec()
+            .then(doc => {
+                if (!doc)
+                    throw new NotFoundException(`Cannot find order ${orderID}`);
+                return doc;
+            });
+    }
+
+    async updateOrderState(orderID: string | mongoose.Types.ObjectId, state: OrderStateEnum, user: string | mongoose.Types.ObjectId, comment?: string) {
+        const currentState = await this.OrderModel
+            .findById(orderID)
+            .select('status')
+            .exec()
+            .then(doc => doc?.status);
+
+        if (!currentState)
+            throw new NotFoundException('Cannot find order');
+
+        OrderService.checkCanUpdateState(currentState, state);
+
+        return this.OrderModel
+            .findByIdAndUpdate(orderID, {
+                status: state,
+                modifiedAt: new Date(),
+                $push: {
+                    history: {
+                        user: user as mongoose.Types.ObjectId,
+                        newStatus: state,
+                        comment,
+                    } as Omit<OrderHistoryElement, 'createdAt'>,
+                },
+            }, {
+                new: true,
+                omitUndefined: true,
+            })
+            .exec();
     }
 
 }
