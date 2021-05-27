@@ -1,6 +1,14 @@
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 import { Model, PopulateOptions } from 'mongoose';
+import { basicProductFields } from '../product/entities/basic-product.entity';
 import { Order, OrderDoc } from '../schemas/order.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
@@ -50,6 +58,31 @@ export class OrderService {
             } as PopulateOptions)
             .sort('-createdAt')
             .exec();
+    }
+
+    getOrder(orderID: string | mongoose.Types.ObjectId) {
+
+        if (!mongoose.isValidObjectId(orderID))
+            throw new BadRequestException('Invalid order ID');
+
+        return this.OrderModel
+            .findById(orderID)
+            .populate({
+                path: 'user',
+                model: this.UserModel,
+                select: '-cart',
+            } as PopulateOptions)
+            .populate({
+                path: 'items.product',
+                model: this.ProductModel,
+                select: basicProductFields,
+            } as PopulateOptions)
+            .exec()
+            .then(doc => {
+                if (!doc)
+                    throw new NotFoundException(`Cannot find order ${orderID}`);
+                return doc;
+            });
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {

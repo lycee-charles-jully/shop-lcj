@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { User } from '../auth/decorators/user.decorator';
@@ -47,6 +47,17 @@ export class OrderController {
     })
     getAllPendingOrders() {
         return this.OrderService.getAllOrders('pending');
+    }
+
+    @Get(':order')
+    @Auth(RoleEnum.PREPARATOR)
+    @ApiResponse({
+        description: 'The order details with populated data',
+        status: 200,
+        type: OrderEntity,
+    })
+    getOrderDetails(@Param('order') order: string) {
+        return this.OrderService.getOrder(order);
     }
 
 }
