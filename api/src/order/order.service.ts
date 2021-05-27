@@ -25,13 +25,15 @@ export class OrderService {
         OrderStateEnum.DELIVERING,
     ];
 
-    getUserOrder(userID: string, mode: 'pending' | 'completed') {
-        return this.OrderModel.find({
-            user: userID,
-            status: mode === 'pending'
-                ? { $in: this.pendingState }
-                : OrderStateEnum.COMPLETED,
-        });
+    getUserOrders(userID: string, mode: 'pending' | 'completed') {
+        return this.OrderModel
+            .find({
+                user: userID,
+                status: mode === 'pending'
+                    ? { $in: this.pendingState }
+                    : OrderStateEnum.COMPLETED,
+            })
+            .exec();
     }
 
     getAllOrders(mode: 'pending' | 'completed') {
@@ -46,7 +48,8 @@ export class OrderService {
                 model: this.UserModel,
                 select: [ 'firstname', 'lastname' ],
             } as PopulateOptions)
-            .sort('-createdAt');
+            .sort('-createdAt')
+            .exec();
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {

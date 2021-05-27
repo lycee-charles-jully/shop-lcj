@@ -23,8 +23,8 @@ export class OrderController {
         status: 200,
         type: [ OrderEntity ],
     })
-    getUserOrder(@User('_id') userID: string) {
-        return this.OrderService.getUserOrder(userID, 'pending');
+    getUserOrders(@User('_id') userID: string) {
+        return this.OrderService.getUserOrders(userID, 'pending');
     }
 
     @Post('from-cart')
