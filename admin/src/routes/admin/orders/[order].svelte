@@ -2,6 +2,7 @@
     import { page } from '$app/stores';
     import OrderStatus from '$lib/OrderStatus.svelte';
     import Item from '$lib/Item.svelte';
+    import NextStatus from '$lib/NextStatus.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { currencyFormat } from '$lib/currency-format';
@@ -12,9 +13,13 @@
     let orderDetails;
     let itemCount: number;
     let itemsTotalPrice: number;
+    let nextStatus: string;
     let error: string | null = null;
+    let loading: boolean = false;
 
     onMount(() => {
+        loading = true;
+        error = null;
         fetch(`${REMOTE_ENDPOINT}/v1/order/${orderID}`, {
             credentials: 'same-origin',
         })
@@ -22,18 +27,81 @@
             .then(({ res, data }) => {
                 if (!res.ok)
                     throw new Error(data.message || JSON.stringify(data));
-                orderDetails = data;
-                itemCount = orderDetails.items.reduce((total, { count }) => total + count, 0);
-                itemsTotalPrice = orderDetails.items
-                    .reduce((total, { count, product }) => total + product.price * count, 0);
+                injectRawOrder(data);
             })
-            .catch(e => error = e.message || e);
+            .catch(e => error = e.message || e)
+            .finally(() => loading = false);
     });
+
+
+    function injectRawOrder(data) {
+        orderDetails = data;
+        itemCount = orderDetails.items.reduce((total, { count }) => total + count, 0);
+        itemsTotalPrice = orderDetails.items
+            .reduce((total, { count, product }) => total + product.price * count, 0);
+        if (orderDetails.status === 'WAITING_FOR_ACCEPTATION')
+            nextStatus = 'PREPARATING';
+        else if (orderDetails.status === 'PREPARATING')
+            nextStatus = 'DELIVERING';
+        else if (orderDetails.status === 'DELIVERING')
+            nextStatus = 'COMPLETED';
+    }
+
+
+    function cancelOrder() {
+        if (loading)
+            return;
+        loading = true;
+        error = null;
+        fetch(`${REMOTE_ENDPOINT}/v1/order/${orderID}/state`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                state: 'ADMIN_CANCELLED',
+            }),
+            headers: [
+                [ 'Content-Type', 'application/json' ],
+            ],
+            credentials: 'same-origin',
+        })
+            .then(async res => ({ res, data: await res.json() }))
+            .then(({ res, data }) => {
+                if (!res.ok)
+                    throw new Error(data.message || JSON.stringify(data));
+                injectRawOrder(data);
+            })
+            .catch(e => error = e.message || e)
+            .finally(() => loading = false);
+    }
+
+    function nextOrderState() {
+        if (loading)
+            return;
+        loading = true;
+        error = null;
+        fetch(`${REMOTE_ENDPOINT}/v1/order/${orderID}/state`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                state: nextStatus,
+            }),
+            headers: [
+                [ 'Content-Type', 'application/json' ],
+            ],
+            credentials: 'same-origin',
+        })
+            .then(async res => ({ res, data: await res.json() }))
+            .then(({ res, data }) => {
+                if (!res.ok)
+                    throw new Error(data.message || JSON.stringify(data));
+                injectRawOrder(data);
+            })
+            .catch(e => error = e.message || e)
+            .finally(() => loading = false);
+    }
 </script>
 
 
 {#if error}
-    <p class="text-red-600">{error}</p>
+    <p class="text-red-600 mb-4">{error}</p>
 {/if}
 
 
@@ -70,6 +138,19 @@
         Classe : {orderDetails.user.grade}<br/>
         Numéro Jeun'Est : {orderDetails.user.jeunestNumber}
     </p>
+
+
+    {#if orderDetails.status !== 'ADMIN_CANCELLED' && orderDetails.status !== 'USER_CANCELLED' && orderDetails.status !== 'COMPLETED'}
+
+        <h2 class="text-xl font-bold mb-2">Actions</h2>
+
+        <NextStatus currentStatus={orderDetails.status} on:click={nextOrderState} disabled={loading}/>
+
+        <button class="bg-red-500 text-white rounded px-4 py-2 mb-4" on:click={cancelOrder} disabled={loading}>
+            Annuler la commande
+        </button>
+
+    {/if}
 
 
     <h2 class="text-xl font-bold mb-2">Historique</h2>
