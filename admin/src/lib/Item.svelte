@@ -3,10 +3,11 @@
 
     export let href;
     export let thumb;
+    export let target = '_self';
 </script>
 
 
-<a class="block w-full bg-white rounded-md my-2 h-14 flex justify-start" {href}>
+<a class="block w-full bg-white rounded-md my-2 h-14 flex justify-start" {href} {target}>
     {#if thumb}
         <img src={imageUrl(thumb)} class="h-14 w-14 rounded-l-md"/>
     {/if}
