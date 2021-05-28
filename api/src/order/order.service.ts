@@ -63,10 +63,13 @@ export class OrderService {
 
     private static checkCanUpdateState(currentState: OrderStateEnum, newState: OrderStateEnum) {
 
+        if (newState === OrderStateEnum.USER_CANCELLED)
+            throw new UnauthorizedException('A preparator cannot mark an order as cancelled by the user');
+
         if (currentState === OrderStateEnum.USER_CANCELLED || currentState === OrderStateEnum.ADMIN_CANCELLED)
             throw new UnauthorizedException('The order is cancelled, cannot modify it');
 
-        if (newState === OrderStateEnum.ADMIN_CANCELLED || newState === OrderStateEnum.USER_CANCELLED)
+        if (newState === OrderStateEnum.ADMIN_CANCELLED)
             return true;
 
         const stateValues: Map<OrderStateEnum, number> = new Map([
