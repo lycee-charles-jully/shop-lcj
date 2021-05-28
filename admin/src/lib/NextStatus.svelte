@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { statusColors } from '$lib/status-colors';
-
     export let currentStatus: 'WAITING_FOR_ACCEPTATION' | 'PREPARATING' | 'DELIVERING' | 'COMPLETED' | 'USER_CANCELLED' | 'ADMIN_CANCELLED';
     export let disabled: boolean = false;
 
@@ -12,9 +10,6 @@
         nextStatus = 'DELIVERING';
     else if (currentStatus === 'DELIVERING')
         nextStatus = 'COMPLETED';
-
-    let color;
-    $: color = statusColors.get(nextStatus);
 </script>
 
 
@@ -26,13 +21,17 @@
 
 
 {#if nextStatus}
-    <button class="bg-{color}" on:click {disabled}>
-        {#if nextStatus === 'PREPARATING'}
+    {#if nextStatus === 'PREPARATING'}
+        <button on:click {disabled} class="bg-purple-400">
             Marquer comme en préparation
-        {:else if nextStatus === 'DELIVERING'}
+        </button>
+    {:else if nextStatus === 'DELIVERING'}
+        <button on:click {disabled} class="bg-blue-400">
             Marquer comme en livraison
-        {:else if nextStatus === 'COMPLETED'}
+        </button>
+    {:else if nextStatus === 'COMPLETED'}
+        <button on:click {disabled} class="bg-green-400">
             Marquer comme complétée
-        {/if}
-    </button>
+        </button>
+    {/if}
 {/if}
