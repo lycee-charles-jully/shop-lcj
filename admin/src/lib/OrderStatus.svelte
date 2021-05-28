@@ -1,5 +1,9 @@
 <script lang="ts">
+    import { statusColors } from '$lib/status-colors';
+
     export let status: 'WAITING_FOR_ACCEPTATION' | 'PREPARATING' | 'DELIVERING' | 'COMPLETED' | 'USER_CANCELLED' | 'ADMIN_CANCELLED';
+
+    let color = statusColors.get(status);
 </script>
 
 
@@ -11,13 +15,13 @@
 
 
 {#if status === 'WAITING_FOR_ACCEPTATION'}
-    <div class="bg-yellow-400">À confirmer</div>
+    <div class="bg-{color}">À confirmer</div>
 {:else if status === 'PREPARATING'}
-    <div class="bg-purple-400">Préparation</div>
+    <div class="bg-{color}">Préparation</div>
 {:else if status === 'DELIVERING'}
-    <div class="bg-blue-400">Livraison</div>
+    <div class="bg-{color}">Livraison</div>
 {:else if status === 'COMPLETED'}
-    <div class="bg-green-400">Complétée</div>
+    <div class="bg-{color}">Complétée</div>
 {:else if status === 'USER_CANCELLED' || status === 'ADMIN_CANCELLED'}
-    <div class="bg-red-400">Annulée</div>
+    <div class="bg-{color}">Annulée</div>
 {/if}
