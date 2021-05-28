@@ -194,6 +194,21 @@ export class OrderService {
                 new: true,
                 omitUndefined: true,
             })
+            .populate({
+                path: 'user',
+                model: this.UserModel,
+                select: '-cart',
+            } as PopulateOptions)
+            .populate({
+                path: 'history.user',
+                model: this.UserModel,
+                select: [ 'firstname', 'lastname', 'email' ],
+            } as PopulateOptions)
+            .populate({
+                path: 'items.product',
+                model: this.ProductModel,
+                select: basicProductFields,
+            } as PopulateOptions)
             .exec();
     }
 
