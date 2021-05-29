@@ -137,19 +137,20 @@ export class OrderService {
             });
     }
 
-    getOrder(orderID: string | mongoose.Types.ObjectId) {
+    getOrder(orderID: string | mongoose.Types.ObjectId, sendPrivateData = false) {
 
         if (!mongoose.isValidObjectId(orderID))
             throw new BadRequestException('Invalid order ID');
 
         return this.OrderModel
             .findById(orderID)
-            .populate({
+            .select(!sendPrivateData && '-history.user')
+            .populate(sendPrivateData && {
                 path: 'user',
                 model: this.UserModel,
                 select: '-cart',
             } as PopulateOptions)
-            .populate({
+            .populate(sendPrivateData && {
                 path: 'history.user',
                 model: this.UserModel,
                 select: [ 'firstname', 'lastname', 'email' ],

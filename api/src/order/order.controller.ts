@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UnauthorizedException } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import * as mongoose from 'mongoose';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
@@ -26,6 +27,20 @@ export class OrderController {
     })
     getUserOrders(@User('_id') userID: string) {
         return this.OrderService.getUserOrders(userID, 'pending');
+    }
+
+    @Get('/me/:order')
+    @Auth(RoleEnum.USER)
+    @ApiResponse({
+        description: 'The detailled user\'s order',
+        status: 200,
+        type: OrderEntity,
+    })
+    async getUserOrder(@User('_id') userID: mongoose.Types.ObjectId, @Param('order') orderID: string) {
+        const order = await this.OrderService.getOrder(orderID, false);
+        if (order.user.toHexString() !== userID.toHexString())
+            throw new UnauthorizedException('You are not allowed to view this order');
+        return order;
     }
 
     @Post('from-cart')
@@ -58,7 +73,7 @@ export class OrderController {
         type: OrderEntity,
     })
     getOrderDetails(@Param('order') order: string) {
-        return this.OrderService.getOrder(order);
+        return this.OrderService.getOrder(order, true);
     }
 
     @Patch(':order/state')
