@@ -45,7 +45,10 @@
                 if (res.status.toString().match(/[45]\d{2}/))
                     return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
                 $session.user = data;
-                goto(redirectionURL || '/', { replaceState: true });
+                if (redirectionURL?.startsWith('/admin'))
+                    window.location.pathname = redirectionURL;
+                else
+                    goto(redirectionURL || '/', { replaceState: true });
             })
             .catch(err => {
                 console.error(err);
