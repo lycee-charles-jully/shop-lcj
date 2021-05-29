@@ -46,7 +46,7 @@
                     return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
                 $session.user = data;
                 if (redirectionURL?.startsWith('/admin'))
-                    window.location.pathname = redirectionURL;
+                    window.location.href = window.location.origin + redirectionURL;
                 else
                     goto(redirectionURL || '/', { replaceState: true });
             })
