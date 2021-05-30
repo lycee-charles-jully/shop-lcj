@@ -58,6 +58,7 @@ export class OrderService {
                 cart: [],
                 $inc: {
                     pendingOrders: 1,
+                    orderCount: 1,
                 },
             }).exec(),
             new this.OrderModel({

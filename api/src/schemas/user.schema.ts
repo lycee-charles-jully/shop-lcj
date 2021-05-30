@@ -44,6 +44,9 @@ export class User {
 
     @Prop({ default: 0 })
     pendingOrders: number;
+
+    @Prop({ default: 0 })
+    orderCount: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
