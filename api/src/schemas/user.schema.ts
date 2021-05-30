@@ -41,6 +41,9 @@ export class User {
 
     @Prop({ default: [], type: [ CartSchema ] })
     cart: Cart[];
+
+    @Prop({ default: 0 })
+    pendingOrders: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

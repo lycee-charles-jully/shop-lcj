@@ -81,6 +81,9 @@ export class OrderService {
         return Promise.all([
             this.UserModel.findByIdAndUpdate(user._id, {
                 cart: [],
+                $inc: {
+                    pendingOrders: 1,
+                },
             }).exec(),
             new this.OrderModel({
                 user: user._id,
@@ -147,48 +150,59 @@ export class OrderService {
     }
 
     async updateOrderState(orderID: string | mongoose.Types.ObjectId, state: OrderStateEnum, user: string | mongoose.Types.ObjectId, comment?: string) {
-        const currentState = await this.OrderModel
+        const order = await this.OrderModel
             .findById(orderID)
-            .select('status')
-            .exec()
-            .then(doc => doc?.status);
+            .select([ 'status', 'user' ])
+            .exec();
 
-        if (!currentState)
+        if (!order)
             throw new NotFoundException('Cannot find order');
+
+        const { status: currentState, user: orderUser } = order;
 
         OrderService.checkCanUpdateState(currentState, state);
 
-        return this.OrderModel
-            .findByIdAndUpdate(orderID, {
-                status: state,
-                modifiedAt: new Date(),
-                $push: {
-                    history: {
-                        user: user as mongoose.Types.ObjectId,
-                        newStatus: state,
-                        comment,
-                    } as Omit<OrderHistoryElement, 'createdAt'>,
-                },
-            }, {
-                new: true,
-                omitUndefined: true,
-            })
-            .populate({
-                path: 'user',
-                model: this.UserModel,
-                select: '-cart',
-            } as PopulateOptions)
-            .populate({
-                path: 'history.user',
-                model: this.UserModel,
-                select: [ 'firstname', 'lastname', 'email' ],
-            } as PopulateOptions)
-            .populate({
-                path: 'items.product',
-                model: this.ProductModel,
-                select: basicProductFields,
-            } as PopulateOptions)
-            .exec();
+        return Promise.all([
+            this.OrderModel
+                .findByIdAndUpdate(orderID, {
+                    status: state,
+                    modifiedAt: new Date(),
+                    $push: {
+                        history: {
+                            user: user as mongoose.Types.ObjectId,
+                            newStatus: state,
+                            comment,
+                        } as Omit<OrderHistoryElement, 'createdAt'>,
+                    },
+                }, {
+                    new: true,
+                    omitUndefined: true,
+                })
+                .populate({
+                    path: 'user',
+                    model: this.UserModel,
+                    select: '-cart',
+                } as PopulateOptions)
+                .populate({
+                    path: 'history.user',
+                    model: this.UserModel,
+                    select: [ 'firstname', 'lastname', 'email' ],
+                } as PopulateOptions)
+                .populate({
+                    path: 'items.product',
+                    model: this.ProductModel,
+                    select: basicProductFields,
+                } as PopulateOptions)
+                .exec(),
+            (state === OrderStateEnum.COMPLETED || state === OrderStateEnum.ADMIN_CANCELLED || state === OrderStateEnum.USER_CANCELLED)
+                ? this.UserModel.findByIdAndUpdate(orderUser, {
+                    $inc: {
+                        pendingOrders: -1,
+                    },
+                })
+                : null,
+        ])
+            .then(res => res[0]);
     }
 
 }
