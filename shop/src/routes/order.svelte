@@ -64,6 +64,7 @@
                 if (!res.ok)
                     throw new Error(data.message || JSON.stringify(data));
                 ($session.user as User).cart = [];
+                ($session.user as User).pendingOrders++;
                 step = 'SUCCESS';
             })
             .catch(e => setError(e));
