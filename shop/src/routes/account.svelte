@@ -4,6 +4,7 @@
     import { session } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
     import OrderCard from '$lib/OrderCard.svelte';
+    import OrderPreview from '$lib/OrderPreview.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
 
@@ -35,14 +36,18 @@
 <Meta title="Compte"/>
 
 
-{#if orders.length > 0 || error}
-    <h2 class="category-title">Mes commandes en cours</h2>
+<h2 class="category-title">Mes commandes en cours</h2>
 
-    {#if error}
-        <p class="error-message">{error}</p>
-    {/if}
+{#if error}
+    <p class="error-message">{error}</p>
+{/if}
 
+{#if orders.length > 0}
     {#each orders as order}
         <OrderCard {order}/>
+    {/each}
+{:else if typeof $session?.user?.pendingOrders === 'number'}
+    {#each new Array($session.user.pendingOrders).fill(null) as _}
+        <OrderPreview/>
     {/each}
 {/if}
