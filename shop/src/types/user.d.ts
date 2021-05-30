@@ -10,4 +10,5 @@ export interface User {
     role: number,
     cart: CartItem[],
     tokenCreatedAt: string,
+    pendingOrders: number,
 }
