@@ -12,6 +12,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-bottom: var(--spacing);
         background-color: var(--white);
         padding: var(--spacing);
         border-radius: var(--round);
