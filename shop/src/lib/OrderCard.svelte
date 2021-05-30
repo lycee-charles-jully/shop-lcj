@@ -17,6 +17,7 @@
         padding: var(--spacing);
         border-radius: var(--round);
         cursor: pointer;
+        color: var(--black);
     }
 
     .body {
@@ -36,11 +37,11 @@
 </style>
 
 
-<div class="container">
+<a class="container" href="/order/{order._id}">
     <!-- TODO: display product images -->
     <div class="body">
         <span class="header">Commande du {dayjs(order.createdAt).format('DD/MM/YYYY')}</span>
         <span><OrderStatus status={order.status}/></span>
     </div>
     <img alt=">" class="chevron" height="24" src="/icons/chevron-right.svg" width="24"/>
-</div>
+</a>

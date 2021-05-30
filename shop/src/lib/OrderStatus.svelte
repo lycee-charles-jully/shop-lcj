@@ -2,19 +2,20 @@
     import type { OrderStatus } from '$types/order';
 
     export let status: OrderStatus;
+    export let lowercase = false;
 </script>
 
 
 {#if status === 'WAITING_FOR_ACCEPTATION'}
-    En attente
+    {lowercase ? 'e' : 'E'}n attente
 {:else if status === 'PREPARATING'}
-    En cours de préparation
+    {lowercase ? 'e' : 'E'}n cours de préparation
 {:else if status === 'DELIVERING'}
-    En cours de livraison
+    {lowercase ? 'e' : 'E'}n cours de livraison
 {:else if status === 'COMPLETED'}
-    Complétée
+    {lowercase ? 'c' : 'C'}omplétée
 {:else if status === 'USER_CANCELLED'}
-    Annulée
+    {lowercase ? 'a' : 'A'}nnulée
 {:else if status === 'ADMIN_CANCELLED'}
-    Annulée par un administrateur
+    {lowercase ? 'a' : 'A'}nnulée par un administrateur
 {/if}

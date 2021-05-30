@@ -6,7 +6,7 @@ export interface Order {
     user: string;
     createdAt: string;
     modifiedAt: string;
-    items: CartItem;
+    items: CartItem[];
     history: OrderHistoryElement[];
 }
 

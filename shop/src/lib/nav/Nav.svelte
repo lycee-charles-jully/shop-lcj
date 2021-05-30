@@ -1,5 +1,5 @@
 <script>
-    import NavLink from './NavLink.svelte';
+    import NavLink from '$lib/nav/NavLink.svelte';
     import { session } from '$app/stores';
 </script>
 <style>
@@ -34,5 +34,5 @@
     <NavLink href="/{$session.user ? 'account' : 'login'}"
              icon="person"
              label={$session.user ? 'Compte' : 'Connexion'}
-             pattern={/^\/(account|login|register)(\/|$)/}/>
+             pattern={/^\/(account|login|register|order\/[a-f0-9]{24})(\/|$)/}/>
 </nav>
