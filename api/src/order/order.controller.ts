@@ -84,7 +84,7 @@ export class OrderController {
         @Body() { state, comment }: ChangeOrderStateDto,
         @User('_id') user: string,
     ) {
-        return this.OrderService.updateOrderState(order, state, user, comment);
+        return this.OrderAdminService.updateOrderState(order, state, user, comment);
     }
 
 }
