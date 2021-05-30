@@ -4,6 +4,7 @@ import { OrderSchema } from '../schemas/order.schema';
 import { ProductSchema } from '../schemas/product.schema';
 import { RecommendationSchema } from '../schemas/recommendation.schema';
 import { UserSchema } from '../schemas/user.schema';
+import { OrderAdminService } from './order-admin.service';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 
@@ -17,7 +18,7 @@ import { OrderService } from './order.service';
         ]),
     ],
     controllers: [ OrderController ],
-    providers: [ OrderService ],
+    providers: [ OrderService, OrderAdminService ],
 })
 export class OrderModule {
 }

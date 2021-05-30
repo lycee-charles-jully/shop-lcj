@@ -15,7 +15,7 @@ import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
 import { UserDoc } from '../schemas/user.schema';
 import { OrderRecommendationDto } from './dto/order-recommendation.dto';
-import { OrderStateEnum } from './enum/order-state.enum';
+import { OrderStateEnum, pendingStates } from './enum/order-state.enum';
 
 @Injectable()
 export class OrderService {
@@ -28,40 +28,7 @@ export class OrderService {
     ) {
     }
 
-    private readonly pendingState = [
-        OrderStateEnum.WAITING_FOR_ACCEPTATION,
-        OrderStateEnum.PREPARATING,
-        OrderStateEnum.DELIVERING,
-    ];
-
-    getUserOrders(userID: string, mode: 'pending' | 'completed') {
-        return this.OrderModel
-            .find({
-                user: userID,
-                status: mode === 'pending'
-                    ? { $in: this.pendingState }
-                    : OrderStateEnum.COMPLETED,
-            })
-            .exec();
-    }
-
-    getAllOrders(mode: 'pending' | 'completed') {
-        return this.OrderModel
-            .find({
-                status: mode === 'pending'
-                    ? { $in: this.pendingState }
-                    : OrderStateEnum.COMPLETED,
-            })
-            .populate({
-                path: 'user',
-                model: this.UserModel,
-                select: [ 'firstname', 'lastname' ],
-            } as PopulateOptions)
-            .sort('-createdAt')
-            .exec();
-    }
-
-    private static checkCanUpdateState(currentState: OrderStateEnum, newState: OrderStateEnum) {
+    static checkCanUpdateState(currentState: OrderStateEnum, newState: OrderStateEnum) {
 
         if (newState === OrderStateEnum.USER_CANCELLED)
             throw new UnauthorizedException('A preparator cannot mark an order as cancelled by the user');
@@ -83,6 +50,17 @@ export class OrderService {
             throw new UnauthorizedException('Cannot modify the state to a previous step');
 
         return true;
+    }
+
+    getUserOrders(userID: string, mode: 'pending' | 'completed') {
+        return this.OrderModel
+            .find({
+                user: userID,
+                status: mode === 'pending'
+                    ? { $in: pendingStates }
+                    : OrderStateEnum.COMPLETED,
+            })
+            .exec();
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {

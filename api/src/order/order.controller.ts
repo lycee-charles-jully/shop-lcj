@@ -8,6 +8,7 @@ import { UserDoc } from '../schemas/user.schema';
 import { ChangeOrderStateDto } from './dto/change-order-state.dto';
 import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderEntity } from './entities/order.entity';
+import { OrderAdminService } from './order-admin.service';
 import { OrderService } from './order.service';
 
 
@@ -15,7 +16,7 @@ import { OrderService } from './order.service';
 @Controller('order')
 export class OrderController {
 
-    constructor(private readonly OrderService: OrderService) {
+    constructor(private readonly OrderService: OrderService, private readonly OrderAdminService: OrderAdminService) {
     }
 
     @Get('me/pending')
@@ -62,7 +63,7 @@ export class OrderController {
         type: [ OrderEntity ],
     })
     getAllPendingOrders() {
-        return this.OrderService.getAllOrders('pending');
+        return this.OrderAdminService.getAllOrders('pending');
     }
 
     @Get(':order')
