@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
-    import Button from '../Button.svelte';
-    import { currencyFormat } from '$lib/currency-format';
-    import { imageUrl } from '$lib/image-url';
+    import Button from '$lib/layout/Button.svelte';
+    import { currencyFormat } from '$lib/helpers/currency-format';
+    import { imageUrl } from '$lib/helpers/image-url';
     import { createEventDispatcher } from 'svelte';
     import { goto } from '$app/navigation';
 

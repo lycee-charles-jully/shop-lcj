@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Order } from '$types/order';
-    import OrderStatus from '$lib/OrderStatus.svelte';
+    import OrderStatus from '$lib/order/OrderStatus.svelte';
     import dayjs from 'dayjs';
 
     export let order: Order;

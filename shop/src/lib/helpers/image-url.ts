@@ -1,4 +1,4 @@
-import { REMOTE_ENDPOINT } from '$lib/api-url';
+import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
 
 const STATICALLY_CDN = import.meta.env.VITE_STATICALLY_CND as string;
 

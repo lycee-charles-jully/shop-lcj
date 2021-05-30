@@ -1,4 +1,4 @@
-import { LOCAL_ENDPOINT } from '$lib/api-url';
+import { LOCAL_ENDPOINT } from '$lib/helpers/api-url';
 import type { GetSession, Handle } from '@sveltejs/kit';
 import axios from 'axios';
 import * as cookie from 'cookie';

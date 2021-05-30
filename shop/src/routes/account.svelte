@@ -4,10 +4,10 @@
     import { goto } from '$app/navigation';
     import { session } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
-    import OrderCard from '$lib/OrderCard.svelte';
-    import OrderPreview from '$lib/OrderPreview.svelte';
+    import OrderCard from '$lib/order/OrderCard.svelte';
+    import OrderPreview from '$lib/order/OrderPreview.svelte';
     import { onMount } from 'svelte';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
 
     let error: string | null = null;
     let orders: Order[] = [];

@@ -1,11 +1,11 @@
 <script lang="ts">
-    import Popup from '$lib/Popup.svelte';
-    import { imageUrl } from '$lib/image-url';
-    import { currencyFormat } from '$lib/currency-format';
+    import Popup from '$lib/layout/Popup.svelte';
+    import { imageUrl } from '$lib/helpers/image-url';
+    import { currencyFormat } from '$lib/helpers/currency-format';
     import type { Product } from '$types/products';
-    import Button from '$lib/Button.svelte';
-    import QuantitySelector from '$lib/QuantitySelector.svelte';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import Button from '$lib/layout/Button.svelte';
+    import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session } from '$app/stores';
     import type { CartItem } from '$types/cart';
     import type { User } from '$types/user';

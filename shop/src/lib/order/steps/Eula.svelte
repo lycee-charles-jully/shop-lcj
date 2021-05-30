@@ -1,5 +1,5 @@
 <script>
-    import Button from '../Button.svelte';
+    import Button from '$lib/layout/Button.svelte';
     import { createEventDispatcher } from 'svelte';
     import { goto } from '$app/navigation';
 

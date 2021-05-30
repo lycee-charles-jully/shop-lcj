@@ -1,12 +1,12 @@
 <script lang="ts">
-    import Center from '$lib/Center.svelte';
-    import InputContainer from '$lib/inputs/InputContainer.svelte';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import Center from '$lib/layout/Center.svelte';
+    import InputContainer from '$lib/layout/InputContainer.svelte';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { goto } from '$app/navigation';
     import { session, page } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
     import { onMount } from 'svelte';
-    import { getRedirectionUrl } from '../lib/get-redirection-url';
+    import { getRedirectionUrl } from '$lib/helpers/get-redirection-url';
 
     let email: string;
     let password: string;

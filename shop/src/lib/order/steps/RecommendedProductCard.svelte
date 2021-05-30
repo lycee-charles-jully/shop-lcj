@@ -1,10 +1,10 @@
 <script lang="ts">
     import type { Recommendation } from '$types/recommendation';
     import type { CartItemPopulated } from '$types/cart';
-    import { imageUrl } from '$lib/image-url';
-    import { currencyFormat } from '$lib/currency-format';
-    import Button from '$lib/Button.svelte';
-    import QuantitySelector from '$lib/QuantitySelector.svelte';
+    import { imageUrl } from '$lib/helpers/image-url';
+    import { currencyFormat } from '$lib/helpers/currency-format';
+    import Button from '$lib/layout/Button.svelte';
+    import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
 
     export let recommendation: Recommendation;
     export let validatedRecommendations: CartItemPopulated[] = [];

@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
-    import { API_URL } from '$lib/api-url';
+    import { API_URL } from '$lib/helpers/api-url';
 
     export const load: Load = async ({ fetch, page }) => {
         const slug = page.params.slug;
@@ -18,8 +18,8 @@
 
 <script lang="ts">
     import type { Product } from '$types/products';
-    import ProductCard from '$lib/ProductCard.svelte';
-    import Category from '$lib/Category.svelte';
+    import ProductCard from '$lib/product/ProductCard.svelte';
+    import Category from '$lib/product/Category.svelte';
 
     export let products: Product[];
 </script>

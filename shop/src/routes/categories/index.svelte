@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
-    import { API_URL } from '$lib/api-url';
+    import { API_URL } from '$lib/helpers/api-url';
 
     export const load: Load = async ({ fetch }) => {
         const categories = await fetch(`${API_URL}/v1/category`)
@@ -16,8 +16,8 @@
 
 <script lang="ts">
     import type { CategoryPopulated } from '$types/categories';
-    import Category from '$lib/Category.svelte';
-    import CategoryCard from '$lib/CategoryCard.svelte';
+    import Category from '$lib/product/Category.svelte';
+    import CategoryCard from '$lib/product/CategoryCard.svelte';
     import Meta from '$lib/Meta.svelte';
 
     export let categories: CategoryPopulated[] = [];

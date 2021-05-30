@@ -1,11 +1,11 @@
 <script lang="ts">
-    import InputContainer from '$lib/inputs/InputContainer.svelte';
-    import Center from '$lib/Center.svelte';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import InputContainer from '$lib/layout/InputContainer.svelte';
+    import Center from '$lib/layout/Center.svelte';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session, page } from '$app/stores';
     import { goto } from '$app/navigation';
     import Meta from '$lib/Meta.svelte';
-    import { getRedirectionUrl } from '../lib/get-redirection-url';
+    import { getRedirectionUrl } from '$lib/helpers/get-redirection-url';
 
     let user = {
         email: '',

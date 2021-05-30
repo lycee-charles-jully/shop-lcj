@@ -1,7 +1,7 @@
 <script lang="ts">
     import Nav from '$lib/nav/Nav.svelte';
     import '../app.css';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session } from '$app/stores';
     import type { User } from '$types/user';
 

@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
     import { browser } from '$app/env';
-    import { API_URL } from '$lib/api-url';
+    import { API_URL } from '$lib/helpers/api-url';
 
 
     export const load: Load = async ({ fetch, page }) => {
@@ -19,14 +19,14 @@
 
 <script lang="ts">
     import type { Product } from '$types/products';
-    import ProductImages from '$lib/ProductImages.svelte';
-    import { currencyFormat } from '$lib/currency-format';
-    import Button from '$lib/Button.svelte';
-    import ProductAdding from '$lib/ProductAdding.svelte';
+    import ProductImages from '$lib/product/ProductImages.svelte';
+    import { currencyFormat } from '$lib/helpers/currency-format';
+    import Button from '$lib/layout/Button.svelte';
+    import ProductAdding from '$lib/product/ProductAdding.svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
     import Meta from '$lib/Meta.svelte';
-    import { sanitize } from '$lib/sanitize';
+    import { sanitize } from '$lib/helpers/sanitize';
 
     export let product: Product;
 

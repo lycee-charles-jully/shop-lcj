@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
-    import { API_URL } from '$lib/api-url';
+    import { API_URL } from '$lib/helpers/api-url';
 
     export const load: Load = async ({ fetch }) => {
         // TODO: handle error
@@ -15,8 +15,8 @@
 <script lang="ts">
     import type { HomeProducts } from '$types/products';
     import Meta from '$lib/Meta.svelte';
-    import Category from '$lib/Category.svelte';
-    import ProductCard from '$lib/ProductCard.svelte';
+    import Category from '$lib/product/Category.svelte';
+    import ProductCard from '$lib/product/ProductCard.svelte';
 
     export let homeProducts: HomeProducts;
 </script>

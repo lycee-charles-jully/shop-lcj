@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { BasicProduct } from '$types/products';
-    import QuantitySelector from '$lib/QuantitySelector.svelte';
-    import { imageUrl } from '$lib/image-url';
-    import { currencyFormat } from '$lib/currency-format';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
+    import { imageUrl } from '$lib/helpers/image-url';
+    import { currencyFormat } from '$lib/helpers/currency-format';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session } from '$app/stores';
     import type { User } from '$types/user';
     import { createEventDispatcher } from 'svelte';

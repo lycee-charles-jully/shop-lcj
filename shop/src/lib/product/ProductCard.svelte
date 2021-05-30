@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { BasicProduct } from '$types/products';
-    import { currencyFormat } from '$lib/currency-format';
-    import { imageUrl } from '$lib/image-url';
+    import { currencyFormat } from '$lib/helpers/currency-format';
+    import { imageUrl } from '$lib/helpers/image-url';
     import { session } from '$app/stores';
-    import ProductAdding from '$lib/ProductAdding.svelte';
+    import ProductAdding from './ProductAdding.svelte';
     import { goto } from '$app/navigation';
 
     export let product: BasicProduct;

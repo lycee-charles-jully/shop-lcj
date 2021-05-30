@@ -3,11 +3,11 @@
     import type { Product } from '$types/products';
     import { page } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
-    import OrderStatus from '$lib/OrderStatus.svelte';
+    import OrderStatus from '$lib/order/OrderStatus.svelte';
     import { onMount } from 'svelte';
-    import { imageUrl } from '$lib/image-url';
-    import { currencyFormat } from '$lib/currency-format';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { imageUrl } from '$lib/helpers/image-url';
+    import { currencyFormat } from '$lib/helpers/currency-format';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import dayjs from 'dayjs';
 
     const orderID = $page.params.order as string;

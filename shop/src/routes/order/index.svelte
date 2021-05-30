@@ -2,13 +2,13 @@
     import type { CartItemPopulated } from '$types/cart';
     import type { Recommendation } from '$types/recommendation';
     import type { User } from '$types/user';
-    import CartConfirmation from '$lib/order/CartConfirmation.svelte';
-    import Eula from '$lib/order/Eula.svelte';
-    import OrderSucceed from '$lib/order/OrderSucceed.svelte';
+    import CartConfirmation from '$lib/order/steps/CartConfirmation.svelte';
+    import Eula from '$lib/order/steps/Eula.svelte';
+    import OrderSucceed from '$lib/order/steps/OrderSucceed.svelte';
     import { onMount } from 'svelte';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import Meta from '$lib/Meta.svelte';
-    import Recommendations from '$lib/order/Recommendations.svelte';
+    import Recommendations from '$lib/order/steps/Recommendations.svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
 

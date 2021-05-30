@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from '$lib/Button.svelte';
+    import Button from '$lib/layout/Button.svelte';
     import { onDestroy, onMount } from 'svelte';
     import { goto } from '$app/navigation';
 

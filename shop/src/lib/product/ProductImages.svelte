@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { imageUrl } from '$lib/image-url';
+    import { imageUrl } from '$lib/helpers/image-url';
 
     export let images: string[] = [];
     export let productName: string;

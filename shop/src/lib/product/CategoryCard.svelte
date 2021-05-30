@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { CategoryPopulated } from '$types/categories';
-    import { imageUrl } from '$lib/image-url';
+    import { imageUrl } from '$lib/helpers/image-url';
 
     export let category: CategoryPopulated;
 </script>

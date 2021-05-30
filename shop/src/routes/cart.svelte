@@ -2,13 +2,13 @@
     import type { CartItemPopulated } from '$types/cart';
     import CartItem from '$lib/CartItem.svelte';
     import Meta from '$lib/Meta.svelte';
-    import Button from '$lib/Button.svelte';
-    import Center from '$lib/Center.svelte';
+    import Button from '$lib/layout/Button.svelte';
+    import Center from '$lib/layout/Center.svelte';
     import { onMount } from 'svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
-    import { currencyFormat } from '$lib/currency-format';
+    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
+    import { currencyFormat } from '$lib/helpers/currency-format';
 
     let items: CartItemPopulated[] = [];
     let fetched = false;
