@@ -10,7 +10,7 @@ export const getSession: GetSession = req => ({
 });
 
 
-export const handle: Handle = async ({ request, render }) => {
+export const handle: Handle = async ({ request, resolve }) => {
 
     const cookies = request.headers.cookie
         ? cookie.parse(request.headers.cookie)
@@ -28,5 +28,5 @@ export const handle: Handle = async ({ request, render }) => {
 
     request.locals.user = user;
 
-    return render(request);
+    return resolve(request);
 };
