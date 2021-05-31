@@ -12,7 +12,7 @@ export class AddCategoryDto {
 
     @IsString()
     @IsNotEmpty()
-    @Matches(/[a-z0-9-]+/)
+    @Matches(/^[a-z0-9-]+$/)
     @ApiProperty({
         required: true,
         description: 'The category\'s slug to display in the URL',
