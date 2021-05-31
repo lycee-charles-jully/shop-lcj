@@ -48,6 +48,10 @@ export class Product {
 
     @Prop({ default: true })
     available: boolean;
+
+    @Prop({ default: -1 })
+    stockCount: number;
 }
+
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

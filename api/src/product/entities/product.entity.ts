@@ -14,4 +14,7 @@ export class ProductEntity extends BasicProductEntity {
 
     @ApiProperty()
     category: CategoryEntity;
+
+    @ApiProperty()
+    stockCount: number;
 }
