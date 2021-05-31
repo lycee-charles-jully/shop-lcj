@@ -18,7 +18,7 @@ export class ProductTypeController {
         description: 'A list of the differents available product types',
         type: [ ProductTypeEntity ],
     })
-    getCategories() {
+    getProductType() {
         return this.productTypeService.getProductTypes();
     }
 
@@ -26,10 +26,10 @@ export class ProductTypeController {
     @Auth(RoleEnum.MANAGER)
     @ApiResponse({
         status: 201,
-        description: 'The created category',
+        description: 'The created product type',
         type: ProductTypeEntity,
     })
-    addCategory(@Body() productType: AddProductTypeDto) {
+    addProductType(@Body() productType: AddProductTypeDto) {
         return this.productTypeService.addProductType(productType);
     }
 }
