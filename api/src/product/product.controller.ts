@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Query,
+    UploadedFiles,
+    UseInterceptors,
+} from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Express } from 'express';
+import * as mongoose from 'mongoose';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
 import { RoleEnum } from '../auth/enum/role.enum';
@@ -9,6 +21,7 @@ import { AddProductDto } from './dto/add-product.dto';
 import { AddProductWithImagesDto } from './dto/add-product-with-images.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { GetSingleProductParamsDto } from './dto/get-single-product-params.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { BasicProductEntity } from './entities/basic-product.entity';
 import { HomeProductsEntity } from './entities/home-products.entity';
 import { ProductEntity } from './entities/product.entity';
@@ -76,5 +89,17 @@ export class ProductController {
         @UploadedFiles() images: Express.Multer.File[],
     ) {
         return this.productService.addProduct(product, images);
+    }
+
+    @Patch(':id')
+    @ApiResponse({
+        status: 200,
+        description: 'The updated product',
+        type: ProductEntity,
+    })
+    updateProduct(@Param('id') id: string, @Body() patch: UpdateProductDto) {
+        if (!mongoose.isValidObjectId(id))
+            throw new BadRequestException('The product ID is not valid');
+        return this.productService.updateProduct(id, patch);
     }
 }

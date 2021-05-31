@@ -6,6 +6,7 @@ import { CategoryDoc } from '../schemas/category.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { basicProductFields } from './entities/basic-product.entity';
 
 
@@ -82,5 +83,23 @@ export class ProductService {
             },
         });
         return newProduct;
+    }
+
+    updateProduct(id: string, patch: UpdateProductDto) {
+        return this.ProductModel
+            .findByIdAndUpdate(
+                id,
+                patch,
+                {
+                    omitUndefined: true,
+                    new: true,
+                },
+            )
+            .exec()
+            .then(doc => {
+                if (!doc)
+                    throw new NotFoundException('Cannot find product');
+                return doc;
+            });
     }
 }
