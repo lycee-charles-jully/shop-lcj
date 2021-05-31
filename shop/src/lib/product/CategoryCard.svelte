@@ -18,6 +18,8 @@
 
     .card img {
         border-radius: var(--round) var(--round) 0 0;
+        width: 100%;
+        height: auto;
     }
 
     .card span {
@@ -29,6 +31,6 @@
 
 
 <a class="card" href="/categories/{category.slug}">
-    <img alt={category.name} src={imageUrl(category?.products[0]?.coverImageUrl, 200)}/>
+    <img src={imageUrl(category?.products[0]?.coverImageUrl, 200)} alt={category.name} height="200" width="200"/>
     <span>{category.name}</span>
 </a>

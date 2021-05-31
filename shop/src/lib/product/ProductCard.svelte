@@ -38,6 +38,7 @@
 
     .cover {
         width: 100%;
+        height: auto;
         aspect-ratio: 1;
         object-fit: cover;
         border-radius: var(--round) var(--round) 0 0;
@@ -65,7 +66,7 @@
 
 
 <a class="card" href="/product/{product.slug}" on:click={goToProductPage}>
-    <img alt={product.name} class="cover" src={imageUrl(product.coverImageUrl, 200)}/>
+    <img src={imageUrl(product.coverImageUrl, 200)} alt={product.name} class="cover" height="200" width="200"/>
     <div class="body">
         <span class="name">{product.name}</span>
         <div class="bottom-bar">

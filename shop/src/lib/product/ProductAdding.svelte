@@ -81,6 +81,7 @@
     .product-image {
         display: block;
         width: 100%;
+        height: auto;
         margin: var(--spacing) 0;
     }
 
@@ -101,7 +102,7 @@
         <h2>Ajouter au panier</h2>
     </div>
 
-    <img alt={product.name} class="product-image" src={imageUrl(product.coverImageUrl, 500)}/>
+    <img src={imageUrl(product.coverImageUrl, 500)} alt={product.name} class="product-image" height="500" width="500"/>
 
     <h1>{product.name}</h1>
 

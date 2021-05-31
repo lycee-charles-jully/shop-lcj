@@ -140,7 +140,7 @@
 
     <div class="card" class:disabled={deletingItem}>
         <a href="/product/{product.slug}">
-            <img src={imageUrl(product.coverImageUrl, 200)} class="thumbnail"/>
+            <img src={imageUrl(product.coverImageUrl, 200)} class="thumbnail" height="200" width="200"/>
         </a>
 
         <div class="body">

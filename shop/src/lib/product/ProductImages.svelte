@@ -65,12 +65,13 @@
 
 
 <div class="container">
-    <img alt={productName} class="main-image" src={imageUrl(selectedImage, 500)}/>
+    <img src={imageUrl(selectedImage, 500)} alt={productName} class="main-image" height="500" width="500"/>
     <div class="side-images">
         {#each images as src}
             <img src={imageUrl(src, 70)}
                  on:click={() => selectedImage = src}
                  class:highlight={src === selectedImage}
+                 height="70" width="70"
                  alt={productName}/>
         {/each}
     </div>

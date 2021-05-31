@@ -103,7 +103,7 @@
 <div class="container">
     <span>{recommendation.message}</span>
     <div class="product">
-        <img height="200" src={imageUrl(recommendation.recommendedProduct.coverImageUrl, 200)} width="200"/>
+        <img src={imageUrl(recommendation.recommendedProduct.coverImageUrl, 200)} height="200" width="200"/>
         <div class="product-info">
             <span>{recommendation.recommendedProduct.name}</span>
             <span>{currencyFormat(recommendation.recommendedProduct.price)} l'unité</span>
