@@ -3,13 +3,13 @@ import type { Handle } from '@sveltejs/kit';
 import axios from 'axios';
 import * as cookie from 'cookie';
 
-export const handle: Handle = async ({ render, request }) => {
+export const handle: Handle = async ({ resolve, request }) => {
 
     const cookies = cookie.parse(request.headers.cookie || '');
 
     if (!request.path.startsWith('/admin'))
         return {
-            ...(await render(request)),
+            ...(await resolve(request)),
             status: 404,
         };
 
@@ -20,7 +20,7 @@ export const handle: Handle = async ({ render, request }) => {
         const { role } = me.data;
         if (!role || role < 2000)
             throw new Error('Unauthorized');
-        const response = await render(request);
+        const response = await resolve(request);
         return {
             ...response,
         };
