@@ -35,6 +35,9 @@
 </style>
 
 
+<svelte:window on:keydown={e => e.key === 'Escape' && dispatch('close')}/>
+
+
 <div class:backdrop on:click={e => e.target.classList.contains('backdrop') && dispatch('close')}>
     <div class="popup">
         <slot/>
