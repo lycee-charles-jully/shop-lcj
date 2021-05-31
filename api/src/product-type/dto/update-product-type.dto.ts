@@ -8,7 +8,7 @@ export class UpdateProductTypeDto {
     @ApiProperty({
         required: false,
     })
-    name: string;
+    name?: string;
 
     @IsString()
     @IsOptional()
@@ -16,5 +16,5 @@ export class UpdateProductTypeDto {
     @ApiProperty({
         required: false,
     })
-    namePluralized: string;
+    namePluralized?: string;
 }
