@@ -56,7 +56,7 @@ export class ProductController {
     }
 
     @Post()
-    @Auth(RoleEnum.ADMIN)
+    @Auth(RoleEnum.MANAGER)
     @UseInterceptors(FilesInterceptor('images', 5, {
         fileFilter(req: RequestWithUserEntity, file, cb) {
             cb(null, file.mimetype.startsWith('image/'));

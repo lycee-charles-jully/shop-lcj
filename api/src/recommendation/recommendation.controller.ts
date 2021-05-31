@@ -27,7 +27,7 @@ export class RecommendationController {
     }
 
     @Post()
-    @Auth(RoleEnum.ADMIN)
+    @Auth(RoleEnum.MANAGER)
     @ApiResponse({
         status: 201,
         description: 'The created recommendation',
