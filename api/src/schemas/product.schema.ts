@@ -45,6 +45,9 @@ export class Product {
 
     @Prop({ default: () => new Date() })
     createdAt: Date;
+
+    @Prop({ default: true })
+    available: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

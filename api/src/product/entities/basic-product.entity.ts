@@ -15,6 +15,9 @@ export class BasicProductEntity {
 
     @ApiProperty()
     price: number;
+
+    @ApiProperty()
+    available: boolean;
 }
 
-export const basicProductFields = [ '_id', 'name', 'slug', 'coverImageUrl', 'price' ];
+export const basicProductFields = [ '_id', 'name', 'slug', 'coverImageUrl', 'price', 'available' ];

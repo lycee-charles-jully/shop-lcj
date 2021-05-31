@@ -20,14 +20,19 @@ export class ProductService {
 
     async getProducts(filters: GetProductsFilterDto) {
         let findOptions: FilterQuery<ProductDoc> = {};
-        if (filters.category) {
+        if (filters.category)
             findOptions = {
                 category: await this.CategoryModel
                     .findOne({ slug: filters.category })
                     .exec()
                     .then(res => res?._id),
             };
-        }
+        if (!filters.nonAvailable)
+            findOptions = {
+                ...findOptions,
+                available: true,
+            };
+
         return this.ProductModel
             .find(findOptions)
             .limit(filters.limit)
@@ -55,8 +60,8 @@ export class ProductService {
 
     async getHomeProducts() {
         const [ popular, latest ] = await Promise.all([
-            this.ProductModel.find().limit(5).sort('-viewCount').select(basicProductFields).exec(),
-            this.ProductModel.find().limit(5).sort('-createdAt').select(basicProductFields).exec(),
+            this.ProductModel.find({ available: true }).limit(5).sort('-viewCount').select(basicProductFields).exec(),
+            this.ProductModel.find({ available: true }).limit(5).sort('-createdAt').select(basicProductFields).exec(),
         ]);
         return { popular, latest };
     }

@@ -4,6 +4,7 @@ export interface BasicProduct {
     slug: string;
     coverImageUrl: string;
     price: number;
+    available: boolean;
 }
 
 export interface Product extends BasicProduct {

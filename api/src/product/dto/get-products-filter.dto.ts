@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { transformBoolean } from '../../utils/transformBoolean';
 import { ProductOrderEnum } from '../enum/product-order.enum';
 
 export class GetProductsFilterDto {
@@ -47,4 +48,14 @@ export class GetProductsFilterDto {
         description: 'The slug of the category of the product',
     })
     category: string;
+
+    @IsBoolean()
+    @IsOptional()
+    @Transform(transformBoolean)
+    @ApiProperty({
+        required: false,
+        description: 'Include non available products',
+        default: false,
+    })
+    nonAvailable: boolean = false;
 }
