@@ -1,24 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoryEntity } from '../../category/entities/category.entity';
+import { BasicProductEntity } from './basic-product.entity';
 
-export class ProductEntity {
-    @ApiProperty()
-    name: string;
-
+export class ProductEntity extends BasicProductEntity {
     @ApiProperty()
     description: string;
 
     @ApiProperty()
-    slug: string;
-
-    @ApiProperty()
-    coverImageUrl: string;
-
-    @ApiProperty()
     imagesUrls: string[];
-
-    @ApiProperty()
-    price: number;
 
     @ApiProperty()
     tags: string[];
