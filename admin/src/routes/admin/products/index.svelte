@@ -1,15 +1,25 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+    import { API_URL } from '$lib/api-url';
+
+    export const load: Load = async ({ fetch }) => {
+
+        const productTypes = await fetch(`${API_URL}/v1/product-type`)
+            .then(res => res.json());
+
+        return {
+            props: {
+                productTypes,
+            },
+        };
+    };
+</script>
+
+
 <script lang="ts">
     import Item from '$lib/Item.svelte';
-    import { onMount } from 'svelte';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
 
-    let productTypes = [];
-
-    onMount(() => {
-        fetch(`${REMOTE_ENDPOINT}/v1/product-type`)
-            .then(res => res.json())
-            .then(p => productTypes = p);
-    });
+    export let productTypes = [];
 </script>
 
 

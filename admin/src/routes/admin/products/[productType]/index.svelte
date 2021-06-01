@@ -1,18 +1,30 @@
-<script>
-    import { page } from '$app/stores';
-    import { REMOTE_ENDPOINT } from '$lib/api-url';
-    import Item from '$lib/Item.svelte';
-    import { onMount } from 'svelte';
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+    import { API_URL } from '$lib/api-url';
 
-    const productTypeID = $page.params.productType;
+    export const load: Load = async ({ fetch, page }) => {
 
-    let categories = [];
+        const productTypeID: string = page.params.productType;
 
-    onMount(() => {
-        fetch(`${REMOTE_ENDPOINT}/v1/category`)
+        const categories = await fetch(`${API_URL}/v1/category`)
             .then(res => res.json())
-            .then(c => categories = c.filter(e => e.productType._id === productTypeID));
-    });
+            .then(c => c.filter(e => e.productType._id === productTypeID));
+
+        return {
+            props: {
+                productTypeID,
+                categories,
+            },
+        };
+    };
+</script>
+
+
+<script lang="ts">
+    import Item from '$lib/Item.svelte';
+
+    export let productTypeID: string;
+    export let categories = [];
 </script>
 
 
