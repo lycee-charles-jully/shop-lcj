@@ -39,6 +39,7 @@
     import { sanitize } from '$lib/sanitize';
     import { currencyFormat } from '$lib/currency-format';
     import dayjs from 'dayjs';
+    import { goto } from '$app/navigation';
 
     export let product;
     export let error: string | null = null;
@@ -80,10 +81,15 @@
                     Gestion du stock activée, {product.stockCount} restant
                 {/if}
             </div>
-            <div class="mb-1">
+            <div class="mb-4">
                 {product.viewCount} vue{product.viewCount > 1 ? 's' : ''},
                 commandé {product.orderCount} fois
             </div>
+
+            <button class="bg-blue-500 text-white w-full px-4 py-2 rounded"
+                    on:click={() => goto(`./${product.slug}/edit`)}>
+                Modifier
+            </button>
         </div>
     </div>
 {/if}
