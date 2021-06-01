@@ -40,7 +40,7 @@
                 if (!res.ok) {
                     throw processApiError(data);
                 } else {
-                    goto(`/admin/products/${productType}/${data._id}`);
+                    goto(`/admin/products/${productType}/${data.slug}`);
                 }
             })
             .catch(e => error = e?.message || e)
