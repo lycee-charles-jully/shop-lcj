@@ -3,7 +3,7 @@
 
     export let href;
     export let thumb;
-    export let target = '_self';
+    export let target;
 </script>
 
 
