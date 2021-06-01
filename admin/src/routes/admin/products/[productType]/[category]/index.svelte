@@ -12,7 +12,7 @@
     let category: string, productType: string;
 
     onMount(() => {
-        fetch(`${REMOTE_ENDPOINT}/v1/product?limit=20&category=${categorySlug}`)
+        fetch(`${REMOTE_ENDPOINT}/v1/product?limit=20&category=${categorySlug}&nonAvailable`)
             .then(res => res.json())
             .then(p => products = p);
         fetch(`${REMOTE_ENDPOINT}/v1/category`)
