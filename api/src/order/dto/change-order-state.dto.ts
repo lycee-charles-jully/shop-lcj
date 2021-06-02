@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { transformTrim } from '../../utils/transformTrim';
 import { OrderStateEnum } from '../enum/order-state.enum';
 
 export class ChangeOrderStateDto {
@@ -13,6 +15,7 @@ export class ChangeOrderStateDto {
 
     @IsString()
     @IsOptional()
+    @Transform(transformTrim)
     @ApiProperty({
         description: 'A small comment about the state change',
         required: false,

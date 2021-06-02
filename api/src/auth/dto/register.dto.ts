@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsEmail, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { transformTrim } from '../../utils/transformTrim';
 import { IsStrongPassword } from '../../validators/IsStrongPassword';
 
 export class RegisterDto {
     @IsEmail()
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The user\'s email',
@@ -14,6 +17,7 @@ export class RegisterDto {
     @IsString()
     @MinLength(2)
     @MaxLength(20)
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The user\'s firstname',
@@ -24,6 +28,7 @@ export class RegisterDto {
     @IsString()
     @MinLength(2)
     @MaxLength(20)
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The user\'s lastname',
@@ -43,6 +48,7 @@ export class RegisterDto {
     @IsString()
     @MinLength(2)
     @MaxLength(20)
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The user\'s grade',

@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsMongoId, IsNotEmpty, IsString, Matches } from 'class-validator';
+import { transformTrim } from '../../utils/transformTrim';
 
 export class AddCategoryDto {
     @IsString()
     @IsNotEmpty()
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The category\'s name',

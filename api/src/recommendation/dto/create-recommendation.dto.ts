@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsArray, IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { transformTrim } from '../../utils/transformTrim';
 
 
 export class CreateRecommendationDto {
     @IsString()
     @IsNotEmpty()
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The name of the recommendation',
@@ -13,6 +16,7 @@ export class CreateRecommendationDto {
 
     @IsString()
     @IsNotEmpty()
+    @Transform(transformTrim)
     @ApiProperty({
         required: true,
         description: 'The message shown when the product is recommended',
