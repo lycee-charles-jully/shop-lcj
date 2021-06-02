@@ -18,7 +18,7 @@
                                 category: undefined,
                                 productType: undefined,
                             };
-                        const { category, productType: { name: productType } } =
+                        const { name: category, productType: { name: productType } } =
                             categories?.find(c => c.slug === categorySlug);
                         return {
                             category,
