@@ -14,6 +14,7 @@
         password: '',
         grade: '',
         jeunestNumber: '',
+        phone: '',
     };
 
     let passwordConfirm;
@@ -35,6 +36,13 @@
             return;
         }
         registering = true;
+
+        if (user.phone.match(/^0[67]\d{8}$/)) // Add the points if there is none
+            user.phone = user
+                .phone
+                .split('')
+                .reduce((prev, val, ind) => prev + (ind % 2 === 1 ? val + '.' : val), '')
+                .slice(0, -1);
 
         fetch(`${REMOTE_ENDPOINT}/v1/auth/register`, {
             method: 'POST',
@@ -168,6 +176,15 @@
             </InputContainer>
             <!-- TODO: Jeun'Est hint -->
         </div>
+
+        <InputContainer label="Téléphone portable" let:id>
+            <input bind:value={user.phone}
+                   disabled={registering}
+                   {id}
+                   pattern={'^(0[67](\\.\\d{2}){4}|0[67]\\d{8})$'}
+                   placeholder="06.12.34.56.78"
+                   type="tel"/>
+        </InputContainer>
 
         <InputContainer label="Mot de passe" let:id>
             <input bind:value={user.password}

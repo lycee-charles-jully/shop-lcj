@@ -7,6 +7,7 @@ export interface User {
     lastname: string,
     grade: string,
     jeunestNumber: string,
+    phone: string,
     role: number,
     cart: CartItem[],
     tokenCreatedAt: string,
