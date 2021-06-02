@@ -40,9 +40,43 @@
     import { currencyFormat } from '$lib/currency-format';
     import dayjs from 'dayjs';
     import { goto } from '$app/navigation';
+    import { REMOTE_ENDPOINT } from '$lib/api-url';
 
     export let product;
     export let error: string | null = null;
+
+    let loading = false;
+
+
+    function toggleProductAvailability() {
+        if (loading)
+            return;
+        loading = true;
+
+        fetch(`${REMOTE_ENDPOINT}/v1/product/${product._id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                available: !product.available,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin',
+        })
+            .then(async res => ({ res, data: await res.json() }))
+            .then(({ res, data }) => {
+                if (!res.ok)
+                    throw new Error(data.message || JSON.stringify(data));
+                product.available = !product.available;
+            })
+            .catch(err => {
+                console.error(err);
+                error = err.message || err;
+            })
+            .finally(() => {
+                loading = false;
+            });
+    }
 </script>
 
 
@@ -86,9 +120,14 @@
                 commandé {product.orderCount} fois
             </div>
 
-            <button class="bg-blue-500 text-white w-full px-4 py-2 rounded"
+            <button class="bg-blue-500 text-white w-full px-4 py-2 rounded mb-1"
                     on:click={() => goto(`./${product.slug}/edit`)}>
                 Modifier
+            </button>
+
+            <button class="{product.available ? 'bg-red-500' : 'bg-green-500'} text-white w-full px-4 py-2 rounded"
+                    on:click={toggleProductAvailability}>
+                Rendre {product.available ? 'in' : ''}disponible
             </button>
         </div>
     </div>
