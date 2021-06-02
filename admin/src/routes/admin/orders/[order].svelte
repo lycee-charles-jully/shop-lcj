@@ -136,6 +136,8 @@
         Identité : {orderDetails.user.firstname} {orderDetails.user.lastname}<br/>
         Email : <a href="mailto:{orderDetails.user.email}" class="text-blue-500 underline">{orderDetails.user.email}</a><br/>
         Classe : {orderDetails.user.grade}<br/>
+        Téléphone :
+        <a href="tel:{orderDetails.user.phone}" class="text-blue-500 underline">{orderDetails.user.phone}</a><br/>
         Numéro Jeun'Est : {orderDetails.user.jeunestNumber}
     </p>
 
