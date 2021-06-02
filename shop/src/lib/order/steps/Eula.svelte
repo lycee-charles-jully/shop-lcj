@@ -1,11 +1,13 @@
 <script>
     import Button from '$lib/layout/Button.svelte';
+    import Popup from '$lib/layout/Popup.svelte';
     import { createEventDispatcher } from 'svelte';
     import { goto } from '$app/navigation';
 
     const dispatch = createEventDispatcher();
 
     let accepted = false;
+    let showDisallowPopup = false;
 </script>
 
 
@@ -76,6 +78,15 @@ aux prix indiqués lors de l'enregistrement de la commande.
     Commander
 </Button>
 
-<Button nomargin on:click={() => goto('/cart')} type="secondary">
+<Button nomargin on:click={() => showDisallowPopup = true} type="secondary">
     Refuser
 </Button>
+
+{#if showDisallowPopup}
+    <Popup on:close={() => showDisallowPopup = false} backdrop>
+        <h1>Refuser les CGU</h1>
+        <p>Vous devez accepter les conditions générales d'utilisation afin d'effectuer une commande.</p>
+        <Button on:click={() => showDisallowPopup = false}>Retour</Button>
+        <Button type="secondary" on:click={() => goto('/cart')} nomargin>Refuser</Button>
+    </Popup>
+{/if}
