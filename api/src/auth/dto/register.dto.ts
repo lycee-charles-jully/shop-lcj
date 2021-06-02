@@ -64,4 +64,13 @@ export class RegisterDto {
         example: '12345',
     })
     jeunestNumber: string;
+
+    @IsString()
+    @Matches(/^0[67](\.\d{2}){4}$/)
+    @ApiProperty({
+        required: true,
+        description: 'The mobile phone number',
+        example: '06.12.34.56.78',
+    })
+    phone: string;
 }

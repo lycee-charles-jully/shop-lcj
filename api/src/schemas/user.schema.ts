@@ -47,6 +47,9 @@ export class User {
 
     @Prop({ default: 0 })
     orderCount: number;
+
+    @Prop({ required: true })
+    phone: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
