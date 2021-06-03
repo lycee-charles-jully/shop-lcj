@@ -63,7 +63,7 @@
         {#each orders as order}
             <OrderCard {order}/>
         {/each}
-    {:else if typeof $session?.user?.pendingOrders === 'number'}
+    {:else if typeof $session?.user?.pendingOrders === 'number' && $session.user.pendingOrders > 0}
         {#each new Array($session.user.pendingOrders).fill(null) as _}
             <OrderPreview/>
         {/each}
