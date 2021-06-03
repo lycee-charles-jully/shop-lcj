@@ -81,6 +81,10 @@ label {
     display: block;
 }
 
+input, button, textarea {
+    font-family: inherit;
+}
+
 input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
     background-color: var(--white);
     padding: var(--spacing);
