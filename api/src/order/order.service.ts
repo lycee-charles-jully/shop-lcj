@@ -9,6 +9,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Model, PopulateOptions } from 'mongoose';
 import { basicProductFields } from '../product/entities/basic-product.entity';
+import { OrderHistoryElement } from '../schemas/order-history-element.schema';
 import { Order, OrderDoc } from '../schemas/order.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
@@ -123,6 +124,58 @@ export class OrderService {
                     throw new NotFoundException(`Cannot find order ${orderID}`);
                 return doc;
             });
+    }
+
+
+    async cancelOrder(userID: string | mongoose.Types.ObjectId, orderID: string, reason?: string) {
+        const order = await this.OrderModel.findById(orderID);
+        if (!order)
+            throw new NotFoundException('Cannot find the order');
+        if (order.user.toHexString() !== String(userID))
+            throw new UnauthorizedException('You cannot cancel this order');
+        if (![
+            OrderStateEnum.WAITING_FOR_ACCEPTATION,
+            OrderStateEnum.PREPARATING,
+            OrderStateEnum.DELIVERING,
+        ].includes(order.status))
+            throw new UnauthorizedException('You cannot update a completed or already cancelled order');
+        if (order.createdAt.getTime() + (86400 * 1000 * 2) < Date.now())
+            throw new UnauthorizedException('You cannot cancel an order that is older than 2 days');
+
+        return Promise.all([
+            this.OrderModel.findByIdAndUpdate(orderID, {
+                status: OrderStateEnum.USER_CANCELLED,
+                modifiedAt: new Date(),
+                $push: {
+                    history: {
+                        user: userID as mongoose.Types.ObjectId,
+                        newStatus: OrderStateEnum.USER_CANCELLED,
+                        comment: reason,
+                    } as Omit<OrderHistoryElement, 'createdAt'>,
+                },
+            }, {
+                new: true,
+                omitUndefined: true,
+            })
+                .select('-history.user')
+                .populate({
+                    path: 'user',
+                    model: this.UserModel,
+                    select: '-cart',
+                } as PopulateOptions)
+                .populate({
+                    path: 'items.product',
+                    model: this.ProductModel,
+                    select: basicProductFields,
+                } as PopulateOptions)
+                .exec(),
+            this.UserModel.findByIdAndUpdate(userID, {
+                $inc: {
+                    pendingOrders: -1,
+                },
+            }).exec(),
+        ])
+            .then(res => res[0]);
     }
 
 }

@@ -1,10 +1,22 @@
-import { Body, Controller, Get, Param, Patch, Post, UnauthorizedException } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    NotAcceptableException,
+    Param,
+    Patch,
+    Post,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { isValidObjectId } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
 import { UserDoc } from '../schemas/user.schema';
+import { CancelOrderDto } from './dto/cancel-order.dto';
 import { ChangeOrderStateDto } from './dto/change-order-state.dto';
 import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderEntity } from './entities/order.entity';
@@ -53,6 +65,14 @@ export class OrderController {
     })
     makeOrder(@User() user: UserDoc, @Body() { recommendations }: OrderFromCartDto) {
         return this.OrderService.createOrderFromCart(user, recommendations);
+    }
+
+    @Delete('/me/:order')
+    @Auth(RoleEnum.USER)
+    cancelOrder(@User('_id') userID: string, @Param('order') orderID: string, @Body() { reason }: CancelOrderDto) {
+        if (!isValidObjectId(orderID))
+            throw new NotAcceptableException(`Invalid order ID ${orderID}`);
+        return this.OrderService.cancelOrder(userID, orderID, reason);
     }
 
     @Get('all/pending')
