@@ -42,4 +42,14 @@ export class AuthService {
             sameSite: 'strict',
         });
     }
+
+    deleteAuthCookie(req: Request, res: Response) {
+        res.cookie('token', null, {
+            maxAge: 0,
+            httpOnly: true,
+            domain: process.env.APP_DOMAIN,
+            secure: req.secure,
+            sameSite: 'strict',
+        });
+    }
 }

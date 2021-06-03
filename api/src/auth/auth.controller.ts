@@ -44,4 +44,10 @@ export class AuthController {
         res.json(user);
     }
 
+    @Get('logout')
+    logout(@Request() req: ExpressRequest, @Res() res: Response) {
+        this.AuthService.deleteAuthCookie(req, res);
+        res.sendStatus(200);
+    }
+
 }
