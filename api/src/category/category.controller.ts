@@ -24,6 +24,16 @@ export class CategoryController {
         return this.categoryService.getCategories();
     }
 
+    @Get(':slug')
+    @ApiResponse({
+        status: 200,
+        description: 'The resolved category, without the products',
+        type: CategoryEntity,
+    })
+    getCategory(@Param('slug') slug: string) {
+        return this.categoryService.getCategory(slug);
+    }
+
     @Post()
     @Auth(RoleEnum.MANAGER)
     @ApiResponse({

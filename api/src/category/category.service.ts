@@ -35,6 +35,22 @@ export class CategoryService {
             .exec();
     }
 
+    getCategory(slug: string) {
+        return this.CategoryModel
+            .findOne({ slug })
+            .select('-products')
+            .populate({
+                path: 'productType',
+                model: this.ProductTypeModel,
+            } as PopulateOptions)
+            .exec()
+            .then(doc => {
+                if (!doc)
+                    throw new NotFoundException('Cannot find the category');
+                return doc;
+            });
+    }
+
     addCategory(category: AddCategoryDto) {
         return new this.CategoryModel(category)
             .save()
