@@ -57,7 +57,7 @@ export class RegisterDto {
     grade: string;
 
     @IsString()
-    @Matches(/^\d{5}$/)
+    @Matches(/^\d{5,6}$/)
     @ApiProperty({
         required: true,
         description: 'The user\'s Jeun\'est card number',
