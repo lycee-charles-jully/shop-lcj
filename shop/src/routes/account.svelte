@@ -6,6 +6,8 @@
     import Meta from '$lib/Meta.svelte';
     import OrderCard from '$lib/order/OrderCard.svelte';
     import OrderPreview from '$lib/order/OrderPreview.svelte';
+    import AccountLink from '$lib/account/AccountLink.svelte';
+    import DisconnectPopup from '$lib/account/DisconnectPopup.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
 
@@ -33,10 +35,20 @@
                     error = e;
                 });
     });
+
+    let showDisconnectPopup = false;
 </script>
 
 
 <Meta title="Compte"/>
+
+
+<h2 class="category-title">Mon compte</h2>
+
+<AccountLink on:click={() => showDisconnectPopup = true}>Déconnexion</AccountLink>
+{#if $session.user?.role >= 2000}
+    <AccountLink href="/admin" target="_self">Page Admin</AccountLink>
+{/if}
 
 
 {#if $session.user?.pendingOrders}
@@ -58,3 +70,5 @@
     {/if}
 
 {/if}
+
+<DisconnectPopup bind:show={showDisconnectPopup}/>
