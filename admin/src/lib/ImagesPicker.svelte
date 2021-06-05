@@ -36,7 +36,7 @@
 
 {#if FilePond}
     <svelte:component this={FilePond}
-                      maxFiles={5}
+                      maxFiles={10}
                       {disabled}
                       {required}
                       allowMultiple

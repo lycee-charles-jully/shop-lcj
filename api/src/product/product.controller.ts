@@ -70,7 +70,7 @@ export class ProductController {
 
     @Post()
     @Auth(RoleEnum.MANAGER)
-    @UseInterceptors(FilesInterceptor('images', 5, {
+    @UseInterceptors(FilesInterceptor('images', 10, {
         fileFilter(req: RequestWithUserEntity, file, cb) {
             cb(null, file.mimetype.startsWith('image/'));
         },
