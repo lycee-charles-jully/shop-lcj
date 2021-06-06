@@ -1,11 +1,12 @@
 <script lang="ts">
     import InputContainer from '$lib/layout/InputContainer.svelte';
     import Center from '$lib/layout/Center.svelte';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session, page } from '$app/stores';
     import { goto } from '$app/navigation';
     import Meta from '$lib/Meta.svelte';
     import { getRedirectionUrl } from '$lib/helpers/get-redirection-url';
+    import * as Sentry from '@sentry/browser';
+    import { registerUser } from '$lib/api/auth/register-user';
 
     let user = {
         email: '',
@@ -44,30 +45,16 @@
                 .reduce((prev, val, ind) => prev + (ind % 2 === 1 ? val + '.' : val), '')
                 .slice(0, -1);
 
-        fetch(`${REMOTE_ENDPOINT}/v1/auth/register`, {
-            method: 'POST',
-            body: JSON.stringify(user),
-            headers: [
-                [ 'Content-Type', 'application/json' ],
-            ],
-        })
-            .then(async res => ({ data: await res.json(), res }))
-            .then(async ({ data, res }) => {
-                if (res.status === 409) {
-                    if (data.message.match(/jeunestNumber/))
-                        return error = 'Ce numéro de carte Jeun\'Est est déjà utilisé. Si il vous appartient, veuillez contacter l\'administration pour régler ce problème.';
-                    if (data.message.match(/email/))
-                        return error = 'Cet email est déjà utilisé.';
-                    return error = data.message;
+
+        registerUser(user)
+            .then(({ data, error: err }) => {
+                if (err)
+                    error = err;
+                if (data && data.email) {
+                    $session.user = data;
+                    Sentry.setUser({ email: data.email });
+                    goto(redirectionURL || '/', { replaceState: true });
                 }
-                if (res.status.toString().match(/[45]\d{2}/))
-                    return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
-                $session.user = data;
-                goto(redirectionURL || '/', { replaceState: true });
-            })
-            .catch(err => {
-                console.error(err);
-                return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
             })
             .finally(() => registering = false);
     }
@@ -85,7 +72,7 @@
             error = 'Le mot de passe doit contenir au moins un chiffre.';
             return false;
         }
-        if (pwd.length <= 8) {
+        if (pwd.length < 8) {
             error = 'Le mot de passe doit faire au moins 8 caractères.';
             return false;
         }

@@ -6,11 +6,12 @@
     import Eula from '$lib/order/steps/Eula.svelte';
     import OrderSucceed from '$lib/order/steps/OrderSucceed.svelte';
     import { onMount } from 'svelte';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import Meta from '$lib/Meta.svelte';
     import Recommendations from '$lib/order/steps/Recommendations.svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
+    import { getDataForOrder } from '$lib/api/orders/get-data-for-order';
+    import { createOrderFromCart } from '$lib/api/orders/create-order-from-cart';
 
     let step: 'LOADING' | 'RECOMMENDATIONS' | 'CONFIRM_ITEMS' | 'EULA' | 'ORDERING' | 'SUCCESS' | 'ERROR' = 'LOADING';
 
@@ -22,19 +23,16 @@
         if (($session.user as User).cart.length === 0)
             return goto('/cart');
 
-        Promise.all([
-            fetch(`${REMOTE_ENDPOINT}/v1/recommendation`, { credentials: 'include' })
-                .then(res => res.json())
-                .then(data => recommendations = data),
-            fetch(`${REMOTE_ENDPOINT}/v1/cart`, { credentials: 'include' })
-                .then(res => res.json())
-                .then(data => cart = data),
-        ])
-            .then(() => {
-                if (recommendations.length > 0)
+        getDataForOrder()
+            .then(({ cart: c, recommendations: r, error: e }) => {
+                cart = c;
+                recommendations = r;
+                if (recommendations && recommendations.length > 0)
                     step = 'RECOMMENDATIONS';
-                else
+                else if (recommendations)
                     step = 'CONFIRM_ITEMS';
+                if (e)
+                    setError(new Error(e));
             });
     });
 
@@ -47,27 +45,16 @@
     }
 
 
-    async function order() {
+    function order() {
         step = 'ORDERING';
-        await fetch(`${REMOTE_ENDPOINT}/v1/order/from-cart`, {
-            method: 'POST',
-            body: JSON.stringify({
-                recommendations: validatedRecommendations.map(r => ({ count: r.count, product: r.product._id })),
-            }),
-            credentials: 'include',
-            headers: [
-                [ 'Content-Type', 'application/json' ],
-            ],
-        })
-            .then(async res => ({ res, data: await res.json() }))
-            .then(({ res, data }) => {
-                if (!res.ok)
-                    throw new Error(data.message || JSON.stringify(data));
+        createOrderFromCart(validatedRecommendations)
+            .then(({ error: err }) => {
+                if (err)
+                    return setError(new Error(err));
                 ($session.user as User).cart = [];
                 ($session.user as User).pendingOrders++;
                 step = 'SUCCESS';
-            })
-            .catch(e => setError(e));
+            });
     }
 
 </script>

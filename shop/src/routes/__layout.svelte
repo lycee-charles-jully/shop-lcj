@@ -1,16 +1,19 @@
 <script lang="ts">
-    import Nav from '$lib/nav/Nav.svelte';
-    import '../app.css';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
-    import { session } from '$app/stores';
     import type { User } from '$types/user';
+    import '$lib/helpers/sentry';
+    import * as Sentry from '@sentry/browser';
+    import { refreshToken } from '$lib/api/auth/refresh-token';
+    import Nav from '$lib/nav/Nav.svelte';
+    import { session } from '$app/stores';
+    import '../app.css';
 
 
     function handleAppStart() {
+        if ($session.user?.email) {
+            Sentry.setUser({ email: $session.user.email });
+        }
         if ($session.user && (Date.now() - new Date(($session.user as User | null)?.tokenCreatedAt).getTime()) > 86400 * 1000)
-            fetch(`${REMOTE_ENDPOINT}/v1/auth/refresh`, {
-                credentials: 'same-origin',
-            });
+            refreshToken();
     }
 </script>
 

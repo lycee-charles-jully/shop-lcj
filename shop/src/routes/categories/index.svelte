@@ -1,16 +1,16 @@
 <script context="module" lang="ts">
     import type { CategoryPopulated } from '$types/categories';
     import type { Load } from '@sveltejs/kit/types/page';
-    import { API_URL } from '$lib/helpers/api-url';
+    import { getCategoriesList } from '$lib/api/categories/get-categories-list';
 
     export const load: Load = async ({ fetch }) => {
-        const categories: CategoryPopulated[] = await fetch(`${API_URL}/v1/category`)
-            .then(res => res.json());
-
+        const { data: categories, error, status } = await getCategoriesList(fetch);
         return {
             props: {
                 categories: categories.filter(c => c.products?.length > 0),
             },
+            error: error && new Error(error),
+            status,
         };
     };
 </script>

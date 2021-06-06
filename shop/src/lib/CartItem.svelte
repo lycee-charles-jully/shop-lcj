@@ -3,10 +3,11 @@
     import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
     import { imageUrl } from '$lib/helpers/image-url';
     import { currencyFormat } from '$lib/helpers/currency-format';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session } from '$app/stores';
     import type { User } from '$types/user';
     import { createEventDispatcher } from 'svelte';
+    import { updateCartItemCount } from '$lib/api/cart/update-cart-item-count';
+    import { deleteCartItem } from '$lib/api/cart/delete-cart-item';
 
     export let product: BasicProduct | null = null;
     export let count = 1;
@@ -18,32 +19,26 @@
     function updateProductCount(ev: CustomEvent) {
         const type = ev.detail.type as 'INCREASE' | 'DECREASE';
         dispatch('countchange', count);
-        fetch(`${REMOTE_ENDPOINT}/v1/cart/${product._id}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ count }),
-            credentials: 'same-origin',
-            headers: [
-                [ 'Content-Type', 'application/json' ],
-            ],
-        })
-            .then(async res => ({ res, data: await res.json() }))
-            .then(({ res, data }) => {
-                if (!res.ok)
-                    throw new Error(data.message || data);
-                $session.user.cart = ($session.user as User).cart.map(item => {
-                    if (item.product !== product._id)
+
+        updateCartItemCount(product._id, count)
+            .then(({ data, error }) => {
+                if (error) {
+                    if (type === 'INCREASE')
+                        count--;
+                    else
+                        count++;
+                    dispatch('error', new Error(error));
+                    dispatch('countchange', count);
+                    return;
+                }
+
+                if (data && data.product)
+                    $session.user.cart = ($session.user as User).cart.map(item => {
+                        if (item.product !== data.product)
+                            return item;
+                        item.count = data.count;
                         return item;
-                    item.count = count;
-                    return item;
-                });
-            })
-            .catch(err => {
-                if (type === 'INCREASE')
-                    count--;
-                else
-                    count++;
-                dispatch('error', err);
-                dispatch('countchange', count);
+                    });
             });
     }
 
@@ -55,18 +50,15 @@
             return;
         deletingItem = true;
 
-        fetch(`${REMOTE_ENDPOINT}/v1/cart/${product._id}`, {
-            method: 'DELETE',
-            credentials: 'same-origin',
-        })
-            .then(async res => ({ res, data: await res.json() }))
-            .then(({ res, data }) => {
-                if (!res.ok)
-                    throw new Error(data.message || data);
-                $session.user.cart = ($session.user as User).cart.filter(i => i.product !== product._id);
-                dispatch('delete', product._id);
+        deleteCartItem(product._id)
+            .then(({ data, error }) => {
+                if (error)
+                    dispatch('error', new Error(error));
+                if (data) {
+                    $session.user.cart = ($session.user as User).cart.filter(i => i.product !== product._id);
+                    dispatch('delete', product._id);
+                }
             })
-            .catch(e => dispatch('error', e))
             .finally(() => deletingItem = false);
     }
 </script>

@@ -1,14 +1,13 @@
 <script lang="ts">
+    import type { User } from '$types/user';
     import Popup from '$lib/layout/Popup.svelte';
     import { imageUrl } from '$lib/helpers/image-url';
     import { currencyFormat } from '$lib/helpers/currency-format';
     import type { Product } from '$types/products';
     import Button from '$lib/layout/Button.svelte';
     import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { session } from '$app/stores';
-    import type { CartItem } from '$types/cart';
-    import type { User } from '$types/user';
+    import { addProductToCart } from '$lib/api/cart/add-product-to-cart';
 
     export let visible = false;
     export let product: Product;
@@ -26,36 +25,14 @@
         process = true;
         error = null;
 
-        fetch(`${REMOTE_ENDPOINT}/v1/cart`, {
-            method: 'POST',
-            body: JSON.stringify({
-                product: product._id,
-                count: quantity,
-            } as CartItem),
-            credentials: 'same-origin',
-            headers: [
-                [ 'Content-Type', 'application/json' ],
-            ],
-        })
-            .then(async res => {
-                if (res.ok) {
-                    error = null;
-                    visible = false;
-                    ($session.user as User).cart = [
-                        ...$session.user.cart,
-                        { product: product._id, count: quantity },
-                    ];
-                    return;
-                }
-
-                return res
-                    .json()
-                    .then(d => {
-                        throw new Error(d.message || JSON.stringify(d));
-                    });
-            })
-            .catch(e => error = e?.message || e)
-            .finally(() => process = false);
+        addProductToCart(product._id, quantity)
+            .then(({ error: err, data }) => {
+                process = false;
+                if (err)
+                    return error = err;
+                visible = false;
+                ($session.user as User).cart = data;
+            });
     }
 </script>
 

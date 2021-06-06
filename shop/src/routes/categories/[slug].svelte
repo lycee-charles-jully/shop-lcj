@@ -1,20 +1,19 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
-    import { API_URL } from '$lib/helpers/api-url';
+    import { getDataForCategory } from '$lib/api/categories/get-data-for-category';
 
     export const load: Load = async ({ fetch, page }) => {
         const slug = page.params.slug;
-        const [ products, category ] = await Promise.all([
-            fetch(`${API_URL}/v1/product?category=${slug}&sort=orderCount&limit=20`)
-                .then(res => res.json()),
-            fetch(`${API_URL}/v1/category/${slug}`)
-                .then(res => res.json()),
-        ]);
+        const { products, category, error, status } = await getDataForCategory(slug, fetch);
+
         return {
             props: {
                 products,
                 category,
+                error,
             },
+            error: status === 404 ? new Error(`Impossible de trouver la catégorie ${slug}.`) : error,
+            status,
         };
     };
 </script>
@@ -29,6 +28,7 @@
 
     export let products: Product[];
     export let category: CategoryType;
+    export let error: string | null = null;
 </script>
 
 
@@ -46,13 +46,19 @@
 </style>
 
 
-<Meta title={category.name}/>
+<Meta title={category?.name}/>
 
 
-<h2>
-    <img alt="<" height="24" on:click={() => window.history.back()} src="/icons/back-highlight.svg" width="24">
-    {category.name}
-</h2>
+{#if error}
+    <p class="error-message">{error}</p>
+{/if}
+
+{#if category?.name}
+    <h2>
+        <img alt="<" height="24" on:click={() => window.history.back()} src="/icons/back-highlight.svg" width="24">
+        {category.name}
+    </h2>
+{/if}
 
 <Category>
     {#each products as product}

@@ -4,25 +4,28 @@
     import Button from '$lib/layout/Button.svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
+    import { disconnectUser } from '../api/auth/disconnect-user';
 
     export let show = false;
     export let processing = false;
+    export let error: null | string = null;
 
 
     function disconnect() {
         if (processing)
             return;
         processing = true;
+        error = null;
 
-        fetch(`${REMOTE_ENDPOINT}/v1/auth/logout`)
-            .then(res => {
-                if (!res.ok)
-                    return;
+        disconnectUser()
+            .then(({ error: err }) => {
+                processing = false;
+                if (err)
+                    return error = err;
                 show = false;
                 $session.user = null;
                 goto('/login', { replaceState: true });
-            })
-            .finally(() => processing = false);
+            });
     }
 </script>
 
@@ -60,6 +63,10 @@
         </div>
 
         <p>Êtes vous sûr de vouloir vous déconnecter ?</p>
+
+        {#if error}
+            <p class="error-message">{error}</p>
+        {/if}
 
         <Button disabled={processing} on:click={disconnect}>Déconnexion</Button>
         <Button nomargin type="secondary" disabled={processing}>Retour</Button>

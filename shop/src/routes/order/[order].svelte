@@ -10,9 +10,10 @@
     import { onMount } from 'svelte';
     import { imageUrl } from '$lib/helpers/image-url';
     import { currencyFormat } from '$lib/helpers/currency-format';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import dayjs from 'dayjs';
     import { session } from '$app/stores';
+    import { cancelUserOrder } from '$lib/api/orders/cancel-user-order';
+    import { getOrderDetails } from '$lib/api/orders/get-order-details';
 
     const orderID = $page.params.order as string;
     let order: Order;
@@ -24,16 +25,12 @@
     $: title = order?.createdAt ? `Commande du ${dayjs(order.createdAt).format('DD/MM/YYYY')}` : 'Commande';
 
     onMount(() => {
-        fetch(`${REMOTE_ENDPOINT}/v1/order/me/${orderID}`)
-            .then(async res => ({ res, data: await res.json() }))
-            .then(({ res, data }) => {
-                if (!res.ok)
-                    throw new Error(data.message || JSON.stringify(data));
-                populateOrderData(data);
-            })
-            .catch(e => {
-                console.error(e);
-                error = e.message || e;
+        getOrderDetails(orderID)
+            .then(({ data, error: err }) => {
+                if (err)
+                    error = err;
+                if (data?._id)
+                    populateOrderData(data);
             });
     });
 
@@ -44,7 +41,7 @@
         && dayjs(order.createdAt).add(2, 'days').isAfter(new Date());
 
 
-    function populateOrderData(data) {
+    function populateOrderData(data: Order) {
         order = data;
         itemCount = order.items.reduce((total, { count }) => total + count, 0);
         itemsTotalPrice = order.items
@@ -75,28 +72,16 @@
         cancellingOrder = true;
         cancelError = null;
 
-        fetch(`${REMOTE_ENDPOINT}/v1/order/me/${orderID}`, {
-            method: 'DELETE',
-            body: cancelReason
-                ? JSON.stringify({ reason: cancelReason })
-                : '{}',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'same-origin',
-        })
-            .then(async res => ({ res, data: await res.json() }))
-            .then(({ res, data }) => {
-                if (!res.ok)
-                    throw new Error(data.message || JSON.stringify(data));
-                populateOrderData(data);
-                ($session.user as User).pendingOrders--;
-                cancellingOrder = false;
-                hideCancelPopup();
-            })
-            .catch(err => {
-                console.error(err);
-                cancelError = err.message || err;
+        cancelUserOrder(orderID, cancelReason)
+            .then(({ data, error: err }) => {
+                if (err)
+                    cancelError = err;
+                if (data?._id) {
+                    populateOrderData(data);
+                    ($session.user as User).pendingOrders--;
+                    cancellingOrder = false;
+                    hideCancelPopup();
+                }
                 cancellingOrder = false;
             });
     }

@@ -9,30 +9,22 @@
     import AccountLink from '$lib/account/AccountLink.svelte';
     import DisconnectPopup from '$lib/account/DisconnectPopup.svelte';
     import { onMount } from 'svelte';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
+    import { getPendingOrders } from '$lib/api/orders/get-pending-orders';
 
     let error: string | null = null;
     let orders: Order[] = [];
 
-    onMount(() => {
+    onMount(async () => {
         if (!$session.user)
             return goto('/login?r=/account');
 
         if (($session.user as User).pendingOrders)
-            fetch(`${REMOTE_ENDPOINT}/v1/order/me/pending`, {
-                credentials: 'same-origin',
-            })
-                .then(async res => ({ res, data: await res.json() }))
-                .then(({ res, data }) => {
-                    if (!res.ok)
-                        throw new Error(data.message || JSON.stringify(data));
-                    if (!Array.isArray(data))
-                        throw new Error('Réponse du serveur invalide');
-                    orders = data;
-                })
-                .catch(e => {
-                    console.error(e);
-                    error = e;
+            getPendingOrders()
+                .then(({ error: err, data }) => {
+                    if (err)
+                        error = err;
+                    if (data)
+                        orders = data;
                 });
     });
 

@@ -1,12 +1,16 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
-    import { API_URL } from '$lib/helpers/api-url';
+    import { getHomeProducts } from '$lib/api/products/get-home-products';
 
     export const load: Load = async ({ fetch }) => {
-        // TODO: handle error
-        const homeProducts = await fetch(`${API_URL}/v1/product/home`).then(res => res.json());
+        const { data: homeProducts, error, status } = await getHomeProducts(fetch);
+
         return {
-            props: { homeProducts },
+            props: {
+                homeProducts,
+            },
+            error: error && new Error(error),
+            status,
         };
     };
 </script>
@@ -25,15 +29,19 @@
 <Meta/>
 
 
-<Category title="Populaire">
-    {#each homeProducts.popular as product}
-        <ProductCard {product}/>
-    {/each}
-</Category>
+{#if Array.isArray(homeProducts?.popular)}
+    <Category title="Populaire">
+        {#each homeProducts.popular as product}
+            <ProductCard {product}/>
+        {/each}
+    </Category>
+{/if}
 
 
-<Category title="Récent">
-    {#each homeProducts.latest as product}
-        <ProductCard {product}/>
-    {/each}
-</Category>
+{#if Array.isArray(homeProducts?.latest)}
+    <Category title="Récent">
+        {#each homeProducts.latest as product}
+            <ProductCard {product}/>
+        {/each}
+    </Category>
+{/if}

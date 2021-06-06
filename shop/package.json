@@ -19,6 +19,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@sentry/browser": "^6.5.1",
+    "@sentry/tracing": "^6.5.1",
     "axios": "^0.21.1",
     "cookie": "^0.4.1",
     "dayjs": "^1.10.5"

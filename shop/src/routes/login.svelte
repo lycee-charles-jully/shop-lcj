@@ -1,12 +1,13 @@
 <script lang="ts">
     import Center from '$lib/layout/Center.svelte';
     import InputContainer from '$lib/layout/InputContainer.svelte';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { goto } from '$app/navigation';
     import { session, page } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
+    import * as Sentry from '@sentry/browser';
     import { onMount } from 'svelte';
     import { getRedirectionUrl } from '$lib/helpers/get-redirection-url';
+    import { logUserIn } from '../lib/api/auth/log-user-in';
 
     let email: string;
     let password: string;
@@ -28,31 +29,18 @@
             return;
         loggingIn = true;
         error = null;
-        fetch(`${REMOTE_ENDPOINT}/v1/auth/login`, {
-            method: 'POST',
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-            headers: [
-                [ 'Content-Type', 'application/json' ],
-            ],
-        })
-            .then(async res => ({ data: await res.json(), res }))
-            .then(({ data, res }) => {
-                if (res.status === 401)
-                    return error = 'Email ou mot de passe invalide.';
-                if (res.status.toString().match(/[45]\d{2}/))
-                    return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
-                $session.user = data;
-                if (redirectionURL?.startsWith('/admin'))
-                    window.location.href = window.location.origin + redirectionURL;
-                else
-                    goto(redirectionURL || '/', { replaceState: true });
-            })
-            .catch(err => {
-                console.error(err);
-                return error = 'Une erreur inconnue est survenue. Veuillez réessayer.';
+        logUserIn({ email, password })
+            .then(({ data, error: err }) => {
+                if (err)
+                    error = err;
+                if (data && data.email) {
+                    $session.user = data;
+                    Sentry.setUser({ email: data.email });
+                    if (redirectionURL?.startsWith('/admin'))
+                        window.location.href = window.location.origin + redirectionURL;
+                    else
+                        goto(redirectionURL || '/', { replaceState: true });
+                }
             })
             .finally(() => loggingIn = false);
     }

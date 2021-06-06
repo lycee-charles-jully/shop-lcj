@@ -7,8 +7,8 @@
     import { onMount } from 'svelte';
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
-    import { REMOTE_ENDPOINT } from '$lib/helpers/api-url';
     import { currencyFormat } from '$lib/helpers/currency-format';
+    import { getCartItems } from '$lib/api/cart/get-cart';
 
     let items: CartItemPopulated[] = [];
     let fetched = false;
@@ -20,17 +20,14 @@
             return;
         }
 
-        fetch(`${REMOTE_ENDPOINT}/v1/cart`, {
-            credentials: 'same-origin',
-        })
-            .then(async res => ({ res, data: await res.json() }))
-            .then(({ res, data }) => {
-                if (!res.ok)
-                    throw new Error(data?.message || data);
-                items = data;
+        getCartItems()
+            .then(({ data, error: err }) => {
+                if (err)
+                    error = err;
+                if (data)
+                    items = data;
                 fetched = true;
-            })
-            .catch(e => error = e?.message || e);
+            });
     });
 </script>
 
