@@ -1,3 +1,17 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+
+    export const load: Load = ({ session }) => {
+        if (!session.user)
+            return {
+                redirect: `/login?r=/order`,
+                status: 302,
+            };
+        return {};
+    };
+</script>
+
+
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
     import type { Recommendation } from '$types/recommendation';

@@ -1,7 +1,20 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+
+    export const load: Load = ({ session }) => {
+        if (!session.user)
+            return {
+                redirect: '/login?r=/account',
+                status: 302,
+            };
+        return {};
+    };
+</script>
+
+
 <script lang="ts">
     import type { Order } from '$types/order';
     import type { User } from '$types/user';
-    import { goto } from '$app/navigation';
     import { session } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
     import OrderCard from '$lib/order/OrderCard.svelte';
@@ -15,9 +28,6 @@
     let orders: Order[] = [];
 
     onMount(async () => {
-        if (!$session.user)
-            return goto('/login?r=/account');
-
         if (($session.user as User).pendingOrders)
             getPendingOrders()
                 .then(({ error: err, data }) => {

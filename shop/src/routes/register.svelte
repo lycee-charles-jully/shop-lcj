@@ -1,3 +1,17 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+
+    export const load: Load = ({ session }) => {
+        if (session.user)
+            return {
+                redirect: '/account',
+                status: 302,
+            };
+        return {};
+    };
+</script>
+
+
 <script lang="ts">
     import InputContainer from '$lib/layout/InputContainer.svelte';
     import Center from '$lib/layout/Center.svelte';

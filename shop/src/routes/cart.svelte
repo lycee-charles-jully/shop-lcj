@@ -1,3 +1,17 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+
+    export const load: Load = ({ session }) => {
+        if (!session.user)
+            return {
+                redirect: '/login?r=/cart',
+                status: 302,
+            };
+        return {};
+    };
+</script>
+
+
 <script lang="ts">
     import type { CartItemPopulated } from '$types/cart';
     import CartItem from '$lib/CartItem.svelte';
@@ -15,11 +29,6 @@
     let error: string | null = null;
 
     onMount(() => {
-        if (!$session.user) {
-            goto(`/login?r=/cart`, { replaceState: true });
-            return;
-        }
-
         getCartItems()
             .then(({ data, error: err }) => {
                 if (err)

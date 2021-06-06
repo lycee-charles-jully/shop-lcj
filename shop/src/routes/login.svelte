@@ -1,3 +1,17 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+
+    export const load: Load = ({ session }) => {
+        if (session.user)
+            return {
+                redirect: '/account',
+                status: 302,
+            };
+        return {};
+    };
+</script>
+
+
 <script lang="ts">
     import Center from '$lib/layout/Center.svelte';
     import InputContainer from '$lib/layout/InputContainer.svelte';
@@ -5,7 +19,6 @@
     import { session, page } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
     import * as Sentry from '@sentry/browser';
-    import { onMount } from 'svelte';
     import { getRedirectionUrl } from '$lib/helpers/get-redirection-url';
     import { logUserIn } from '../lib/api/auth/log-user-in';
 
@@ -18,11 +31,6 @@
 
     const redirectionURL = getRedirectionUrl($page.query);
 
-
-    onMount(() => {
-        if ($session.user)
-            goto('/account', { replaceState: true });
-    });
 
     function login() {
         if (loggingIn)
