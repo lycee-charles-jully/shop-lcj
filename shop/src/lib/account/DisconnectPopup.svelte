@@ -11,6 +11,8 @@
     export let error: null | string = null;
 
 
+    const closePopup = () => !processing && (show = false);
+
     function disconnect() {
         if (processing)
             return;
@@ -51,12 +53,12 @@
 
 
 {#if show}
-    <Popup backdrop on:close={() => !processing && (show = false)}>
+    <Popup backdrop on:close={closePopup}>
         <div class="header">
             <img alt="x"
                  class="close-popup-btn"
                  height="24"
-                 on:click={() => !processing && (show = false)}
+                 on:click={closePopup}
                  src="/icons/cross-highlight.svg"
                  width="24"/>
             <h1>Déconnexion</h1>
@@ -69,6 +71,6 @@
         {/if}
 
         <Button disabled={processing} on:click={disconnect}>Déconnexion</Button>
-        <Button nomargin type="secondary" disabled={processing}>Retour</Button>
+        <Button nomargin type="secondary" disabled={processing} on:click={closePopup}>Retour</Button>
     </Popup>
 {/if}
