@@ -7,7 +7,7 @@ export const logUserIn = (credentials) => apiWrapper<User>('/auth/login', {
     validate(data, handleError, res) {
         if (res.status === 401)
             return handleError('Email ou mot de passe invalide.', 401);
-        if (!data._id)
+        if (!data.email)
             return handleError(
                 'Impossible d\'obtenir les informations de votre compte. Veuillez rafraichir la page et réessayer.',
                 null,

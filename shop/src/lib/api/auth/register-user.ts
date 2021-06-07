@@ -13,7 +13,7 @@ export const registerUser = (credentials) => apiWrapper<User>('/auth/register', 
             return handleError(data.message, 409, new Error('Unknown register error'));
         }
 
-        if (!data._id)
+        if (!data.email)
             return handleError(
                 'Impossible d\'obtenir les informations de votre compte. Veuillez rafraichir la page et réessayer.',
                 null,
