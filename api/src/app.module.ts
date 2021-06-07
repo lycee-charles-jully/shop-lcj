@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
 import { OrderModule } from './order/order.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { OrderModule } from './order/order.module';
         RecommendationModule,
         FileModule,
         BackupModule,
+        EmailModule,
     ],
     controllers: [],
     providers: [],

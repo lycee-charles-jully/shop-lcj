@@ -8,7 +8,9 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Model, PopulateOptions } from 'mongoose';
+import { EmailService } from '../email/email.service';
 import { basicProductFields } from '../product/entities/basic-product.entity';
+import { Cart } from '../schemas/cart.schema';
 import { OrderHistoryElement } from '../schemas/order-history-element.schema';
 import { Order, OrderDoc } from '../schemas/order.schema';
 import { ProductDoc } from '../schemas/product.schema';
@@ -25,6 +27,7 @@ export class OrderService {
         @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
         @InjectModel('order') private readonly OrderModel: Model<OrderDoc>,
         @InjectModel('recommendation') private readonly RecommendationModel: Model<RecommendationDoc>,
+        private readonly EmailService: EmailService,
     ) {
     }
 
@@ -37,6 +40,35 @@ export class OrderService {
                     : OrderStateEnum.COMPLETED,
             })
             .exec();
+    }
+
+    async sendConfirmationOrderMail(user: UserDoc, products: Cart[], orderID: string) {
+        const currencyFormat = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+        const productsCount = new Map<string, number>(
+            products.map(p => [ String(p.product), p.count ]),
+        );
+        const productsData = await this.ProductModel.find({
+            _id: {
+                $in: products.map(p => p.product),
+            },
+        })
+            .select([ 'name', 'price', 'slug', 'coverImageUrl' ])
+            .exec();
+        const total = currencyFormat.format(
+            productsData.reduce((tt, product) => tt + product.price * (productsCount.get(String(product._id)) || 1), 0),
+        );
+
+        await this.EmailService.sentOrderConfirmationEmail(user.email, {
+            name: user.firstname,
+            orderID,
+            total,
+            products: productsData.map(p => ({
+                name: p.name,
+                image: p.coverImageUrl,
+                quantity: `${productsCount.get(String(p._id)) || 1}x ${currencyFormat.format(p.price)} = ${currencyFormat.format(p.price * (productsCount.get(String(p._id)) || 1))}`,
+                slug: p.slug,
+            })),
+        });
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {
@@ -83,7 +115,14 @@ export class OrderService {
                 },
             ).exec(),
         ])
-            .then(res => res[1])
+            .then(res => {
+                this.sendConfirmationOrderMail(
+                    user,
+                    [ ...(user.cart as Cart[]), ...(recommendations as unknown as Cart[]) ],
+                    res[1]._id,
+                );
+                return res[1];
+            })
             .catch(async (e) => {
                 console.error(e);
                 // Reverting changes on error

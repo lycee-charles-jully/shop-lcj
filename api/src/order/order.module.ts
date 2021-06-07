@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { EmailModule } from '../email/email.module';
 import { OrderSchema } from '../schemas/order.schema';
 import { ProductSchema } from '../schemas/product.schema';
 import { RecommendationSchema } from '../schemas/recommendation.schema';
@@ -16,6 +17,7 @@ import { OrderService } from './order.service';
             { name: 'order', schema: OrderSchema },
             { name: 'recommendation', schema: RecommendationSchema },
         ]),
+        EmailModule,
     ],
     controllers: [ OrderController ],
     providers: [ OrderService, OrderAdminService ],
