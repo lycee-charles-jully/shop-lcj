@@ -1,6 +1,7 @@
 <script>
     import NavLink from '$lib/nav/NavLink.svelte';
     import { session } from '$app/stores';
+    import { staticImageUrl } from '$lib/helpers/image-url';
 </script>
 
 
@@ -47,7 +48,7 @@
 
 <header>
     <a href="/">
-        <img class="header-img" height="100" src="/shop-icon-v1.png" width="100"/>
+        <img class="header-img" height="100" src={staticImageUrl('shop-icon-v1.png')} width="100"/>
     </a>
     <nav>
         <NavLink href="/" icon="home" label="Accueil"/>
