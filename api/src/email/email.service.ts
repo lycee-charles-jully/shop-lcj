@@ -11,16 +11,26 @@ export class EmailService {
     }
 
     sentOrderConfirmationEmail(to: string, data: OrderConfirmationDataEntity) {
+        return this.sendEmail(
+            'd-7247863d60e0403d983cba7fff9d8fa4',
+            to,
+            data,
+            `Cannot send the order confirmation email`,
+        );
+    }
+
+
+    private sendEmail(templateId: string, to: string, data: any, errorMsg?: string) {
         return sgMail.send({
             to,
-            from: 'noreply@shop-lcj.fr', // Change to your verified sender
-            templateId: 'd-7247863d60e0403d983cba7fff9d8fa4',
+            from: 'noreply@shop-lcj.fr',
+            templateId,
             dynamicTemplateData: data,
         })
             .then(() => ({ success: true, error: null }))
             .catch(err => {
-                console.error(err);
-                throw new InternalServerErrorException('Cannot send the confirmation email');
+                console.error(`Cannot send the email with the template ${templateId} to ${to}`, err);
+                throw new InternalServerErrorException(errorMsg || 'Cannot send the email');
             });
     }
 }
