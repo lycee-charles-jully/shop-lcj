@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as sgMail from '@sendgrid/mail';
 import { OrderConfirmationDataEntity } from './entity/order-confirmation-data.entity';
+import { OrderCompletedDataEntity } from './entity/order-completed-data.entity';
 
 
 @Injectable()
