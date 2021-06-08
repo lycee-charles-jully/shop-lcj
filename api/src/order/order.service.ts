@@ -42,7 +42,7 @@ export class OrderService {
             .exec();
     }
 
-    async sendConfirmationOrderMail(user: UserDoc, products: Cart[], orderID: string) {
+    async getOrderDetailsForMail(products: Cart[]) {
         const currencyFormat = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
         const productsCount = new Map<string, number>(
             products.map(p => [ String(p.product), p.count ]),
@@ -58,9 +58,7 @@ export class OrderService {
             productsData.reduce((tt, product) => tt + product.price * (productsCount.get(String(product._id)) || 1), 0),
         );
 
-        await this.EmailService.sentOrderConfirmationEmail(user.email, {
-            name: user.firstname,
-            orderID,
+        return {
             total,
             products: productsData.map(p => ({
                 name: p.name,
@@ -68,7 +66,7 @@ export class OrderService {
                 quantity: `${productsCount.get(String(p._id)) || 1}x ${currencyFormat.format(p.price)} = ${currencyFormat.format(p.price * (productsCount.get(String(p._id)) || 1))}`,
                 slug: p.slug,
             })),
-        });
+        };
     }
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {
@@ -116,11 +114,16 @@ export class OrderService {
             ).exec(),
         ])
             .then(res => {
-                this.sendConfirmationOrderMail(
-                    user,
-                    [ ...(user.cart as Cart[]), ...(recommendations as unknown as Cart[]) ],
-                    res[1]._id,
-                );
+                this.getOrderDetailsForMail([ ...(user.cart as Cart[]), ...(recommendations as unknown as Cart[]) ])
+                    .then(({ total, products }) => this.EmailService.sentOrderConfirmationEmail(
+                        user.email,
+                        {
+                            name: user.firstname,
+                            orderID: res[1]._id,
+                            total,
+                            products,
+                        },
+                    ));
                 return res[1];
             })
             .catch(async (e) => {
