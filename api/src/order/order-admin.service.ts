@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Model, PopulateOptions } from 'mongoose';
+import { EmailService } from '../email/email.service';
 import { basicProductFields } from '../product/entities/basic-product.entity';
 import { OrderHistoryElement } from '../schemas/order-history-element.schema';
 import { OrderDoc } from '../schemas/order.schema';
@@ -9,6 +10,7 @@ import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
 import { UserDoc } from '../schemas/user.schema';
 import { OrderStateEnum, pendingStates } from './enum/order-state.enum';
+import { OrderService } from './order.service';
 
 @Injectable()
 export class OrderAdminService {
@@ -18,6 +20,8 @@ export class OrderAdminService {
         @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
         @InjectModel('order') private readonly OrderModel: Model<OrderDoc>,
         @InjectModel('recommendation') private readonly RecommendationModel: Model<RecommendationDoc>,
+        private readonly OrderService: OrderService,
+        private readonly EmailService: EmailService,
     ) {
     }
 
@@ -116,7 +120,21 @@ export class OrderAdminService {
                 })
                 : null,
         ])
-            .then(res => res[0]);
+            .then(res => {
+                const order = res[0]!;
+                const user = order.user as unknown as Omit<UserDoc, 'cart'>;
+                if (order.status === OrderStateEnum.COMPLETED)
+                    this.OrderService.getOrderDetailsForMail(order.items)
+                        .then(({ total, products }) => this.EmailService.sentOrderCompletedEmail(
+                            user.email,
+                            {
+                                name: user.firstname,
+                                total,
+                                products,
+                            },
+                        ));
+                return order;
+            });
     }
 
 }

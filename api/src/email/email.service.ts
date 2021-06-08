@@ -19,6 +19,15 @@ export class EmailService {
         );
     }
 
+    sentOrderCompletedEmail(to: string, data: OrderCompletedDataEntity) {
+        return this.sendEmail(
+            'd-c671d986b5df40a3bf833f70b4d8467f',
+            to,
+            data,
+            `Cannot send the order completed email`,
+        );
+    }
+
 
     private sendEmail(templateId: string, to: string, data: any, errorMsg?: string) {
         return sgMail.send({

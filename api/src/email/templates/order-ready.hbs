@@ -1,0 +1,109 @@
+<html lang='fr'>
+<head>
+    <meta charset='UTF-8'/>
+    <title>Votre commande Shop LCJ vous attends au BVS !</title>
+</head>
+<body style="font-family: 'Google Sans', Roboto, Arial, sans-serif; width: 100%; padding: 0; margin: 0; color: #03071e">
+<table width='600' style='margin: 0 auto; width: 600px'>
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td width='50px' align='center' style='width: 50px'>
+                        <img src='https://cdn.statically.io/img/shop-lcj.fr/w=50/shop-icon-v1.png'
+                             style='display: block' alt=' ' height='30' width='30'/>
+                    </td>
+
+                    <td>
+                        <h2 style='line-height: 50px; margin: 0; font-size: 24px; font-weight: normal; padding: 0'>Shop
+                            LCJ</h2>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr style='display: block; height: 1px; background-color: #d00000; width: 600px'>
+        <td></td>
+    </tr>
+    <tr height='20px' style='height: 20px'>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <h1 style='text-align: center; line-height: 36px; font-weight: bold; font-size: 30px; padding: 0'>Votre
+                commande Shop LCJ vous attends au Bureau de Vie Scolaire !</h1>
+        </td>
+    </tr>
+    <tr>
+        <td style='font-size: 16px'>Bonjour {{name}},</td>
+    </tr>
+    <tr>
+        <td style='padding: 10px 0; font-size: 16px'>
+            Votre commande sur
+            <a href='https://shop-lcj.fr/' target='_blank' style='color: #d00000 !important' rel='noopener,noreferrer'>shop-lcj.fr</a>
+            est prête à être récupéré au Bureau de Vie Scolaire. Pensez à apporter vos {{total}} pour procéder au
+            paiement (en espèce ou par chèque à l’ordre de la Maison Des Lycéens).
+        </td>
+    </tr>
+    <tr>
+        <td style='font-size: 16px; padding: 10px 0 0 0'>Pour rappel, voici votre commande :</td>
+    </tr>
+    {{#each products}}
+        <tr>
+            <td style='padding: 10px 0 0'>
+                <a href='https://shop-lcj.fr/product/{{slug}}' style='color: #03071e; text-decoration: none'
+                   target='_blank' rel='noopener,noreferrer'>
+                    <table cellspacing='0' cellpadding='0' border='0' height='100'>
+                        <tr style='background-color: #f7f9fb; border-radius: 10px; display: block; height: 100px'>
+                            <td width='100px' height='100px' style='width: 100px; height: 100px'>
+                                <img src='https://cdn.statically.io/img/shop-lcj.fr/w=100/api/v1/file/{{this.image}}'
+                                     alt=' ' height='100' width='100' style='border-radius: 10px 0 0 10px'/>
+                            </td>
+                            <td width='500' height='100' style='width: 500px; height: 100px'>
+                                <table height='100' width='500' style='height: 100px; width: 500px'>
+                                    <tr>
+                                        <td style='padding-left: 10px; font-size: 16px'>{{this.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding-left: 10px; font-size: 16px'>{{this.quantity}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </a>
+            </td>
+        </tr>
+    {{/each}}
+    <tr>
+        <td style='padding: 10px 0 0; font-size: 16px'>Total : {{total}}</td>
+    </tr>
+    <tr>
+        <td style='padding: 20px 0 0; font-size: 16px'>Profitez bien de vos achats !</td>
+    </tr>
+    <tr>
+        <td style='padding: 20px 0 0; font-size: 16px'>À bientôt sur Shop LCJ !</td>
+    </tr>
+    <tr>
+        <td style='padding: 10px 0 0; font-size: 16px'>- La Maison des Lycéens</td>
+    </tr>
+    <tr height='20px' style='height: 20px'>
+        <td></td>
+    </tr>
+    <tr style='display: block; height: 1px; background-color: #d00000; width: 600px'>
+        <td></td>
+    </tr>
+    <tr height='20px' style='height: 20px'>
+        <td></td>
+    </tr>
+    <tr>
+        <td style='text-align: center; font-size: 12px'>© 2021 La maison des Lycéens,</td>
+    </tr>
+    <tr>
+        <td style='text-align: center; font-size: 12px'>Lycée Charles Jully, 59 Rue du Maréchal Foch, 57500
+            Saint-Avold
+        </td>
+    </tr>
+</table>
+</body>
+</html>
