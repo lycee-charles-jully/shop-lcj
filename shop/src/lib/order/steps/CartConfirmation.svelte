@@ -32,6 +32,7 @@
     .product img {
         height: var(--card-height);
         width: var(--card-height);
+        border-radius: var(--round) 0 0 var(--round);
     }
 
     .product-body {
