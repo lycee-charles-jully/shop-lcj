@@ -41,7 +41,7 @@ export class AuthController {
         const createdUser = await this.AccountService.createUser(user);
         const jwtData = this.AuthService.login(createdUser);
         this.AuthService.applyAuthCookie(req, res, jwtData);
-        res.json(user);
+        res.json(createdUser);
     }
 
     @Get('logout')
