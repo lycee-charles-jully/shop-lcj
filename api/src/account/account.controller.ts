@@ -9,7 +9,7 @@ import { UserDoc } from '../schemas/user.schema';
 @Controller('account')
 export class AccountController {
     @Get('me')
-    @Auth(RoleEnum.USER)
+    @Auth(RoleEnum.UNVERIFIED_USER)
     getUserData(@User() user: UserDoc) {
         return user;
     }

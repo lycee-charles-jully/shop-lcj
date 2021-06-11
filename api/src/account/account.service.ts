@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import { EmailService } from '../email/email.service';
 import { UserDoc } from '../schemas/user.schema';
 import { handleMongoError } from '../utils/handleMongoError';
 import { RegisterDto } from '../auth/dto/register.dto';
@@ -10,6 +11,7 @@ import { RegisterDto } from '../auth/dto/register.dto';
 export class AccountService {
     constructor(
         @InjectModel('user') private readonly UserModel: Model<UserDoc>,
+        private readonly EmailService: EmailService,
     ) {
     }
 
@@ -21,6 +23,14 @@ export class AccountService {
         } catch (e: unknown) {
             throw handleMongoError(e);
         }
+        const verificationCode = newUser.verification?.code;
+        this.EmailService.sendAccountConfirmationEmail(
+            user.email,
+            {
+                code: verificationCode || 'Erreur',
+                name: user.firstname,
+            },
+        );
         return newUser;
     }
 

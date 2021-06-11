@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as sgMail from '@sendgrid/mail';
+import { AccountConfirmationDataEntity } from './entity/account-confirmation-data.entity';
 import { OrderConfirmationDataEntity } from './entity/order-confirmation-data.entity';
 import { OrderCompletedDataEntity } from './entity/order-completed-data.entity';
 
@@ -9,6 +10,15 @@ export class EmailService {
 
     constructor() {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+    }
+
+    sendAccountConfirmationEmail(to: string, data: AccountConfirmationDataEntity) {
+        return this.sendEmail(
+            'd-f5397bf204f040a9a408694bbd348595',
+            to,
+            data,
+            'Cannot send the account confirmation email',
+        );
     }
 
     sentOrderConfirmationEmail(to: string, data: OrderConfirmationDataEntity) {
