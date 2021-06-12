@@ -12,6 +12,8 @@ const convertOptions: mongoose.ToObjectOptions = {
         delete ret.password;
         if (ret.role > RoleEnum.UNVERIFIED_USER)
             delete ret.verification;
+        else
+            delete ret.verification?.code;
         return ret;
     },
 };
