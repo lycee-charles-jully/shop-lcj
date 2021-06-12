@@ -1,3 +1,18 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit/types/page';
+    import type { User } from '$types/user';
+
+    export const load: Load = ({ session, page }) => {
+        if ((session.user as User | null)?.role === 500 && page.path !== '/verify')
+            return {
+                redirect: `/verify${page.path !== '/' ? `?r=${page.path}` : ''}`,
+                status: 302,
+            };
+        return {};
+    };
+</script>
+
+
 <script lang="ts">
     import type { User } from '$types/user';
     import '$lib/helpers/sentry';

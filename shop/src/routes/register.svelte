@@ -67,7 +67,7 @@
                 if (data && data.email) {
                     $session.user = data;
                     Sentry.setUser({ email: data.email });
-                    goto(redirectionURL || '/', { replaceState: true });
+                    goto(`/verify${redirectionURL ? `?r=${redirectionURL}` : ''}`, { replaceState: true });
                 }
             })
             .finally(() => registering = false);

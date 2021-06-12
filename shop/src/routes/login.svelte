@@ -44,7 +44,9 @@
                 if (data && data.email) {
                     $session.user = data;
                     Sentry.setUser({ email: data.email });
-                    if (redirectionURL?.startsWith('/admin'))
+                    if (data.role === 500)
+                        goto(`/verify${redirectionURL ? `?r=${redirectionURL}` : ''}`, { replaceState: true });
+                    else if (redirectionURL?.startsWith('/admin'))
                         window.location.href = window.location.origin + redirectionURL;
                     else
                         goto(redirectionURL || '/', { replaceState: true });
