@@ -3,6 +3,8 @@
     import OrderStatus from '$lib/OrderStatus.svelte';
     import Item from '$lib/Item.svelte';
     import NextStatus from '$lib/NextStatus.svelte';
+    import InputContainer from '$lib/InputContainer.svelte';
+    import Popup from '$lib/Popup.svelte';
     import { onMount } from 'svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { currencyFormat } from '$lib/currency-format';
@@ -47,6 +49,13 @@
             nextStatus = 'COMPLETED';
     }
 
+    let cancelReason = '';
+    let cancelPopupVisible = false;
+
+    function showCancelPopup() {
+        cancelReason = '';
+        cancelPopupVisible = true;
+    }
 
     function cancelOrder() {
         if (loading)
@@ -57,6 +66,7 @@
             method: 'PATCH',
             body: JSON.stringify({
                 state: 'ADMIN_CANCELLED',
+                comment: cancelReason || undefined,
             }),
             headers: [
                 [ 'Content-Type', 'application/json' ],
@@ -68,6 +78,7 @@
                 if (!res.ok)
                     throw new Error(data.message || JSON.stringify(data));
                 injectRawOrder(data);
+                cancelPopupVisible = false;
             })
             .catch(e => error = e.message || e)
             .finally(() => loading = false);
@@ -148,7 +159,7 @@
 
         <NextStatus currentStatus={orderDetails.status} on:click={nextOrderState} disabled={loading}/>
 
-        <button class="bg-red-500 text-white rounded px-4 py-2 mb-4" on:click={cancelOrder} disabled={loading}>
+        <button class="bg-red-500 text-white rounded px-4 py-2 mb-4" on:click={showCancelPopup} disabled={loading}>
             Annuler la commande
         </button>
 
@@ -191,4 +202,21 @@
     <p>
         Chargement...
     </p>
+{/if}
+
+
+{#if cancelPopupVisible}
+    <Popup title="Annuler la commande" on:close={() => !loading && (cancelPopupVisible = false)}>
+        <form on:submit|preventDefault={cancelOrder}>
+            <InputContainer let:id label="Motif (optionnel)">
+                <textarea {id} class="w-full rounded p-2 border border-red-600 outline-none" bind:value={cancelReason}/>
+            </InputContainer>
+            <button class="w-full text-white bg-red-500 rounded p-2 outline-none">Annuler</button>
+        </form>
+
+        <button class="w-full border border-red-600 rounded p-2 mt-4 outline-none"
+                on:click={() => !loading && (cancelPopupVisible = false)}>
+            Retour
+        </button>
+    </Popup>
 {/if}
