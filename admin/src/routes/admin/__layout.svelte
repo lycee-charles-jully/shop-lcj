@@ -16,6 +16,6 @@
 </svelte:head>
 
 <Nav/>
-<main class="p-4">
+<main class="p-4 mx-auto max-w-5xl">
     <slot/>
 </main>
