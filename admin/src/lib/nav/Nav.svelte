@@ -3,7 +3,7 @@
 </script>
 
 
-<header class="w-full bg-gray-100 flex justify-between">
+<header class="w-full bg-gray-100 flex justify-between fixed top-0 left-0">
     <span class="h-10 flex items-center px-4">Panneau d'admin</span>
     <nav class="flex justify-end">
         <NavLink label="Accueil"/>
