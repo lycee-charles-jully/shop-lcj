@@ -1,8 +1,7 @@
 <script lang="ts">
     import Item from '$lib/Item.svelte';
     import OrderStatus from '$lib/OrderStatus.svelte';
-    import OrderModeSelect from '../../../lib/OrderModeSelect.svelte';
-    import { onMount } from 'svelte';
+    import OrderModeSelect from '$lib/OrderModeSelect.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import dayjs from 'dayjs';
 
