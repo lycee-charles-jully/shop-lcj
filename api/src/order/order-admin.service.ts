@@ -9,6 +9,7 @@ import { OrderDoc } from '../schemas/order.schema';
 import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
 import { UserDoc } from '../schemas/user.schema';
+import { GetOrdersFilterDto } from './dto/get-orders-filter.dto';
 import { OrderStateEnum, pendingStates } from './enum/order-state.enum';
 import { OrderService } from './order.service';
 
@@ -50,19 +51,31 @@ export class OrderAdminService {
     }
 
 
-    getAllOrders(mode: 'pending' | 'completed') {
+    getOrders(filters: GetOrdersFilterDto) {
         return this.OrderModel
-            .find({
-                status: mode === 'pending'
-                    ? { $in: pendingStates }
-                    : OrderStateEnum.COMPLETED,
-            })
+            .find(
+                filters.states
+                    ? {
+                        status: {
+                            $in: filters.states,
+                        },
+                    }
+                    : {},
+            )
+            .limit(filters.limit)
+            .skip(filters.offset)
             .populate({
                 path: 'user',
                 model: this.UserModel,
                 select: [ 'firstname', 'lastname' ],
             } as PopulateOptions)
+            .populate({
+                path: 'items.product',
+                model: this.ProductModel,
+                select: basicProductFields,
+            } as PopulateOptions)
             .sort('-createdAt')
+            .select([ '-history' ])
             .exec();
     }
 

@@ -7,6 +7,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     UnauthorizedException,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -18,6 +19,7 @@ import { RoleEnum } from '../auth/enum/role.enum';
 import { UserDoc } from '../schemas/user.schema';
 import { CancelOrderDto } from './dto/cancel-order.dto';
 import { ChangeOrderStateDto } from './dto/change-order-state.dto';
+import { GetOrdersFilterDto } from './dto/get-orders-filter.dto';
 import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderEntity } from './entities/order.entity';
 import { OrderAdminService } from './order-admin.service';
@@ -75,15 +77,15 @@ export class OrderController {
         return this.OrderService.cancelOrder(userID, orderID, reason);
     }
 
-    @Get('all/pending')
+    @Get()
     @Auth(RoleEnum.PREPARATOR)
     @ApiResponse({
-        description: 'A list with the pending orders',
+        description: 'A list of the selected orders sorted by the createdAt field, with the basic product fields populated',
         status: 200,
         type: [ OrderEntity ],
     })
-    getAllPendingOrders() {
-        return this.OrderAdminService.getAllOrders('pending');
+    getOrders(@Query() filters: GetOrdersFilterDto) {
+        return this.OrderAdminService.getOrders(filters);
     }
 
     @Get(':order')
