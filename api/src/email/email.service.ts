@@ -41,16 +41,19 @@ export class EmailService {
 
 
     private sendEmail(templateId: string, to: string, data: any, errorMsg?: string) {
-        return sgMail.send({
-            to,
-            from: 'noreply@shop-lcj.fr',
-            templateId,
-            dynamicTemplateData: data,
-        })
-            .then(() => ({ success: true, error: null }))
-            .catch(err => {
-                console.error(`Cannot send the email with the template ${templateId} to ${to}`, err);
-                throw new InternalServerErrorException(errorMsg || 'Cannot send the email');
-            });
+        if (process.env.NODE_ENV === 'production')
+            return sgMail.send({
+                to,
+                from: 'noreply@shop-lcj.fr',
+                templateId,
+                dynamicTemplateData: data,
+            })
+                .then(() => ({ success: true, error: null }))
+                .catch(err => {
+                    console.error(`Cannot send the email with the template ${templateId} to ${to}`, err);
+                    throw new InternalServerErrorException(errorMsg || 'Cannot send the email');
+                });
+        else
+            return { success: true, error: null };
     }
 }
