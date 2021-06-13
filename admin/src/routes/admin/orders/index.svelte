@@ -59,7 +59,7 @@
 
 <h1 class="text-2xl">Commandes</h1>
 
-<div class="flex my-4">
+<div class="flex my-4 max-w-full overflow-x-auto">
     <OrderModeSelect bind:orderMode {disabled} mode="all">Toutes les commandes</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="validate">À valider</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="pending">En cours</OrderModeSelect>
