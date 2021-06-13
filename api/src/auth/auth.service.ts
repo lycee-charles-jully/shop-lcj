@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+    Injectable,
+    InternalServerErrorException,
+    NotAcceptableException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as dayjs from 'dayjs';
@@ -15,6 +20,17 @@ export class AuthService {
         private readonly AccountService: AccountService,
         private readonly JwtService: JwtService,
     ) {
+    }
+
+    checkEmailValidity(email: string) {
+        const blacklist = [
+            'monbureaunumerique.fr',
+            'orange.fr',
+        ];
+        const emailDomain = email.split('@')[1];
+        if (blacklist.includes(emailDomain))
+            throw new NotAcceptableException(`The email domain ${emailDomain} is not allowed`);
+        return true;
     }
 
     async validateUser(email: string, password: string) {

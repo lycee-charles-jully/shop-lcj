@@ -41,6 +41,7 @@ export class AuthController {
 
     @Post('register')
     async register(@Body() user: RegisterDto, @Request() req: ExpressRequest, @Res() res: Response) {
+        this.AuthService.checkEmailValidity(user.email);
         const createdUser = await this.AccountService.createUser(user);
         const jwtData = this.AuthService.login(createdUser);
         this.AuthService.applyAuthCookie(req, res, jwtData);

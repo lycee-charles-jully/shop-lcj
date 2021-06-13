@@ -22,6 +22,11 @@
     import * as Sentry from '@sentry/browser';
     import { registerUser } from '$lib/api/auth/register-user';
 
+    const emailBlacklist = [
+        'monbureaunumerique.fr',
+        'orange.fr',
+    ];
+
     let user = {
         email: '',
         firstname: '',
@@ -44,6 +49,11 @@
         error = null;
         if (registering)
             return;
+        const emailDomain = user.email.split('@')[1];
+        if (emailBlacklist.includes(emailDomain)) {
+            error = `Les emails ${emailDomain} ne sont pas autorisés.`;
+            return;
+        }
         if (!checkPassword(user.password))
             return;
         if (user.password !== passwordConfirm) {
