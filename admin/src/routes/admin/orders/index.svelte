@@ -3,6 +3,9 @@
     import OrderStatus from '$lib/OrderStatus.svelte';
     import OrderModeSelect from '$lib/OrderModeSelect.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
+    import { page } from '$app/stores';
+    import { goto } from '$app/navigation';
+    import { browser } from '$app/env';
     import dayjs from 'dayjs';
 
     let orders = [];
@@ -13,6 +16,13 @@
             return;
         disabled = true;
         error = null;
+        if (browser) {
+            const currentMode = ($page.query as URLSearchParams).get('mode');
+            if (mode === 'all' && currentMode !== null)
+                goto($page.path, { replaceState: true });
+            else if (mode !== 'all' && currentMode !== mode)
+                goto(`?mode=${mode}`, { replaceState: true });
+        }
         let status;
         switch (mode) {
             case 'all':
@@ -47,9 +57,18 @@
             .finally(() => disabled = false);
     }
 
+
+    function getDefaultOrderMode(): OrderMode {
+        const queryOrderMode = ($page.query as URLSearchParams).get('mode');
+        if (!queryOrderMode || ![ 'validate', 'pending', 'completed', 'cancelled' ].includes(queryOrderMode))
+            return 'all';
+        else
+            return queryOrderMode as OrderMode;
+    }
+
     type OrderMode = 'all' | 'validate' | 'pending' | 'completed' | 'cancelled';
 
-    let orderMode: OrderMode = 'all';
+    let orderMode: OrderMode = getDefaultOrderMode();
     let disabled = false;
 
     $: fetchOrders(orderMode);
