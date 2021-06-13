@@ -157,7 +157,7 @@
 
     <h2 class="text-xl font-bold mb-2">Historique</h2>
 
-    <Item>
+    <div class="block w-full bg-white rounded-md my-2 p-4">
         <div class="flex items-center w-full h-6">
             [{dayjs(orderDetails.createdAt).format('DD/MM à HH:mm')}]
             {orderDetails.user.firstname} {orderDetails.user.lastname} a créé la commande, marquée comme
@@ -165,9 +165,9 @@
                 <OrderStatus status="WAITING_FOR_ACCEPTATION"/>
             </div>
         </div>
-    </Item>
+    </div>
     {#each orderDetails.history as history}
-        <Item>
+        <div class="block w-full bg-white rounded-md my-2 p-4">
             <div class="flex items-center w-full h-6">
                 [{dayjs(history.createdAt).format('DD/MM à HH:mm')}]
                 {history.user.firstname} {history.user.lastname} a marqué la commande comme
@@ -175,7 +175,17 @@
                     <OrderStatus status={history.newStatus}/>
                 </div>
             </div>
-        </Item>
+            {#if history.comment}
+                <div class="mt-1">
+                    {#if history.newStatus === 'USER_CANCELLED' || history.newStatus === 'ADMIN_CANCELLED'}
+                        Raison :
+                    {:else}
+                        Commentaire :
+                    {/if}
+                    <span class="whitespace-pre">{history.comment}</span>
+                </div>
+            {/if}
+        </div>
     {/each}
 {:else}
     <p>
