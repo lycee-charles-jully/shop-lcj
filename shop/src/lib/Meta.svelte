@@ -12,6 +12,9 @@
     let displayTitle: string;
     $: displayTitle = `${title || defaultTitle}${title && !nomarker ? ' - Shop LCJ' : ''}`;
 
+    let displayDescription;
+    $: displayDescription = description.replace(/\n/g, ' ');
+
     const defaultTitle = 'Shop LCJ';
 </script>
 
@@ -19,20 +22,20 @@
     <!-- Primary Meta Tags -->
     <title>{displayTitle}</title>
     <meta content={displayTitle} name="title">
-    <meta content={description} name="description">
+    <meta content={displayDescription} name="description">
 
     <!-- Open Graph / Facebook -->
     <meta content="website" property="og:type">
     <meta content="https://shop-lcj.fr{$page.path}" property="og:url">
     <meta content={displayTitle} property="og:title">
-    <meta content={description} property="og:description">
+    <meta content={displayDescription} property="og:description">
     <meta content={remoteImage ? imageUrl(image, 1000) : staticImageUrl(image)} property="og:image">
 
     <!-- Twitter -->
     <meta content="summary_large_image" property="twitter:card">
     <meta content="https://shop-lcj.fr{$page.path}" property="twitter:url">
     <meta content={displayTitle} property="twitter:title">
-    <meta content={description} property="twitter:description">
+    <meta content={displayDescription} property="twitter:description">
     <meta content={remoteImage ? imageUrl(image, 1000) : staticImageUrl(image)} property="twitter:image">
 
     <!-- Search engines -->
