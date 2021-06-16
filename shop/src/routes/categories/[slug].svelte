@@ -47,7 +47,7 @@
 
 
 <Meta description="Liste des produits de la catégorie {category?.name} disponibles sur Shop LCJ"
-      image={products[0].coverImageUrl}
+      image={products[0]?.coverImageUrl}
       remoteImage
       title={category?.name}/>
 
