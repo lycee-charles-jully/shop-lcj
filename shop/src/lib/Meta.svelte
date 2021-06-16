@@ -9,26 +9,29 @@
     export let noindex = false;
     export let image = 'android-chrome-512x512.png';
 
+    let displayTitle: string;
+    $: displayTitle = `${title || defaultTitle}${title && !nomarker ? ' - Shop LCJ' : ''}`;
+
     const defaultTitle = 'Shop LCJ';
 </script>
 
 <svelte:head>
     <!-- Primary Meta Tags -->
-    <title>{title || defaultTitle}{title && !nomarker ? ' - Shop LCJ' : ''}</title>
-    <meta content="{title || defaultTitle}{title && !nomarker ? ' - Shop LCJ' : ''}" name="title">
+    <title>{displayTitle}</title>
+    <meta content={displayTitle} name="title">
     <meta content={description} name="description">
 
     <!-- Open Graph / Facebook -->
     <meta content="website" property="og:type">
     <meta content="https://shop-lcj.fr{$page.path}" property="og:url">
-    <meta content={title} property="og:title">
+    <meta content={displayTitle} property="og:title">
     <meta content={description} property="og:description">
     <meta content={remoteImage ? imageUrl(image, 1000) : staticImageUrl(image)} property="og:image">
 
     <!-- Twitter -->
     <meta content="summary_large_image" property="twitter:card">
     <meta content="https://shop-lcj.fr{$page.path}" property="twitter:url">
-    <meta content={title} property="twitter:title">
+    <meta content={displayTitle} property="twitter:title">
     <meta content={description} property="twitter:description">
     <meta content={remoteImage ? imageUrl(image, 1000) : staticImageUrl(image)} property="twitter:image">
 
