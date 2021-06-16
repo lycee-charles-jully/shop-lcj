@@ -11,6 +11,7 @@ import { CartModule } from './cart/cart.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
 import { OrderModule } from './order/order.module';
 import { EmailModule } from './email/email.module';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { EmailModule } from './email/email.module';
         FileModule,
         BackupModule,
         EmailModule,
+        SitemapModule,
     ],
     controllers: [],
     providers: [],

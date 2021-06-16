@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin
+Disallow: /api
+Disallow: /account*
+Disallow: /cart
+Disallow: /order*
+Disallow: /verify
+
+Sitemap: https://shop-lcj.fr/sitemap.xml
+Sitemap: https://shop-lcj.fr/api/v1/sitemap.xml
