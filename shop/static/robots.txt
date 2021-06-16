@@ -6,5 +6,8 @@ Disallow: /cart
 Disallow: /order*
 Disallow: /verify
 
+User-agent: Googlebot-Image
+Disallow: /icons/*
+
 Sitemap: https://shop-lcj.fr/sitemap.xml
 Sitemap: https://shop-lcj.fr/api/v1/sitemap.xml
