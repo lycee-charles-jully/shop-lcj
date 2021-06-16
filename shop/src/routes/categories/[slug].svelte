@@ -46,7 +46,10 @@
 </style>
 
 
-<Meta title={category?.name}/>
+<Meta description="Liste des produits de la catégorie {category?.name} disponibles sur Shop LCJ"
+      image={products[0].coverImageUrl}
+      remoteImage
+      title={category?.name}/>
 
 
 {#if error}

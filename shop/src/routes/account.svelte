@@ -42,7 +42,7 @@
 </script>
 
 
-<Meta title="Compte"/>
+<Meta noindex title="Compte"/>
 
 
 <h2 class="category-title">Mon compte</h2>

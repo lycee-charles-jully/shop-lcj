@@ -61,7 +61,10 @@
 </style>
 
 
-<Meta title={product.name}/>
+<Meta description={product.description}
+      image={product.coverImageUrl}
+      remoteImage
+      title={product.name}/>
 
 
 <div class="header">

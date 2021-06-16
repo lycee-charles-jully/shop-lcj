@@ -41,7 +41,7 @@
 </script>
 
 
-<Meta title="Panier"/>
+<Meta noindex title="Panier"/>
 
 <svelte:head>
     <link as="image" href="/icons/increase-btn.svg" rel="preload" type="image/svg+xml">

@@ -31,7 +31,7 @@
 </script>
 
 
-<Meta title="Catégories"/>
+<Meta description="Liste des catégories de produits disponibles sur Shop LCJ" title="Catégories"/>
 
 
 {#each [...productTypes.keys()] as productType}

@@ -172,7 +172,7 @@
 </style>
 
 
-<Meta {title}/>
+<Meta noindex {title}/>
 
 
 <h1>

@@ -128,7 +128,7 @@
 </style>
 
 
-<Meta title="Créer un compte"/>
+<Meta description="Créer un compte sur le site Shop LCJ" title="Créer un compte"/>
 
 
 <Center>

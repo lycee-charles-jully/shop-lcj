@@ -74,7 +74,7 @@
 </script>
 
 
-<Meta title="Passer la commande"/>
+<Meta noindex title="Passer la commande"/>
 
 
 <h1>Passer la commande</h1>

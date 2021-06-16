@@ -74,7 +74,7 @@
 </style>
 
 
-<Meta title="Connexion"/>
+<Meta description="Connexion au site Shop LCJ" title="Connexion"/>
 
 
 <Center>
