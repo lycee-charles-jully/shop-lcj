@@ -7,11 +7,17 @@ export const handle: Handle = async ({ resolve, request }) => {
 
     const cookies = cookie.parse(request.headers.cookie || '');
 
-    if (!request.path.startsWith('/admin'))
+    if (!request.path.startsWith('/admin')) {
+        const response = await resolve(request);
         return {
-            ...(await resolve(request)),
+            ...response,
             status: 404,
+            headers: {
+                ...response.headers,
+                'X-Robots-Tag': 'noindex, nofollow',
+            },
         };
+    }
 
     try {
         const me = await axios.get(`${LOCAL_ENDPOINT}/v1/account/me`, {
@@ -23,12 +29,17 @@ export const handle: Handle = async ({ resolve, request }) => {
         const response = await resolve(request);
         return {
             ...response,
+            headers: {
+                ...response.headers,
+                'X-Robots-Tag': 'noindex, nofollow',
+            },
         };
     } catch {
         return {
             status: 302,
             headers: {
                 'Location': cookies.token ? '/' : `/login?r=${request.path}`,
+                'X-Robots-Tag': 'noindex, nofollow',
             },
         };
     }
