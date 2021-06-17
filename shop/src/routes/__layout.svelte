@@ -22,8 +22,21 @@
     import { session } from '$app/stores';
     import '../app.css';
 
+    let loadingBarStatus = 'hidden';
+    let LoadingBar;
+
+    function showProgressBar() {
+        loadingBarStatus = 'visible';
+    }
+
+    function fillProgressBar() {
+        loadingBarStatus = 'full';
+    }
 
     function handleAppStart() {
+        import('$lib/layout/LoadingBar.svelte')
+            .then(c => LoadingBar = c.default);
+
         if ($session.user?.email) {
             Sentry.setUser({ email: $session.user.email });
         }
@@ -33,7 +46,9 @@
 </script>
 
 
-<svelte:window on:sveltekit:start={handleAppStart}/>
+<svelte:window on:sveltekit:navigation-end={fillProgressBar}
+               on:sveltekit:navigation-start={showProgressBar}
+               on:sveltekit:start={handleAppStart}/>
 
 
 <style>
@@ -57,6 +72,12 @@
 
 
 <Nav/>
+
+
+{#if LoadingBar && loadingBarStatus !== 'hidden'}
+    <svelte:component this={LoadingBar} bind:status={loadingBarStatus}/>
+{/if}
+
 
 <main>
     <slot/>
