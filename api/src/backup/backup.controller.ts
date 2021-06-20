@@ -10,8 +10,9 @@ import { FilesBackupService } from './files-backup.service';
 import * as Archiver from 'archiver';
 
 
-@ApiTags('Backup')
 @Controller('backup')
+@ApiTags('Backup')
+@Auth(RoleEnum.ADMIN)
 export class BackupController {
 
     constructor(
@@ -21,7 +22,6 @@ export class BackupController {
     }
 
     @Get('db/get')
-    @Auth(RoleEnum.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'Get the database backup',
@@ -31,7 +31,6 @@ export class BackupController {
     }
 
     @Get('db/create')
-    @Auth(RoleEnum.ADMIN)
     @ApiResponse({
         status: 200,
         description: 'Create a database backup that is stored on the server',
@@ -41,7 +40,6 @@ export class BackupController {
     }
 
     @Post('db/restore')
-    @Auth(RoleEnum.ADMIN)
     @HttpCode(200)
     @ApiResponse({
         status: 200,
@@ -52,7 +50,6 @@ export class BackupController {
     }
 
     @Get('files/get')
-    @Auth(RoleEnum.ADMIN)
     getFilesBackup(@Res() res: Response) {
         const archive = Archiver('zip');
         res.attachment(`shoplcj_files_${dayjs().format('YYYY-MM-DD_HH-mm-ss')}.zip`);
