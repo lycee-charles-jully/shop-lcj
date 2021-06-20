@@ -9,6 +9,7 @@ import { UserSchema } from '../schemas/user.schema';
 import { BackupController } from './backup.controller';
 import { DbBackupService } from './db-backup.service';
 import { FilesBackupService } from './files-backup.service';
+import { BackupService } from './backup.service';
 
 @Module({
     imports: [
@@ -22,7 +23,7 @@ import { FilesBackupService } from './files-backup.service';
         ]),
     ],
     controllers: [ BackupController ],
-    providers: [ DbBackupService, FilesBackupService ],
+    providers: [ DbBackupService, FilesBackupService, BackupService ],
 })
 export class BackupModule {
 }
