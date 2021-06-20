@@ -21,12 +21,20 @@
     import Meta from '$lib/Meta.svelte';
     import Category from '$lib/product/Category.svelte';
     import ProductCard from '$lib/product/ProductCard.svelte';
+    import Announce from '$lib/Announce.svelte';
 
     export let homeProducts: HomeProducts;
 </script>
 
 
 <Meta/>
+
+
+{#if Array.isArray(homeProducts?.announces)}
+    {#each homeProducts.announces as announce}
+        <Announce message={announce.message}/>
+    {/each}
+{/if}
 
 
 {#if Array.isArray(homeProducts?.popular)}

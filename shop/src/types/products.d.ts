@@ -1,3 +1,5 @@
+import type { Announce } from '$types/announce';
+
 export interface BasicProduct {
     _id: string;
     name: string;
@@ -15,4 +17,5 @@ export interface Product extends BasicProduct {
 export interface HomeProducts {
     popular: BasicProduct[];
     latest: BasicProduct[];
+    announces: Announce[];
 }
