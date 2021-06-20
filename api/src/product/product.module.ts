@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AnnounceModule } from '../announce/announce.module';
 import { FileModule } from '../file/file.module';
 import { CategorySchema } from '../schemas/category.schema';
 import { ProductSchema } from '../schemas/product.schema';
@@ -13,6 +14,7 @@ import { ProductService } from './product.service';
             { name: 'category', schema: CategorySchema },
         ]),
         FileModule,
+        AnnounceModule,
     ],
     controllers: [ ProductController ],
     providers: [ ProductService ],

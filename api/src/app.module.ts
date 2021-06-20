@@ -12,6 +12,7 @@ import { RecommendationModule } from './recommendation/recommendation.module';
 import { OrderModule } from './order/order.module';
 import { EmailModule } from './email/email.module';
 import { SitemapModule } from './sitemap/sitemap.module';
+import { AnnounceModule } from './announce/announce.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { SitemapModule } from './sitemap/sitemap.module';
         CategoryModule,
         ProductTypeModule,
         RecommendationModule,
+        AnnounceModule,
         FileModule,
         BackupModule,
         EmailModule,

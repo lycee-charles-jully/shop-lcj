@@ -1,6 +1,8 @@
-import { Injectable, NotFoundException, NotAcceptableException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PopulateOptions, FilterQuery } from 'mongoose';
+import { FilterQuery, Model, PopulateOptions } from 'mongoose';
+import { AnnounceService } from '../announce/announce.service';
+import { AnnouncePositionEnum } from '../announce/enum/announce-position.enum';
 import { FileService } from '../file/file.service';
 import { CategoryDoc } from '../schemas/category.schema';
 import { ProductDoc } from '../schemas/product.schema';
@@ -16,6 +18,7 @@ export class ProductService {
         @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
         @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
         private readonly FileService: FileService,
+        private readonly AnnounceService: AnnounceService,
     ) {
     }
 
@@ -60,11 +63,12 @@ export class ProductService {
     }
 
     async getHomeProducts() {
-        const [ popular, latest ] = await Promise.all([
+        const [ popular, latest, announces ] = await Promise.all([
             this.ProductModel.find({ available: true }).limit(5).sort('-viewCount').select(basicProductFields).exec(),
             this.ProductModel.find({ available: true }).limit(5).sort('-createdAt').select(basicProductFields).exec(),
+            this.AnnounceService.getAnnouncesForUser(AnnouncePositionEnum.HOME),
         ]);
-        return { popular, latest };
+        return { popular, latest, announces };
     }
 
     async addProduct(product: AddProductDto, images: Express.Multer.File[]) {
