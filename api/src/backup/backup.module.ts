@@ -7,7 +7,8 @@ import { ProductSchema } from '../schemas/product.schema';
 import { RecommendationSchema } from '../schemas/recommendation.schema';
 import { UserSchema } from '../schemas/user.schema';
 import { BackupController } from './backup.controller';
-import { BackupService } from './backup.service';
+import { DbBackupService } from './db-backup.service';
+import { FilesBackupService } from './files-backup.service';
 
 @Module({
     imports: [
@@ -21,7 +22,7 @@ import { BackupService } from './backup.service';
         ]),
     ],
     controllers: [ BackupController ],
-    providers: [ BackupService ],
+    providers: [ DbBackupService, FilesBackupService ],
 })
 export class BackupModule {
 }

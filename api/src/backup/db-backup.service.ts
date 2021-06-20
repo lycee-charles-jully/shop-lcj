@@ -15,7 +15,7 @@ import * as fs from 'fs';
 import * as dayjs from 'dayjs';
 
 @Injectable()
-export class BackupService {
+export class DbBackupService {
     constructor(
         @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
         @InjectModel('order') private readonly OrderModel: Model<OrderDoc>,
@@ -44,7 +44,7 @@ export class BackupService {
 
     async createBackup() {
         const backup = await this.getDatabaseBackup();
-        BackupService.saveBackupToFile(backup, BackupOrigin.MANUAL);
+        DbBackupService.saveBackupToFile(backup, BackupOrigin.MANUAL);
         return {
             success: true,
         };
@@ -56,7 +56,7 @@ export class BackupService {
 
     async restoreBackup({ backup, drop }: RestoreBackupDto) {
         const currentBackup = await this.getDatabaseBackup();
-        BackupService.saveBackupToFile(currentBackup, BackupOrigin.OVERWRITE);
+        DbBackupService.saveBackupToFile(currentBackup, BackupOrigin.OVERWRITE);
         try {
             if (drop) await Promise.all([
                 this.CategoryModel.collection.drop(),
@@ -93,12 +93,12 @@ export class BackupService {
 
     private async getDatabaseBackup(): Promise<BackupData> {
         const [ categories, orders, products, productTypes, recommendations, users ] = await Promise.all([
-            this.CategoryModel.find().exec().then(BackupService.changelessTransform) as Promise<Category[]>,
-            this.OrderModel.find().exec().then(BackupService.changelessTransform) as Promise<Order[]>,
-            this.ProductModel.find().exec().then(BackupService.changelessTransform) as Promise<Product[]>,
-            this.ProductTypeModel.find().exec().then(BackupService.changelessTransform) as Promise<ProductType[]>,
-            this.RecommendationModel.find().exec().then(BackupService.changelessTransform) as Promise<Recommendation[]>,
-            this.UserModel.find().exec().then(BackupService.changelessTransform) as Promise<User[]>,
+            this.CategoryModel.find().exec().then(DbBackupService.changelessTransform) as Promise<Category[]>,
+            this.OrderModel.find().exec().then(DbBackupService.changelessTransform) as Promise<Order[]>,
+            this.ProductModel.find().exec().then(DbBackupService.changelessTransform) as Promise<Product[]>,
+            this.ProductTypeModel.find().exec().then(DbBackupService.changelessTransform) as Promise<ProductType[]>,
+            this.RecommendationModel.find().exec().then(DbBackupService.changelessTransform) as Promise<Recommendation[]>,
+            this.UserModel.find().exec().then(DbBackupService.changelessTransform) as Promise<User[]>,
         ]);
         return { categories, orders, products, productTypes, recommendations, users };
     }
