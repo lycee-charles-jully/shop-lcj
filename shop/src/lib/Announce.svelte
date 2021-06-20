@@ -10,7 +10,7 @@
         background-color: rgba(208, 0, 0, .25);
         color: var(--primary);
         font-weight: bold;
-        white-space: pre;
+        white-space: pre-wrap;
         border-radius: var(--round);
     }
 </style>
