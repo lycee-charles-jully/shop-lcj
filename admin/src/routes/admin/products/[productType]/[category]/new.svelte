@@ -77,7 +77,7 @@
     </InputContainer>
 
     <InputContainer label="Description" let:id>
-        <textarea bind:value={description} class="input w-full" disabled="{loading}" {id} required/>
+        <textarea bind:value={description} class="input w-full" disabled="{loading}" {id} required spellcheck="true"/>
     </InputContainer>
 
     <InputContainer label="Prix" let:id>

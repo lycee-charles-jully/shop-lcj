@@ -111,7 +111,8 @@
 
         <div class="{hasChanged(oldProduct.description, newProduct.description) ? 'italic' : ''}">
             <InputContainer label="Description" let:id>
-                <textarea bind:value={newProduct.description} class="input w-full" disabled="{loading}" {id} required/>
+                <textarea bind:value={newProduct.description} class="input w-full" disabled="{loading}" {id} required
+                          spellcheck="true"/>
             </InputContainer>
         </div>
 
