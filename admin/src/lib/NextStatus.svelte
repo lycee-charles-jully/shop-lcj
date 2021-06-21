@@ -15,7 +15,7 @@
 
 <style>
     button {
-        @apply rounded px-4 py-2 whitespace-nowrap;
+        @apply rounded px-4 py-2 whitespace-nowrap mb-1;
     }
 </style>
 

@@ -160,10 +160,10 @@
     </p>
 
 
-    <div class="print:hidden">
+    <div class="print:hidden mb-4">
         <h2 class="text-xl font-bold mb-2">Actions</h2>
 
-        <button class="bg-indigo-600 text-white rounded px-4 py-2 mb-4" on:click={() => window.print()}
+        <button class="bg-indigo-600 text-white rounded px-4 py-2 mb-1" on:click={() => window.print()}
                 disabled={loading}>
             Imprimer
         </button>
@@ -171,7 +171,7 @@
         {#if orderDetails.status !== 'ADMIN_CANCELLED' && orderDetails.status !== 'USER_CANCELLED' && orderDetails.status !== 'COMPLETED'}
             <NextStatus currentStatus={orderDetails.status} on:click={nextOrderState} disabled={loading}/>
 
-            <button class="bg-red-500 text-white rounded px-4 py-2 mb-4" on:click={showCancelPopup} disabled={loading}>
+            <button class="bg-red-500 text-white rounded px-4 py-2 mb-1" on:click={showCancelPopup} disabled={loading}>
                 Annuler la commande
             </button>
         {/if}
