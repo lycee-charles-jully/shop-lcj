@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Patch,
@@ -19,6 +20,7 @@ import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity
 import { RoleEnum } from '../auth/enum/role.enum';
 import { AddProductDto } from './dto/add-product.dto';
 import { AddProductWithImagesDto } from './dto/add-product-with-images.dto';
+import { DeleteProductDto } from './dto/delete-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { GetSingleProductParamsDto } from './dto/get-single-product-params.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -79,6 +81,19 @@ export class ProductController {
         if (!mongoose.isValidObjectId(id))
             throw new BadRequestException('The product ID is not valid');
         return this.productService.updateProduct(id, patch);
+    }
+
+    @Delete(':id')
+    @ApiResponse({
+        status: 200,
+        description: 'The deleted product',
+        type: ProductEntity,
+    })
+    @Auth(RoleEnum.MANAGER)
+    deleteProduct(@Param('id') id: string, @Body() { name }: DeleteProductDto) {
+        if (!mongoose.isValidObjectId(id))
+            throw new BadRequestException('The product ID is not valid');
+        return this.productService.deleteProduct(id, name);
     }
 
     @Post()

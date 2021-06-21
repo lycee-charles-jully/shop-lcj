@@ -1,4 +1,4 @@
-import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, PopulateOptions } from 'mongoose';
 import { AnnounceService } from '../announce/announce.service';
@@ -6,6 +6,7 @@ import { AnnouncePositionEnum } from '../announce/enum/announce-position.enum';
 import { FileService } from '../file/file.service';
 import { CategoryDoc } from '../schemas/category.schema';
 import { ProductDoc } from '../schemas/product.schema';
+import { UserDoc } from '../schemas/user.schema';
 import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -17,6 +18,7 @@ export class ProductService {
     constructor(
         @InjectModel('product') private readonly ProductModel: Model<ProductDoc>,
         @InjectModel('category') private readonly CategoryModel: Model<CategoryDoc>,
+        @InjectModel('user') private readonly UserModel: Model<UserDoc>,
         private readonly FileService: FileService,
         private readonly AnnounceService: AnnounceService,
     ) {
@@ -105,5 +107,31 @@ export class ProductService {
                     throw new NotFoundException('Cannot find product');
                 return doc;
             });
+    }
+
+    async deleteProduct(id: string, name: string) {
+        const product = await this.ProductModel.findById(id);
+
+        if (!product)
+            throw new NotFoundException(`Cannot find the product with ID ${id}`);
+        if (product.name !== name)
+            throw new UnauthorizedException('The provided name doesn\'t match the product\'s name');
+        if (product.orderCount > 0)
+            throw new UnauthorizedException('The product has already been ordered once, cannot delete it');
+
+
+        await Promise.all([
+            // Delete the product
+            product.delete(),
+            // Delete the images
+            [ product.coverImageUrl, ...product.imagesUrls ].map(file => this.FileService.deleteFile(file)),
+            // Delete the product in users' cart
+            this.UserModel.updateMany(
+                { 'cart.product': id },
+                { $pull: { cart: { product: id } } },
+            ),
+        ]);
+
+        return product;
     }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as sharp from 'sharp';
@@ -46,5 +46,17 @@ export class FileService {
             })
             .toFile(imagePath);
         return `${imageID}.png`;
+    }
+
+
+    deleteFile(file: string) {
+        const { path, code } = this.resolveFilePath(file);
+        if (code === 401)
+            throw new UnauthorizedException();
+        else if (code === 404)
+            throw new NotFoundException();
+        if (!path)
+            throw new InternalServerErrorException('Cannot find file path');
+        fs.unlinkSync(path);
     }
 }
