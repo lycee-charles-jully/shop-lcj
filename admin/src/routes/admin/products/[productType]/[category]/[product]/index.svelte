@@ -103,7 +103,10 @@
                 Tags : {product.tags.join(', ')}
             </div>
             <div class="mb-1">
-                Identifiant : {product.slug}
+                Identifiant dans l'URL : {product.slug}
+            </div>
+            <div class="mb-1">
+                Identifiant dans la base de données : {product._id}
             </div>
             <div class="mb-1">
                 Ajouté le {dayjs(product.createdAt).format('DD/MM/YYYY à HH:mm')}
