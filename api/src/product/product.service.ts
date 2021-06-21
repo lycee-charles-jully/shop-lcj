@@ -125,6 +125,11 @@ export class ProductService {
             product.delete(),
             // Delete the images
             [ product.coverImageUrl, ...product.imagesUrls ].map(file => this.FileService.deleteFile(file)),
+            // Delete the product reference in its category
+            this.CategoryModel.updateOne(
+                { products: id } as any,
+                { $pull: { products: id } },
+            ),
             // Delete the product in users' cart
             this.UserModel.updateMany(
                 { 'cart.product': id },
