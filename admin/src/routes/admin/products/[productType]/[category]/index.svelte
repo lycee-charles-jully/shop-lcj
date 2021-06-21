@@ -69,7 +69,8 @@
 
 {#each products as product}
     <Item href="/admin/products/{productTypeID}/{categorySlug}/{product.slug}"
-          thumb={product.coverImageUrl}>
+          thumb={product.coverImageUrl}
+          disabled={!product.available}>
         {product.name}
     </Item>
 {/each}
