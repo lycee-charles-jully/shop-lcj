@@ -22,17 +22,26 @@ export class FileService {
 
 
     async saveProductImage(image: Express.Multer.File) {
+        // Inserting the image into sharp
+        const sharpImage = await sharp(image.buffer);
+        // Getting final image size
+        const { height, width } = await sharpImage.metadata();
+        let imageSize = Math.max(height || 2000, width || 2000);
+        if (imageSize > 2000)
+            imageSize = 2000;
+        // Generating path data
         const imageID = nanoid(20);
         const storagePath = path.resolve('./storage/');
         const imagePath = path.resolve(storagePath, `${imageID}.png`);
         fs.mkdirSync(storagePath, { recursive: true });
-        await sharp(image.buffer)
+        // Resising and saving the image
+        sharpImage
             .rotate()
             .resize({
-                width: 2000,
-                height: 2000,
+                width: imageSize,
+                height: imageSize,
                 fit: 'contain',
-                withoutEnlargement: true,
+                withoutEnlargement: false,
                 background: { r: 255, g: 255, b: 255, alpha: 0 },
             })
             .toFile(imagePath);
