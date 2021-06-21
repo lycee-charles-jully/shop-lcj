@@ -26,6 +26,9 @@ export class CategoryService {
                 options: {
                     sort: { viewCount: -1 },
                 },
+                match: {
+                    available: true,
+                },
                 perDocumentLimit: 1,
             } as PopulateOptions)
             .populate({
