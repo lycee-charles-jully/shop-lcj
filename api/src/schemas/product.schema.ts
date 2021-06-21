@@ -34,9 +34,6 @@ export class Product {
     @Prop({ required: true })
     price: number;
 
-    @Prop({ default: [], index: 'text' })
-    tags: string[];
-
     @Prop({ default: 0 })
     orderCount: number;
 

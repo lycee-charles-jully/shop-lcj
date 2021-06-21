@@ -27,7 +27,6 @@
     let name: string = '';
     let description: string = '';
     let price: number;
-    let tags: string = '';
     let images: any[];
 
 
@@ -42,7 +41,6 @@
         body.append('description', description);
         body.append('category', categoryID);
         body.append('price', price.toString());
-        body.append('tags', tags.split(',').map(t => t.trim()).join(','));
         images.forEach(i => {
             body.append('images', i);
         });
@@ -85,11 +83,6 @@
     <InputContainer label="Prix" let:id>
         <input bind:value={price} class="input w-full" disabled="{loading}" {id} min="0" required step="0.01"
                type="number"/>
-    </InputContainer>
-
-    <!-- TODO: https://www.npmjs.com/package/svelte-tags-input -->
-    <InputContainer label="Tags (séparés par des virgules)" let:id>
-        <input bind:value={tags} class="input w-full" disabled={loading} {id}/>
     </InputContainer>
 
     <InputContainer label="Images (la première sera utilisée en couverture)">

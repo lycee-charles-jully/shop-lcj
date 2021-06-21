@@ -100,9 +100,6 @@
                 Visible : {product.available ? 'oui' : 'non'}
             </div>
             <div class="mb-1">
-                Tags : {product.tags.join(', ')}
-            </div>
-            <div class="mb-1">
                 Identifiant dans l'URL : {product.slug}
             </div>
             <div class="mb-1">

@@ -10,9 +10,6 @@ export class ProductEntity extends BasicProductEntity {
     imagesUrls: string[];
 
     @ApiProperty()
-    tags: string[];
-
-    @ApiProperty()
     category: CategoryEntity;
 
     @ApiProperty()

@@ -18,7 +18,6 @@
                         name: data.name,
                         description: data.description,
                         price: data.price,
-                        tags: data.tags?.join(', '),
                         _id: data._id,
                     };
                 })
@@ -59,8 +58,7 @@
     let canUpdate = false;
     $: canUpdate = hasChanged(oldProduct.name, newProduct.name)
         || hasChanged(oldProduct.description, newProduct.description)
-        || hasChanged(oldProduct.price, newProduct.price)
-        || hasChanged(oldProduct.tags, newProduct.tags);
+        || hasChanged(oldProduct.price, newProduct.price);
 
 
     function updateProduct() {
@@ -72,10 +70,7 @@
 
         fetch(`${REMOTE_ENDPOINT}/v1/product/${oldProduct._id}`, {
             method: 'PATCH',
-            body: JSON.stringify({
-                ...newProduct,
-                tags: newProduct.tags.split(/, */),
-            }),
+            body: JSON.stringify(newProduct),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -125,13 +120,6 @@
                 <input bind:value={newProduct.price} class="input w-full" disabled="{loading}" {id} min="0" required
                        step="0.01"
                        type="number"/>
-            </InputContainer>
-        </div>
-
-        <div class="{hasChanged(oldProduct.tags, newProduct.tags) ? 'italic' : ''}">
-            <!-- TODO: https://www.npmjs.com/package/svelte-tags-input -->
-            <InputContainer label="Tags (séparés par des virgules)" let:id>
-                <input bind:value={newProduct.tags} class="input w-full" disabled={loading} {id}/>
             </InputContainer>
         </div>
 
