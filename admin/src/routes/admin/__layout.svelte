@@ -17,6 +17,6 @@
 
 <Nav/>
 <main class="sm:p-4 p-1 mx-auto max-w-5xl">
-    <div class="h-10"/>
+    <div class="h-10 print:h-0"/>
     <slot/>
 </main>

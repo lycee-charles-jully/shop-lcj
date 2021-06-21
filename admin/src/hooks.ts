@@ -1,7 +1,13 @@
 import { LOCAL_ENDPOINT } from '$lib/api-url';
-import type { Handle } from '@sveltejs/kit';
+import type { GetSession, Handle } from '@sveltejs/kit';
 import axios from 'axios';
 import * as cookie from 'cookie';
+
+
+export const getSession: GetSession = req => ({
+    user: req.locals.user,
+});
+
 
 export const handle: Handle = async ({ resolve, request }) => {
 
@@ -26,6 +32,7 @@ export const handle: Handle = async ({ resolve, request }) => {
         const { role } = me.data;
         if (!role || role < 2000)
             throw new Error('Unauthorized');
+        request.locals.user = me.data;
         const response = await resolve(request);
         return {
             ...response,

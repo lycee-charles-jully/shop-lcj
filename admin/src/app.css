@@ -14,3 +14,13 @@
 .btn:disabled {
     @apply cursor-not-allowed filter saturate-50;
 }
+
+@media print {
+    @page {
+        margin: 0;
+    }
+
+    main {
+        margin: 0 1cm 1cm 1cm !important;
+    }
+}

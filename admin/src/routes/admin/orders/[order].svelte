@@ -117,7 +117,7 @@
 
 
 {#if orderDetails && orderDetails._id}
-    <h1 class="text-2xl font-bold mb-4 flex justify-between">
+    <h1 class="text-2xl font-bold mb-4 flex justify-between items-center">
         <span>
             Commande de {orderDetails.user.firstname} {orderDetails.user.lastname}
             du {dayjs(orderDetails.createdAt).format('DD/MM à HH:mm')}
@@ -145,49 +145,61 @@
 
     <p class="mb-4">
         Identité : {orderDetails.user.firstname} {orderDetails.user.lastname}<br/>
-        Email : <a href="mailto:{orderDetails.user.email}" class="text-blue-500 underline">{orderDetails.user.email}</a><br/>
+        Email :
+        <a href="mailto:{orderDetails.user.email}"
+           class="text-blue-500 underline print:text-black print:no-underline">
+            {orderDetails.user.email}
+        </a><br/>
         Classe : {orderDetails.user.grade}<br/>
         Téléphone :
-        <a href="tel:{orderDetails.user.phone}" class="text-blue-500 underline">{orderDetails.user.phone}</a><br/>
+        <a href="tel:{orderDetails.user.phone}"
+           class="text-blue-500 underline print:text-black print:no-underline">
+            {orderDetails.user.phone}
+        </a><br/>
         Numéro Jeun'Est : {orderDetails.user.jeunestNumber}
     </p>
 
 
-    {#if orderDetails.status !== 'ADMIN_CANCELLED' && orderDetails.status !== 'USER_CANCELLED' && orderDetails.status !== 'COMPLETED'}
-
+    <div class="print:hidden">
         <h2 class="text-xl font-bold mb-2">Actions</h2>
 
-        <NextStatus currentStatus={orderDetails.status} on:click={nextOrderState} disabled={loading}/>
-
-        <button class="bg-red-500 text-white rounded px-4 py-2 mb-4" on:click={showCancelPopup} disabled={loading}>
-            Annuler la commande
+        <button class="bg-indigo-600 text-white rounded px-4 py-2 mb-4" on:click={() => window.print()}
+                disabled={loading}>
+            Imprimer
         </button>
 
-    {/if}
+        {#if orderDetails.status !== 'ADMIN_CANCELLED' && orderDetails.status !== 'USER_CANCELLED' && orderDetails.status !== 'COMPLETED'}
+            <NextStatus currentStatus={orderDetails.status} on:click={nextOrderState} disabled={loading}/>
+
+            <button class="bg-red-500 text-white rounded px-4 py-2 mb-4" on:click={showCancelPopup} disabled={loading}>
+                Annuler la commande
+            </button>
+        {/if}
+    </div>
 
 
     <h2 class="text-xl font-bold mb-2">Historique</h2>
 
-    <div class="block w-full bg-white rounded-md my-2 p-4">
+    <div class="block w-full bg-white rounded-md my-2 p-4 print:p-0 print:my-1">
         <div class="flex items-center w-full h-6">
             [{dayjs(orderDetails.createdAt).format('DD/MM à HH:mm')}]
             {orderDetails.user.firstname} {orderDetails.user.lastname} a créé la commande, marquée comme
-            <div class="inline-block ml-2">
+            <div class="inline-block ml-2 print:ml-1">
                 <OrderStatus status="WAITING_FOR_ACCEPTATION"/>
             </div>
         </div>
     </div>
     {#each orderDetails.history as history}
-        <div class="block w-full bg-white rounded-md my-2 p-4">
+        <div class="block w-full bg-white rounded-md my-2 p-4 print:p-0 print:my-1">
             <div class="flex items-center w-full h-6">
                 [{dayjs(history.createdAt).format('DD/MM à HH:mm')}]
                 {history.user.firstname} {history.user.lastname} a marqué la commande comme
-                <div class="inline-block ml-2">
+                <div class="inline-block ml-2 print:ml-1">
                     <OrderStatus status={history.newStatus}/>
                 </div>
             </div>
             {#if history.comment}
-                <div class="mt-1">
+                <div class="mt-1 print:mt-0">
                     {#if history.newStatus === 'USER_CANCELLED' || history.newStatus === 'ADMIN_CANCELLED'}
                         Raison :
                     {:else}

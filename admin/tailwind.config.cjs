@@ -1,4 +1,11 @@
 module.exports = {
     mode: 'jit',
     purge: ['./src/**/*.svelte', './src/app.html'],
+    theme: {
+        extend: {
+            screens: {
+                'print': { 'raw': 'print' },
+            }
+        }
+    }
 };

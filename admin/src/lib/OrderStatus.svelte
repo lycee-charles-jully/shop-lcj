@@ -7,6 +7,12 @@
     div {
         @apply rounded inline-block px-2 py-1 whitespace-nowrap;
     }
+
+    @media print {
+        div {
+            padding: 0;
+        }
+    }
 </style>
 
 
