@@ -68,6 +68,19 @@ export class ProductController {
         return this.productService.getProduct(slug, stat);
     }
 
+    @Patch(':id')
+    @ApiResponse({
+        status: 200,
+        description: 'The updated product',
+        type: ProductEntity,
+    })
+    @Auth(RoleEnum.MANAGER)
+    updateProduct(@Param('id') id: string, @Body() patch: UpdateProductDto) {
+        if (!mongoose.isValidObjectId(id))
+            throw new BadRequestException('The product ID is not valid');
+        return this.productService.updateProduct(id, patch);
+    }
+
     @Post()
     @Auth(RoleEnum.MANAGER)
     @UseInterceptors(FilesInterceptor('images', 10, {
@@ -89,17 +102,5 @@ export class ProductController {
         @UploadedFiles() images: Express.Multer.File[],
     ) {
         return this.productService.addProduct(product, images);
-    }
-
-    @Patch(':id')
-    @ApiResponse({
-        status: 200,
-        description: 'The updated product',
-        type: ProductEntity,
-    })
-    updateProduct(@Param('id') id: string, @Body() patch: UpdateProductDto) {
-        if (!mongoose.isValidObjectId(id))
-            throw new BadRequestException('The product ID is not valid');
-        return this.productService.updateProduct(id, patch);
     }
 }
