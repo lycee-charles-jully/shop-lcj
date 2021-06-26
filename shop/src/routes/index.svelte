@@ -27,6 +27,26 @@
 </script>
 
 
+<style>
+    .btn-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: calc(var(--spacing) * 2);
+    }
+
+    .btn-primary {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 440px;
+        padding: calc(var(--spacing) - 2px) var(--spacing);
+        color: var(--white);
+    }
+</style>
+
+
 <Meta/>
 
 
@@ -53,3 +73,8 @@
         {/each}
     </Category>
 {/if}
+
+
+<div class="btn-container">
+    <a class="btn-primary" href="/product">Voir tous les produits</a>
+</div>
