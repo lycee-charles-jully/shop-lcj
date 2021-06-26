@@ -11,6 +11,7 @@ import { AddProductDto } from './dto/add-product.dto';
 import { GetProductsFilterDto } from './dto/get-products-filter.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { basicProductFields } from './entities/basic-product.entity';
+import { ProductOrderEnum } from './enum/product-order.enum';
 
 
 @Injectable()
@@ -43,7 +44,7 @@ export class ProductService {
             .find(findOptions)
             .limit(filters.limit)
             .skip(filters.offset)
-            .sort(`-${filters.sort}`)
+            .sort(filters.sort === ProductOrderEnum.NAME ? ProductOrderEnum.NAME : `-${filters.sort}`)
             .select(basicProductFields)
             .exec();
     }
