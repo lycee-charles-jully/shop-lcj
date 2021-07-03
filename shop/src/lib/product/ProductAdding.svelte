@@ -8,6 +8,7 @@
     import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
     import { session } from '$app/stores';
     import { addProductToCart } from '$lib/api/cart/add-product-to-cart';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let visible = false;
     export let product: Product;
@@ -55,11 +56,12 @@
         margin: 0 0 0 var(--spacing);
     }
 
-    .product-image {
+    picture {
         display: block;
         width: 100%;
         height: auto;
         margin: var(--spacing) 0;
+        padding-top: 100%;
     }
 
     h1 {
@@ -79,7 +81,9 @@
         <h2>Ajouter au panier</h2>
     </div>
 
-    <img src={imageUrl(product.coverImageUrl, 500)} alt={product.name} class="product-image" height="500" width="500"/>
+    <picture class="product-img" use:imgload>
+        <img alt={product.name} height="500" src={imageUrl(product.coverImageUrl, 500)} width="500"/>
+    </picture>
 
     <h1>{product.name}</h1>
 

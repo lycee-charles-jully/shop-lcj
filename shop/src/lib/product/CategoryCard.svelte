@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { CategoryPopulated } from '$types/categories';
     import { imageUrl } from '$lib/helpers/image-url';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let category: CategoryPopulated;
 </script>
@@ -16,10 +17,10 @@
         justify-content: space-between;
     }
 
-    .card img {
-        border-radius: var(--round) var(--round) 0 0;
+    .card picture {
         width: 100%;
-        height: auto;
+        border-radius: var(--round) var(--round) 0 0;
+        padding-top: 100%;
     }
 
     .card span {
@@ -31,6 +32,9 @@
 
 
 <a class="card" href="/categories/{category.slug}">
-    <img src={imageUrl(category?.products[0]?.coverImageUrl, 200)} alt={category.name} height="200" width="200"/>
+    <picture class="product-img" use:imgload>
+        <img alt={category.name} height="200" loading="lazy" src={imageUrl(category?.products[0]?.coverImageUrl, 200)}
+             width="200"/>
+    </picture>
     <span>{category.name}</span>
 </a>

@@ -5,6 +5,7 @@
     import { imageUrl } from '$lib/helpers/image-url';
     import { createEventDispatcher } from 'svelte';
     import { goto } from '$app/navigation';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let cart: CartItemPopulated[] = [];
     export let validatedRecommendations: CartItemPopulated[] = [];
@@ -29,7 +30,7 @@
         border-radius: var(--round);
     }
 
-    .product img {
+    .product picture {
         height: var(--card-height);
         width: var(--card-height);
         border-radius: var(--round) 0 0 var(--round);
@@ -56,7 +57,9 @@
 
 {#each items as item}
     <div class="product">
-        <img src={imageUrl(item.product.coverImageUrl, 200)} height="200" width="200"/>
+        <picture class="product-img" use:imgload>
+            <img src={imageUrl(item.product.coverImageUrl, 200)} height="200" width="200"/>
+        </picture>
         <div class="product-body">
             <span>{item.product.name}</span>
             <span>

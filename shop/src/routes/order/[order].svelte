@@ -28,6 +28,7 @@
     import { session } from '$app/stores';
     import { cancelUserOrder } from '$lib/api/orders/cancel-user-order';
     import { getOrderDetails } from '$lib/api/orders/get-order-details';
+    import { imgload } from '$lib/helpers/imgload';
 
     const orderID = $page.params.order as string;
     let order: Order;
@@ -125,10 +126,11 @@
         color: var(--black);
     }
 
-    .product img {
+    .product picture {
         height: var(--card-height);
         width: var(--card-height);
         border-radius: var(--round) 0 0 var(--round);
+        padding-top: 0;
     }
 
     .product-body {
@@ -191,7 +193,9 @@
 
     {#each order.items as { product, count }}
         <a class="product" href="/product/{product.slug}">
-            <img src={imageUrl(product.coverImageUrl, 200)} height="200" width="200"/>
+            <picture class="product-img" use:imgload>
+                <img src={imageUrl(product.coverImageUrl, 200)} height="200" width="200"/>
+            </picture>
             <div class="product-body">
                 <span>
                     <b>{count}x</b> {product.name} ({currencyFormat(product.price)} pièce)

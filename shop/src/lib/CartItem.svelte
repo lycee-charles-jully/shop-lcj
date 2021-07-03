@@ -8,6 +8,7 @@
     import { createEventDispatcher } from 'svelte';
     import { updateCartItemCount } from '$lib/api/cart/update-cart-item-count';
     import { deleteCartItem } from '$lib/api/cart/delete-cart-item';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let product: BasicProduct | null = null;
     export let count = 1;
@@ -81,6 +82,12 @@
         border-radius: var(--round) 0 0 var(--round);
     }
 
+    .thumbnail picture {
+        width: inherit;
+        height: inherit;
+        border-radius: var(--round) 0 0 var(--round);
+    }
+
     .body {
         display: flex;
         flex-direction: column;
@@ -131,8 +138,10 @@
 {#if product}
 
     <div class="card" class:disabled={deletingItem}>
-        <a href="/product/{product.slug}">
-            <img src={imageUrl(product.coverImageUrl, 200)} class="thumbnail" height="200" width="200"/>
+        <a href="/product/{product.slug}" class="thumbnail">
+            <picture class="product-img" use:imgload>
+                <img src={imageUrl(product.coverImageUrl, 200)} height="200" width="200"/>
+            </picture>
         </a>
 
         <div class="body">

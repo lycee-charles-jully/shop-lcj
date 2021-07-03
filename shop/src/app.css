@@ -133,3 +133,78 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 .error-message {
     color: red;
 }
+
+picture.product-img {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+picture.product-img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.picture-loader {
+    position: relative;
+}
+
+.picture-loader img {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.picture-loading::before, .picture-error::before, .picture-loading::after {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px;
+    z-index: 2;
+}
+
+.picture-error::before {
+    background-image: url("/icons/broken-image.svg");
+    background-color: var(--light-gray);
+}
+
+.picture-loading::before {
+    background-color: var(--light-gray);
+}
+
+@media all and (min-width: 768px) {
+    .picture-loading::before, .picture-error::before {
+        background-color: var(--dark-gray);
+    }
+}
+
+.picture-loading::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M18.65 8.35l-2.79 2.79a.5.5 0 00.35.86H18a6 6 0 01-8.25 5.56.96.96 0 00-1.04.23 1 1 0 00.34 1.64A8 8 0 0020 12h1.79a.5.5 0 00.35-.85l-2.79-2.79a.5.5 0 00-.7-.01zM6 12a6 6 0 018.25-5.56c.36.15.77.04 1.04-.23a1 1 0 00-.34-1.64A8 8 0 004 12H2.21a.5.5 0 00-.35.85l2.79 2.79c.2.2.51.2.71 0l2.79-2.79a.5.5 0 00-.36-.85H6z'/%3E%3C/svg%3E");
+    animation: rotate .6s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0) rotateX(.5turn);
+    }
+    to {
+        transform: rotate(1turn) rotateX(.5turn);
+    }
+}
+
+.img-loading {
+    visibility: hidden;
+}

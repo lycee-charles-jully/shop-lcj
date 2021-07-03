@@ -1,5 +1,6 @@
 <script lang="ts">
     import { imageUrl } from '$lib/helpers/image-url';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let images: string[] = [];
     export let productName: string;
@@ -21,34 +22,41 @@
         width: 100%;
         max-width: 400px;
         max-height: 400px;
+        padding-top: min(400px, 100%);
     }
 
     .side-images {
         display: flex;
         flex-direction: row;
         overflow: auto;
+        gap: var(--spacing);
+        padding: 4px;
     }
 
-    .side-images img {
+    .side-images picture {
         width: 70px;
         height: 70px;
         object-fit: contain;
-        margin: var(--spacing);
+        margin: var(--spacing) 0;
         cursor: pointer;
+        flex-shrink: 0;
     }
 
-    .side-images img.highlight {
-        outline: var(--primary) 2px solid;
-        outline-offset: 2px;
+    .side-images picture.highlight {
+        outline: var(--primary) 4px solid;
     }
 
     @media all and (min-width: 440px) {
         .container {
-            grid-template-columns: 1fr calc(var(--spacing) * 2 + 70px);
+            grid-template-columns: 1fr calc(var(--spacing) * 2 + 78px);
         }
 
         .side-images {
             flex-direction: column;
+        }
+
+        .side-images picture {
+            margin: 0 var(--spacing);
         }
     }
 
@@ -60,19 +68,30 @@
         .side-images {
             flex-direction: row;
         }
+
+        .side-images picture {
+            margin: var(--spacing) 0;
+        }
     }
 </style>
 
 
 <div class="container">
-    <img src={imageUrl(selectedImage, 500)} alt={productName} class="main-image" height="500" width="500"/>
+    {#each images as src}
+        {#if selectedImage === src}
+            <picture class="product-img main-image" use:imgload>
+                <img src={imageUrl(src, 500)} alt={productName} height="500" width="500"/>
+            </picture>
+        {/if}
+    {/each}
     <div class="side-images">
         {#each images as src}
-            <img src={imageUrl(src, 70)}
-                 on:click={() => selectedImage = src}
-                 class:highlight={src === selectedImage}
-                 height="70" width="70"
-                 alt={productName}/>
+            <picture class="product-img"
+                     use:imgload
+                     class:highlight={src === selectedImage}
+                     on:click={() => selectedImage = src}>
+                <img src={imageUrl(src, 70)} height="70" width="70" alt={productName}/>
+            </picture>
         {/each}
     </div>
 </div>

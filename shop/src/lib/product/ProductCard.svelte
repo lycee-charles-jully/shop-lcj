@@ -5,6 +5,7 @@
     import { session } from '$app/stores';
     import ProductAdding from './ProductAdding.svelte';
     import { goto } from '$app/navigation';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let product: BasicProduct;
 
@@ -38,10 +39,8 @@
 
     .cover {
         width: 100%;
-        height: auto;
-        aspect-ratio: 1;
-        object-fit: cover;
         border-radius: var(--round) var(--round) 0 0;
+        padding-top: 100%;
     }
 
     .body {
@@ -66,7 +65,9 @@
 
 
 <a class="card" href="/product/{product.slug}" on:click={goToProductPage}>
-    <img src={imageUrl(product.coverImageUrl, 200)} alt={product.name} class="cover" height="200" width="200"/>
+    <picture class="product-img cover" use:imgload>
+        <img alt={product.name} height="200" loading="lazy" src={imageUrl(product.coverImageUrl, 200)} width="200"/>
+    </picture>
     <div class="body">
         <span class="name">{product.name}</span>
         <div class="bottom-bar">

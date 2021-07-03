@@ -5,6 +5,7 @@
     import { currencyFormat } from '$lib/helpers/currency-format';
     import Button from '$lib/layout/Button.svelte';
     import QuantitySelector from '$lib/layout/QuantitySelector.svelte';
+    import { imgload } from '$lib/helpers/imgload';
 
     export let recommendation: Recommendation;
     export let validatedRecommendations: CartItemPopulated[] = [];
@@ -62,13 +63,13 @@
         margin: var(--spacing) 0;
     }
 
-    .product img {
+    .product picture {
         height: 100px;
         width: 100px;
     }
 
     @media all and (min-width: 440px) {
-        .product img {
+        .product picture {
             height: 120px;
             width: 120px;
         }
@@ -103,7 +104,9 @@
 <div class="container">
     <span>{recommendation.message}</span>
     <div class="product">
-        <img src={imageUrl(recommendation.recommendedProduct.coverImageUrl, 200)} height="200" width="200"/>
+        <picture class="product-img" use:imgload>
+            <img height="200" src={imageUrl(recommendation.recommendedProduct.coverImageUrl, 200)} width="200"/>
+        </picture>
         <div class="product-info">
             <span>{recommendation.recommendedProduct.name}</span>
             <span>{currencyFormat(recommendation.recommendedProduct.price)} l'unité</span>
