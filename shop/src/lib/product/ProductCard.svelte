@@ -32,9 +32,11 @@
         color: var(--black);
         background-color: var(--white);
         max-width: 250px;
+        width: 100%;
         border-radius: var(--round);
         display: flex;
         flex-direction: column;
+        justify-self: center;
     }
 
     .cover {
