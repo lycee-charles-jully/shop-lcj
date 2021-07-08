@@ -18,6 +18,7 @@ import * as mongoose from 'mongoose';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
 import { RoleEnum } from '../auth/enum/role.enum';
+import { AddImagesToProductDto } from './dto/add-images-to-product.dto';
 import { AddProductDto } from './dto/add-product.dto';
 import { AddProductWithImagesDto } from './dto/add-product-with-images.dto';
 import { DeleteProductDto } from './dto/delete-product.dto';
@@ -94,6 +95,28 @@ export class ProductController {
         if (!mongoose.isValidObjectId(id))
             throw new BadRequestException('The product ID is not valid');
         return this.productService.deleteProduct(id, name);
+    }
+
+    @Post(':id/images')
+    @Auth(RoleEnum.MANAGER)
+    @UseInterceptors(FilesInterceptor('images', 10, {
+        fileFilter(req: RequestWithUserEntity, file, cb) {
+            cb(null, file.mimetype.startsWith('image/'));
+        },
+    }))
+    @ApiConsumes('multipart/form-data')
+    @ApiResponse({
+        status: 200,
+        description: 'The updated product',
+        type: ProductEntity,
+    })
+    @ApiBody({
+        type: AddImagesToProductDto,
+    })
+    addImagesToProduct(@Param('id') id: string, @UploadedFiles() images: Express.Multer.File[]) {
+        if (!mongoose.isValidObjectId(id))
+            throw new BadRequestException('The product ID is not valid');
+        return this.productService.addImagesToProduct(id, images);
     }
 
     @Post()

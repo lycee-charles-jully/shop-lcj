@@ -183,4 +183,24 @@ export class ProductService {
 
         return product;
     }
+
+    async addImagesToProduct(id: string, images: Express.Multer.File[]) {
+        const product = await this.ProductModel.findById(id);
+
+        if (!product)
+            throw new NotFoundException(`Cannot find the product with ID ${id}`);
+
+        if (images.length + product.imagesUrls.length + 1 > 10)
+            throw new NotAcceptableException('Cannot put more than 10 images on a product');
+
+        const newImages = await Promise.all(images.map(this.FileService.saveProductImage));
+
+        return this.ProductModel
+            .findByIdAndUpdate(
+                id,
+                { imagesUrls: [ ...product.imagesUrls, ...newImages ] },
+                { omitUndefined: true, new: true },
+            )
+            .exec();
+    }
 }
