@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Matches } from 'class-validator';
 import { transformTrim } from '../../utils/transformTrim';
 
 export class UpdateProductDto {
@@ -35,4 +35,21 @@ export class UpdateProductDto {
         required: false,
     })
     available?: boolean;
+
+    @IsString()
+    @Matches(/^[0-9a-zA-Z_-]{20}\.png$/)
+    @IsOptional()
+    @ApiProperty({
+        required: false,
+    })
+    coverImageUrl?: string;
+
+    @IsArray()
+    @IsString({ each: true })
+    @Matches(/^[0-9a-zA-Z_-]{20}\.png$/, { each: true })
+    @IsOptional()
+    @ApiProperty({
+        required: false,
+    })
+    imagesUrls?: string[];
 }

@@ -92,7 +92,21 @@ export class ProductService {
         return newProduct;
     }
 
-    updateProduct(id: string, patch: UpdateProductDto) {
+    async updateProduct(id: string, patch: UpdateProductDto) {
+
+        const product = await this.ProductModel.findById(id).exec();
+        if (!product)
+            throw new NotFoundException('Cannot find product');
+
+        if (patch.coverImageUrl || patch.imagesUrls) {
+            const futureImages = await this.updateProductImages(
+                product,
+                { newCover: patch.coverImageUrl, newImages: patch.imagesUrls },
+            );
+            patch.coverImageUrl = futureImages[0];
+            patch.imagesUrls = futureImages.slice(1);
+        }
+
         return this.ProductModel
             .findByIdAndUpdate(
                 id,
@@ -102,12 +116,41 @@ export class ProductService {
                     new: true,
                 },
             )
-            .exec()
-            .then(doc => {
-                if (!doc)
-                    throw new NotFoundException('Cannot find product');
-                return doc;
+            .exec();
+    }
+
+    private async updateProductImages(
+        product: ProductDoc,
+        { newCover, newImages }: { newCover?: string, newImages?: string[] },
+    ) {
+
+        // Verifying if the correcponding files exist in the storage
+        if (newCover && this.FileService.resolveFilePath(newCover).code !== 200)
+            throw new NotFoundException(`Cannot find the image ${newCover} for the cover image URL in the storage`);
+        if (newImages && newImages.length >= 1)
+            newImages.forEach(img => {
+                if (this.FileService.resolveFilePath(img).code !== 200)
+                    throw new NotFoundException(`Cannot find the image ${img} in the storage`);
             });
+
+        const currentImages = [ product.coverImageUrl, ...product.imagesUrls ];
+        const futureImages = [ (newCover || product.coverImageUrl), ...(newImages || product.imagesUrls) ];
+
+        // Checks if all the images are associated to the product
+        const outOfPlaceImage = futureImages.find(img => !currentImages.includes(img));
+        if (outOfPlaceImage)
+            throw new NotAcceptableException(`The image ${outOfPlaceImage} is not associated to this product`);
+
+        // Check for duplicates images
+        if (futureImages.length !== [ ...new Set(futureImages) ].length)
+            throw new NotAcceptableException('Some images are duplicated');
+
+        // Delete images that are not used anymore
+        currentImages
+            .filter(img => !futureImages.includes(img))
+            .forEach(img => this.FileService.deleteFile(img));
+
+        return futureImages;
     }
 
     async deleteProduct(id: string, name: string) {
