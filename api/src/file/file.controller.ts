@@ -26,6 +26,17 @@ export class FileController {
             });
         if (!path)
             throw new InternalServerErrorException();
-        res.sendFile(path);
+        res.sendFile(path, (err: Error & { status: number }) => {
+            if (err) {
+                if (err.status === 404)
+                    return res.status(404).json({
+                        statusCode: 404,
+                        message: 'File not found',
+                        error: 'Not Found',
+                    });
+                else
+                    throw err;
+            }
+        });
     }
 }
