@@ -25,6 +25,7 @@
     "cookie-parser": "^1.4.5",
     "dayjs": "^1.10.5",
     "helmet": "^4.6.0",
+    "imagemin-pngquant": "^9.0.2",
     "mongoose": "^5.12.12",
     "nanoid": "^3.1.23",
     "passport": "^0.4.1",

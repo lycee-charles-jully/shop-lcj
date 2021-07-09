@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as sharp from 'sharp';
 import { nanoid } from 'nanoid';
+import imageminPngquant from 'imagemin-pngquant';
 
 @Injectable()
 export class FileService {
@@ -35,7 +36,7 @@ export class FileService {
         const imagePath = path.resolve(storagePath, `${imageID}.png`);
         fs.mkdirSync(storagePath, { recursive: true });
         // Resising and saving the image
-        sharpImage
+        const imageBuffer = await sharpImage
             .rotate()
             .resize({
                 width: imageSize,
@@ -44,7 +45,10 @@ export class FileService {
                 withoutEnlargement: false,
                 background: { r: 255, g: 255, b: 255, alpha: 0 },
             })
-            .toFile(imagePath);
+            .png()
+            .toBuffer();
+        const optimizedImageBuffer = await imageminPngquant({ strip: true })(imageBuffer);
+        fs.writeFileSync(imagePath, optimizedImageBuffer);
         return `${imageID}.png`;
     }
 
