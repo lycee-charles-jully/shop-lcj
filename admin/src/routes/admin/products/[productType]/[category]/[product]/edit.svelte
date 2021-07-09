@@ -19,6 +19,7 @@
                         description: data.description,
                         price: data.price,
                         _id: data._id,
+                        images: [ data.coverImageUrl, ...data.imagesUrls ],
                     };
                 })
                 .catch(e => {
@@ -42,6 +43,7 @@
 <script lang="ts">
     import InputContainer from '$lib/InputContainer.svelte';
     import { goto } from '$app/navigation';
+    import EditProductImages from '$lib/EditProductImages.svelte';
 
     export let oldProduct;
     export let error: string | null = null;
@@ -49,7 +51,6 @@
     let loading = false;
 
     let newProduct = { ...oldProduct };
-
 
     const hasChanged = (old, current) => typeof current === 'string'
         ? old.trim() !== current.trim()
@@ -67,6 +68,7 @@
         loading = true;
 
         delete newProduct._id;
+        delete newProduct.images;
 
         fetch(`${REMOTE_ENDPOINT}/v1/product/${oldProduct._id}`, {
             method: 'PATCH',
@@ -100,6 +102,9 @@
 
 
 {#if newProduct?._id}
+
+    <h2 class="text-xl font-bold">Mettre à jour les informations</h2>
+
     <form on:submit|preventDefault={updateProduct}>
         <div class="{hasChanged(oldProduct.name, newProduct.name) ? 'italic' : ''}">
             <InputContainer label="Nom" let:id>
@@ -126,4 +131,6 @@
 
         <button class="btn w-full mt-4" disabled={loading || !canUpdate}>Mettre à jour</button>
     </form>
+
+    <EditProductImages {oldProduct}/>
 {/if}
