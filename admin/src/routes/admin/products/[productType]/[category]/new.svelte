@@ -67,7 +67,7 @@
 <h1 class="text-2xl mb-4">Nouveau produit</h1>
 
 {#if error}
-    <div class="text-red-600">{error}</div>
+    <div class="text-red-500">{error}</div>
 {/if}
 
 <form on:submit|preventDefault={createProduct}>
@@ -77,7 +77,8 @@
     </InputContainer>
 
     <InputContainer label="Description" let:id>
-        <textarea bind:value={description} class="input w-full" disabled="{loading}" {id} required spellcheck="true"/>
+        <textarea bind:value={description} class="input w-full scroll" disabled="{loading}" {id} required
+                  spellcheck="true"/>
     </InputContainer>
 
     <InputContainer label="Prix" let:id>

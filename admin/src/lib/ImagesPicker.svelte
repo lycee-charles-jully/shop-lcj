@@ -45,6 +45,22 @@
 </script>
 
 
+<style global>
+    .filepond--panel-root {
+        border-radius: 0.25rem !important; /* rounded */
+        background-color: rgb(75, 85, 99) !important; /* bg-gray-600 */
+    }
+
+    .filepond--drop-label {
+        color: rgb(243, 244, 246) !important; /* bg-gray-100 */
+    }
+
+    .filepond--item-panel, .filepond--image-preview {
+        border-radius: 0.25rem !important; /* rounded */
+    }
+</style>
+
+
 {#if FilePond}
     <svelte:component this={FilePond}
                       bind:this={pond}

@@ -109,7 +109,7 @@
 <h2 class="text-xl font-bold mt-8 mb-4">Mettre à jour les images</h2>
 
 {#if error}
-    <p class="text-red-600 mb-2">{error}</p>
+    <p class="text-red-500 mb-2">{error}</p>
 {/if}
 
 <form on:submit|preventDefault={updateImages}>

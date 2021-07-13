@@ -8,7 +8,7 @@
 </script>
 
 
-<a class="block w-full bg-white rounded-md my-2 h-14 flex justify-start" {href} {target}>
+<a class="block w-full bg-gray-600 rounded-md my-2 h-14 flex justify-start" {href} {target}>
     {#if thumb}
         <img src={imageUrl(thumb, 200)} class="h-14 w-14 rounded-l-md {disabled ? 'filter grayscale' : ''}"/>
     {/if}

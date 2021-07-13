@@ -2,6 +2,9 @@
     import NavLink from '$lib/nav/NavLink.svelte';
     import { session } from '$app/stores';
     import { staticImageUrl } from '$lib/image-url';
+    import NavCategory from '$lib/nav/NavCategory.svelte';
+
+    export let productTypes = [];
 </script>
 
 
@@ -12,13 +15,26 @@
 </style>
 
 
-<header class="w-full bg-gray-100 flex justify-between fixed top-0 left-0 z-10 print:hidden">
-    <span class="h-10 flex items-center px-4">Panneau d'admin</span>
-    <nav class="flex justify-end">
-        <NavLink label="Accueil"/>
-        <NavLink href="products" label="Produits"/>
-        <NavLink href="orders" label="Commandes"/>
-    </nav>
+<header class="w-64 h-screen bg-gray-700 text-gray-400 sticky top-0 left-0 z-10 p-2 max-h-screen overflow-y-auto print:hidden scroll">
+    <a class="h-12 w-full flex items-center justify-center" href="/admin">
+        <img class="h-8 mr-3" src={staticImageUrl('shop-icon-v1.png')}/>
+        <span class="font-bold transform translate-y-0.5">Shop LCJ admin</span>
+    </a>
+
+    <NavCategory label="Accueil">
+        <NavLink href="" label="Dashboard"/>
+    </NavCategory>
+
+    <NavCategory label="Produits">
+        {#each productTypes as { namePluralized: label, _id }}
+            <NavLink {label} href="products/{_id}"/>
+        {/each}
+        <NavLink href="products/new" label="+ Nouveau type"/>
+    </NavCategory>
+
+    <NavCategory label="Commandes">
+        <NavLink href="orders" label="Toutes les commandes"/>
+    </NavCategory>
 </header>
 
 

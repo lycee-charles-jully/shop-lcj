@@ -30,7 +30,7 @@
 
 <h1 class="text-2xl mb-4">
     {#if categories.length}
-        <a href="/admin/products">{categories[0].productType.namePluralized}</a> {'>'} catégories
+        {categories[0].productType.namePluralized} {'>'} catégories
     {:else}
         Catégories
     {/if}
@@ -43,6 +43,6 @@
     </Item>
 {/each}
 
-<a class="block w-full bg-white p-4 rounded-md mt-6" href="/admin/products/{productTypeID}/new">
+<a class="block w-full bg-gray-700 p-4 rounded-md mt-6" href="/admin/products/{productTypeID}/new">
     Ajouter une catégorie
 </a>
