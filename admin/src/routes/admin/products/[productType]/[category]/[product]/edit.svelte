@@ -97,7 +97,7 @@
 
 
 {#if error}
-    <p class="text-red-600 mb-2">{error}</p>
+    <p class="text-red-500 mb-2">{error}</p>
 {/if}
 
 
@@ -116,8 +116,8 @@
 
         <div class="{hasChanged(oldProduct.description, newProduct.description) ? 'italic' : ''}">
             <InputContainer label="Description" let:id>
-                <textarea bind:value={newProduct.description} class="input w-full" disabled="{loading}" {id} required
-                          spellcheck="true"/>
+                <textarea bind:value={newProduct.description} class="input w-full h-52 scroll" disabled={loading} {id}
+                          required spellcheck="true"/>
             </InputContainer>
         </div>
 

@@ -9,21 +9,14 @@
 
 
 <style>
-    @media all and (min-width: 440px) {
-        .container {
-            grid-template-columns: 1fr 100px;
-        }
-    }
-
-    @media all and (min-width: 768px) {
-        .container {
-            grid-template-columns: 1fr;
-        }
+    .thumb {
+        height: 70px;
+        width: 70px;
     }
 </style>
 
 
-<div class="w-full mb-4 grid grid-cols-1">
+<div class="w-full mb-4 grid grid-cols-1 auto-rows-min">
     <img alt={productName}
          class="w-full h-auto max-w-sm max-h-sm"
          height="500"
@@ -33,7 +26,7 @@
             <img src={imageUrl(src, 70)}
                  on:click={() => selectedImage = src}
                  height="70" width="70"
-                 class="m-2 cursor-pointer border-2 {src === selectedImage ? 'border-red-600' : 'border-transparent'}"
+                 class="m-2 cursor-pointer border-2 thumb {src === selectedImage ? 'border-red-600' : 'border-transparent'}"
                  alt={productName}/>
         {/each}
     </div>

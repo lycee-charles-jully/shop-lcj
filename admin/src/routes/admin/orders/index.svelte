@@ -82,11 +82,11 @@
     <OrderModeSelect bind:orderMode {disabled} mode="validate">À valider</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="pending">En cours</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="completed">Complétées</OrderModeSelect>
-    <OrderModeSelect bind:orderMode {disabled} mode="cancelled">Annulées</OrderModeSelect>
+    <OrderModeSelect bind:orderMode {disabled} last mode="cancelled">Annulées</OrderModeSelect>
 </div>
 
 {#if error}
-    <p class="text-red-600 mb-4">{error}</p>
+    <p class="text-red-500 mb-4">{error}</p>
 {/if}
 
 {#if disabled}

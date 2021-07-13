@@ -18,7 +18,7 @@
                                 category: undefined,
                                 productType: undefined,
                             };
-                        const { name: category, productType: { name: productType } } =
+                        const { name: category, productType: { namePluralized: productType } } =
                             categories?.find(c => c.slug === categorySlug);
                         return {
                             category,
@@ -59,8 +59,8 @@
 
 <h1 class="text-2xl mb-4">
     {#if category && productType}
-        <a href="/admin/products">{productType}</a> {'>'}
-        <a href="/admin/products/{productTypeID}">{category}</a> {'>'}
+        <a href="/admin/products/{productTypeID}" class="text-blue-400 underline">{productType}</a> {'>'}
+        {category} {'>'}
         produits
     {:else}
         Produits
@@ -75,6 +75,6 @@
     </Item>
 {/each}
 
-<a class="block w-full bg-white p-4 rounded-md mt-6" href="/admin/products/{productTypeID}/{categorySlug}/new">
+<a class="block w-full bg-gray-700 p-4 rounded-md mt-6" href="/admin/products/{productTypeID}/{categorySlug}/new">
     Ajouter un produit
 </a>

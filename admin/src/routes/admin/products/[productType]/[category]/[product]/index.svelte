@@ -123,7 +123,7 @@
 {#if product && product._id}
     <h1 class="text-2xl font-bold mb-4">{product?.name}</h1>
 
-    <div class="grid md:grid-cols-2 gap-4">
+    <div class="grid lg:grid-cols-2 gap-4">
         <ProductImages images={[product.coverImageUrl, ...product.imagesUrls]}/>
         <div>
             <div class="mb-4">

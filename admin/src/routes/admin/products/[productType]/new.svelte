@@ -52,7 +52,7 @@
 <h1 class="text-2xl mb-4">Nouvelle catégorie</h1>
 
 {#if error}
-    <div class="text-red-600">{error}</div>
+    <div class="text-red-500">{error}</div>
 {/if}
 
 <form on:submit|preventDefault={createCategory}>

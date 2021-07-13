@@ -40,7 +40,7 @@
 <h1 class="text-2xl mb-4">Nouveau type de produit</h1>
 
 {#if error}
-    <div class="text-red-600">{error}</div>
+    <div class="text-red-500">{error}</div>
 {/if}
 
 <form on:submit|preventDefault={createProductType}>

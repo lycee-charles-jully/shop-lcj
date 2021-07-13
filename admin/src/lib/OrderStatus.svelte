@@ -5,7 +5,7 @@
 
 <style>
     div {
-        @apply rounded inline-block px-2 py-1 whitespace-nowrap;
+        @apply rounded inline-block px-2 py-1 whitespace-nowrap text-gray-800;
     }
 
     @media print {

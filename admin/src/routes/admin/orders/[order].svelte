@@ -112,7 +112,7 @@
 
 
 {#if error}
-    <p class="text-red-600 mb-4">{error}</p>
+    <p class="text-red-500 mb-4">{error}</p>
 {/if}
 
 
@@ -147,13 +147,13 @@
         Identité : {orderDetails.user.firstname} {orderDetails.user.lastname}<br/>
         Email :
         <a href="mailto:{orderDetails.user.email}"
-           class="text-blue-500 underline print:text-black print:no-underline">
+           class="text-blue-400 underline print:text-black print:no-underline">
             {orderDetails.user.email}
         </a><br/>
         Classe : {orderDetails.user.grade}<br/>
         Téléphone :
         <a href="tel:{orderDetails.user.phone}"
-           class="text-blue-500 underline print:text-black print:no-underline">
+           class="text-blue-400 underline print:text-black print:no-underline">
             {orderDetails.user.phone}
         </a><br/>
         Numéro Jeun'Est : {orderDetails.user.jeunestNumber}
@@ -180,7 +180,7 @@
 
     <h2 class="text-xl font-bold mb-2">Historique</h2>
 
-    <div class="block w-full bg-white rounded-md my-2 p-4 print:p-0 print:my-1">
+    <div class="block w-full bg-gray-600 rounded-md my-2 p-4 print:p-0 print:my-1">
         <div class="flex items-center w-full h-6">
             [{dayjs(orderDetails.createdAt).format('DD/MM à HH:mm')}]
             {orderDetails.user.firstname} {orderDetails.user.lastname} a créé la commande, marquée comme
@@ -190,7 +190,7 @@
         </div>
     </div>
     {#each orderDetails.history as history}
-        <div class="block w-full bg-white rounded-md my-2 p-4 print:p-0 print:my-1">
+        <div class="block w-full bg-gray-600 rounded-md my-2 p-4 print:p-0 print:my-1">
             <div class="flex items-center w-full h-6">
                 [{dayjs(history.createdAt).format('DD/MM à HH:mm')}]
                 {history.user.firstname} {history.user.lastname} a marqué la commande comme
@@ -221,7 +221,9 @@
     <Popup title="Annuler la commande" on:close={() => !loading && (cancelPopupVisible = false)}>
         <form on:submit|preventDefault={cancelOrder}>
             <InputContainer let:id label="Motif (optionnel)">
-                <textarea {id} class="w-full rounded p-2 border border-red-600 outline-none" bind:value={cancelReason}/>
+                <textarea {id}
+                          class="w-full rounded p-2 border border-transparent focus:border-blue-500 outline-none bg-gray-600 text-gray-100 h-40 scroll"
+                          bind:value={cancelReason}/>
             </InputContainer>
             <button class="w-full text-white bg-red-500 rounded p-2 outline-none">Annuler</button>
         </form>
