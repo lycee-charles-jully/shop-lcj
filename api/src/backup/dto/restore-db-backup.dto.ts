@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmptyObject, IsOptional } from 'class-validator';
 import { BackupEntity } from '../entities/backup.entity';
 
-export class RestoreBackupDto {
+export class RestoreDbBackupDto {
     @IsNotEmptyObject()
     @ApiProperty({
         required: true,

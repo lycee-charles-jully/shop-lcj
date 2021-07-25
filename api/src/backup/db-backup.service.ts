@@ -7,7 +7,7 @@ import { ProductType, ProductTypeDoc } from '../schemas/product-type.schema';
 import { Product, ProductDoc } from '../schemas/product.schema';
 import { Recommendation, RecommendationDoc } from '../schemas/recommendation.schema';
 import { User, UserDoc } from '../schemas/user.schema';
-import { RestoreBackupDto } from './dto/restore-backup.dto';
+import { RestoreDbBackupDto } from './dto/restore-db-backup.dto';
 import { BackupData } from './entities/backup.entity';
 import { BackupOrigin } from './enum/BackupOrigin';
 import * as path from 'path';
@@ -54,7 +54,7 @@ export class DbBackupService {
         return this.getDatabaseBackup();
     }
 
-    async restoreBackup({ backup, drop }: RestoreBackupDto) {
+    async restoreBackup({ backup, drop }: RestoreDbBackupDto) {
         const currentBackup = await this.getDatabaseBackup();
         DbBackupService.saveBackupToFile(currentBackup, BackupOrigin.OVERWRITE);
         try {

@@ -47,7 +47,7 @@ export class BackupController {
         status: 200,
         description: 'Imports a backup into the database',
     })
-    restoreDbBackup(@Body() data: RestoreBackupDto) {
+    restoreDbBackup(@Body() data: RestoreDbBackupDto) {
         return this.DbBackupService.restoreBackup(data);
     }
 
