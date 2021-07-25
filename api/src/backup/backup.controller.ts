@@ -1,14 +1,28 @@
-import { Body, Controller, Get, HttpCode, Post, Res } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    Post,
+    Res,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import * as dayjs from 'dayjs';
 import { Response } from 'express';
 import { Auth } from '../auth/decorators/auth.decorator';
+import { RequestWithUserEntity } from '../auth/entities/request-with-user.entity';
 import { RoleEnum } from '../auth/enum/role.enum';
 import { BackupService } from './backup.service';
 import { DbBackupService } from './db-backup.service';
-import { RestoreBackupDto } from './dto/restore-backup.dto';
+import { RestoreDbBackupDto } from './dto/restore-db-backup.dto';
+import { RestoreFullBackupDto } from './dto/restore-full-backup.dto';
 import { FilesBackupService } from './files-backup.service';
 import * as Archiver from 'archiver';
+import { Express } from 'express';
 
 
 @Controller('backup')
@@ -61,12 +75,27 @@ export class BackupController {
     }
 
     @Get('get')
-    @Auth(RoleEnum.ADMIN)
     async getFullBackup(@Res() res: Response) {
         const archive = Archiver('zip');
         res.attachment(`shoplcj_files_${dayjs().format('YYYY-MM-DD_HH-mm-ss')}.zip`);
         archive.pipe(res);
         await this.BackupService.genFullBackup(archive);
         await archive.finalize();
+    }
+
+    @Post('restore')
+    @UseInterceptors(FileInterceptor('backup', {
+        fileFilter(req: RequestWithUserEntity, file, cb) {
+            cb(null, file.mimetype === 'application/zip' || file.mimetype === 'application/x-zip-compressed');
+        },
+    }))
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        type: RestoreFullBackupDto,
+    })
+    async restoreFullBackup(@UploadedFile() file: Express.Multer.File) {
+        if (!file)
+            throw new BadRequestException('A backup file is required');
+        return this.BackupService.restoreFullBackup(file);
     }
 }
