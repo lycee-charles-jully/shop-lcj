@@ -30,6 +30,8 @@
     }
 
     function fillProgressBar() {
+        if (loadingBarStatus !== 'visible')
+            return;
         loadingBarStatus = 'full';
     }
 
