@@ -77,13 +77,26 @@
 
 <h1 class="text-2xl">Commandes</h1>
 
-<div class="flex my-4 max-w-full overflow-x-auto">
+
+<div class="lg:flex hidden my-4">
     <OrderModeSelect bind:orderMode {disabled} mode="all">Toutes les commandes</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="validate">À valider</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="pending">En cours</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} mode="completed">Complétées</OrderModeSelect>
     <OrderModeSelect bind:orderMode {disabled} last mode="cancelled">Annulées</OrderModeSelect>
 </div>
+
+<div class="my-4 lg:hidden">
+    <span class="mr-1">Afficher :</span>
+    <select bind:value={orderMode} class="bg-gray-600 px-2 py-1 rounded">
+        <option value="all">Toutes les commandes</option>
+        <option value="validate">Commandes à valider</option>
+        <option value="pending">Commandes en cours</option>
+        <option value="completed">Commandes complétées</option>
+        <option value="cancelled">Commandes annulées</option>
+    </select>
+</div>
+
 
 {#if error}
     <p class="text-red-500 mb-4">{error}</p>
