@@ -1,13 +1,26 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
+    import { getOrderDetails } from '$lib/api/orders/get-order-details';
 
-    export const load: Load = ({ session, page }) => {
+    export const load: Load = async ({ session, page, fetch }) => {
         if (!session.user)
             return {
                 redirect: `/login?r=/order/${page.params.order}`,
                 status: 302,
             };
-        return {};
+
+        const orderID: string = page.params.order;
+
+        const { data: order, status, error } = await getOrderDetails(orderID, fetch);
+
+        return {
+            props: {
+                orderID,
+                order,
+            },
+            error: error && new Error(error),
+            status,
+        };
     };
 </script>
 
@@ -16,22 +29,19 @@
     import type { Order } from '$types/order';
     import type { Product } from '$types/products';
     import type { User } from '$types/user';
-    import { page } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
     import OrderStatus from '$lib/order/OrderStatus.svelte';
     import Popup from '$lib/layout/Popup.svelte';
     import Button from '$lib/layout/Button.svelte';
-    import { onMount } from 'svelte';
     import { imageUrl } from '$lib/helpers/image-url';
     import { currencyFormat } from '$lib/helpers/currency-format';
     import dayjs from 'dayjs';
     import { session } from '$app/stores';
     import { cancelUserOrder } from '$lib/api/orders/cancel-user-order';
-    import { getOrderDetails } from '$lib/api/orders/get-order-details';
     import { imgload } from '$lib/helpers/imgload';
 
-    const orderID = $page.params.order as string;
-    let order: Order;
+    export let orderID: string;
+    export let order: Order;
     let itemCount: number;
     let itemsTotalPrice: number;
     let error: string | null = null;
@@ -39,15 +49,7 @@
     let title: string;
     $: title = order?.createdAt ? `Commande du ${dayjs(order.createdAt).format('DD/MM/YYYY')}` : 'Commande';
 
-    onMount(() => {
-        getOrderDetails(orderID)
-            .then(({ data, error: err }) => {
-                if (err)
-                    error = err;
-                if (data?._id)
-                    populateOrderData(data);
-            });
-    });
+    populateOrderData(order);
 
 
     let canCancelOrder;
@@ -186,49 +188,46 @@
     <p class="error-message">{error}</p>
 {/if}
 
-{#if !order}
-    Chargement...
-{:else}
-    <h3>Détails</h3>
 
-    {#each order.items as { product, count }}
-        <a class="product" href="/product/{product.slug}">
-            <picture class="product-img" use:imgload>
-                <img src={imageUrl(product.coverImageUrl, 200)} height="200" width="200"/>
-            </picture>
-            <div class="product-body">
+<h3>Détails</h3>
+
+{#each order.items as { product, count }}
+    <a class="product" href="/product/{product.slug}">
+        <picture class="product-img" use:imgload>
+            <img src={imageUrl(product.coverImageUrl, 200)} height="200" width="200"/>
+        </picture>
+        <div class="product-body">
                 <span>
                     <b>{count}x</b> {product.name} ({currencyFormat(product.price)} pièce)
                 </span>
-            </div>
-        </a>
-    {/each}
-
-    Total : {itemCount} produit{itemCount > 1 ? 's' : ''} pour {currencyFormat(itemsTotalPrice)}
-
-
-    {#if canCancelOrder}
-        <h3>Actions</h3>
-
-        <!-- TODO: dynamic update of the remaining time for cancelling -->
-        <button class="cancel-btn" on:click={showCancelPopup}>
-            Annuler la commande
-        </button>
-    {/if}
-
-
-    <h3>Historique</h3>
-
-    <div class="history">
-        [{dayjs(order.createdAt).format('DD/MM à HH:mm')}] Commande effectuée
-    </div>
-    {#each order.history as { createdAt, newStatus }}
-        <div class="history">
-            [{dayjs(createdAt).format('DD/MM à HH:mm')}] Commande
-            <OrderStatus status={newStatus} lowercase/>
         </div>
-    {/each}
+    </a>
+{/each}
+
+Total : {itemCount} produit{itemCount > 1 ? 's' : ''} pour {currencyFormat(itemsTotalPrice)}
+
+
+{#if canCancelOrder}
+    <h3>Actions</h3>
+
+    <!-- TODO: dynamic update of the remaining time for cancelling -->
+    <button class="cancel-btn" on:click={showCancelPopup}>
+        Annuler la commande
+    </button>
 {/if}
+
+
+<h3>Historique</h3>
+
+<div class="history">
+    [{dayjs(order.createdAt).format('DD/MM à HH:mm')}] Commande effectuée
+</div>
+{#each order.history as { createdAt, newStatus }}
+    <div class="history">
+        [{dayjs(createdAt).format('DD/MM à HH:mm')}] Commande
+        <OrderStatus status={newStatus} lowercase/>
+    </div>
+{/each}
 
 
 {#if isCancelPopupVisible}

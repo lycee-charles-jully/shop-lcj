@@ -10,7 +10,7 @@
     import { deleteCartItem } from '$lib/api/cart/delete-cart-item';
     import { imgload } from '$lib/helpers/imgload';
 
-    export let product: BasicProduct | null = null;
+    export let product: BasicProduct;
     export let count = 1;
 
 
@@ -119,60 +119,29 @@
         cursor: pointer;
         transform: translateY(2px);
     }
-
-    .gray-bg {
-        background-color: var(--light-gray);
-        color: var(--light-gray);
-        user-select: none;
-    }
-
-    @media all and (min-width: 768px) {
-        .gray-bg {
-            background-color: var(--dark-gray);
-            color: var(--dark-gray);
-        }
-    }
 </style>
 
 
-{#if product}
+<div class="card" class:disabled={deletingItem}>
+    <a class="thumbnail" href="/product/{product.slug}">
+        <picture class="product-img" use:imgload>
+            <img height="200" src={imageUrl(product.coverImageUrl, 200)} width="200"/>
+        </picture>
+    </a>
 
-    <div class="card" class:disabled={deletingItem}>
-        <a href="/product/{product.slug}" class="thumbnail">
-            <picture class="product-img" use:imgload>
-                <img src={imageUrl(product.coverImageUrl, 200)} height="200" width="200"/>
-            </picture>
-        </a>
-
-        <div class="body">
-            <h2>
-                <a href="/product/{product?.slug}">
-                    {product.name}
-                </a>
-            </h2>
-            <div class="quantity-select" style="transform: translateY(-2px)">
+    <div class="body">
+        <h2>
+            <a href="/product/{product?.slug}">
+                {product.name}
+            </a>
+        </h2>
+        <div class="quantity-select" style="transform: translateY(-2px)">
                 <span>
                     Quantité :
                     <QuantitySelector bind:quantity={count} on:update={updateProductCount}/>
                 </span>
-                <img src="/icons/trash-highlight.svg" height="24" width="24" class="trash-icon" on:click={deleteItem}/>
-            </div>
-            <div>Prix total : {currencyFormat(product.price * count)}</div>
+            <img class="trash-icon" height="24" on:click={deleteItem} src="/icons/trash-highlight.svg" width="24"/>
         </div>
+        <div>Prix total : {currencyFormat(product.price * count)}</div>
     </div>
-
-{:else}
-
-    <div class="card">
-        <div class="thumbnail gray-bg"/>
-
-        <div class="body">
-            <h2 class="gray-bg">easter egg haha</h2>
-            <div class="quantity-select">
-                <h2 class="gray-bg" style="width: 100%">easter egg haha</h2>
-            </div>
-            <h2 class="gray-bg">easter egg haha</h2>
-        </div>
-    </div>
-
-{/if}
+</div>

@@ -1,13 +1,24 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
+    import { getDataForOrder } from '$lib/api/orders/get-data-for-order';
 
-    export const load: Load = ({ session }) => {
+    export const load: Load = async ({ session, fetch }) => {
         if (!session.user)
             return {
                 redirect: `/login?r=/order`,
                 status: 302,
             };
-        return {};
+
+        const { recommendations, cart, error } = await getDataForOrder(fetch);
+
+        return {
+            props: {
+                recommendations,
+                cart,
+            },
+            error: error && new Error(error),
+            status: error ? 400 : 200,
+        };
     };
 </script>
 
@@ -19,37 +30,18 @@
     import CartConfirmation from '$lib/order/steps/CartConfirmation.svelte';
     import Eula from '$lib/order/steps/Eula.svelte';
     import OrderSucceed from '$lib/order/steps/OrderSucceed.svelte';
-    import { onMount } from 'svelte';
     import Meta from '$lib/Meta.svelte';
     import Recommendations from '$lib/order/steps/Recommendations.svelte';
     import { session } from '$app/stores';
-    import { goto } from '$app/navigation';
-    import { getDataForOrder } from '$lib/api/orders/get-data-for-order';
     import { createOrderFromCart } from '$lib/api/orders/create-order-from-cart';
 
-    let step: 'LOADING' | 'RECOMMENDATIONS' | 'CONFIRM_ITEMS' | 'EULA' | 'ORDERING' | 'SUCCESS' | 'ERROR' = 'LOADING';
-
-    let recommendations: Recommendation[];
-    let cart: CartItemPopulated[];
+    export let recommendations: Recommendation[];
+    export let cart: CartItemPopulated[];
     let validatedRecommendations: CartItemPopulated[] = [];
 
-    onMount(() => {
-        if (($session.user as User).cart.length === 0)
-            return goto('/cart');
+    type Step = 'RECOMMENDATIONS' | 'CONFIRM_ITEMS' | 'EULA' | 'ORDERING' | 'SUCCESS' | 'ERROR'
 
-        getDataForOrder()
-            .then(({ cart: c, recommendations: r, error: e }) => {
-                cart = c;
-                recommendations = r;
-                if (recommendations && recommendations.length > 0)
-                    step = 'RECOMMENDATIONS';
-                else if (recommendations)
-                    step = 'CONFIRM_ITEMS';
-                if (e)
-                    setError(new Error(e));
-            });
-    });
-
+    let step: Step = recommendations?.length > 0 ? 'RECOMMENDATIONS' : 'CONFIRM_ITEMS';
 
     let error: string | null = null;
 
@@ -79,9 +71,7 @@
 
 <h1>Passer la commande</h1>
 
-{#if step === 'LOADING'}
-    Chargement...
-{:else if step === 'RECOMMENDATIONS'}
+{#if step === 'RECOMMENDATIONS'}
     <Recommendations
             {recommendations}
             on:nextstep={() => step = 'CONFIRM_ITEMS'}

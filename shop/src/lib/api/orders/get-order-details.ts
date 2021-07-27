@@ -1,7 +1,9 @@
 import type { Order } from '$types/order';
 import { apiWrapper } from '$lib/api/api-wrapper';
+import type { ServerFetch } from '@sveltejs/kit';
 
-export const getOrderDetails = (id: string) => apiWrapper<Order>(`/order/me/${id}`, {
+export const getOrderDetails = (id: string, fetch?: ServerFetch) => apiWrapper<Order>(`/order/me/${id}`, {
+    fetch,
     reqPattern: '/order/me/:slug',
     validate(data, handleError) {
         if (!data?._id)

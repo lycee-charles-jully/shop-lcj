@@ -1,42 +1,38 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit/types/page';
+    import { getPendingOrders } from '$lib/api/orders/get-pending-orders';
 
-    export const load: Load = ({ session }) => {
+    export const load: Load = async ({ session, fetch }) => {
         if (!session.user)
             return {
                 redirect: '/login?r=/account',
                 status: 302,
             };
-        return {};
+
+        const { data: orders, error, status } = await getPendingOrders(fetch);
+
+        return {
+            props: {
+                orders,
+            },
+            error: error && new Error(error),
+            status,
+        };
     };
 </script>
 
 
 <script lang="ts">
     import type { Order } from '$types/order';
-    import type { User } from '$types/user';
     import { session } from '$app/stores';
     import Meta from '$lib/Meta.svelte';
     import OrderCard from '$lib/order/OrderCard.svelte';
     import OrderPreview from '$lib/order/OrderPreview.svelte';
     import AccountLink from '$lib/account/AccountLink.svelte';
     import DisconnectPopup from '$lib/account/DisconnectPopup.svelte';
-    import { onMount } from 'svelte';
-    import { getPendingOrders } from '$lib/api/orders/get-pending-orders';
 
+    export let orders: Order[] = [];
     let error: string | null = null;
-    let orders: Order[] = [];
-
-    onMount(async () => {
-        if (($session.user as User).pendingOrders)
-            getPendingOrders()
-                .then(({ error: err, data }) => {
-                    if (err)
-                        error = err;
-                    if (data)
-                        orders = data;
-                });
-    });
 
     let showDisconnectPopup = false;
 </script>
@@ -53,7 +49,7 @@
 {/if}
 
 
-{#if $session.user?.pendingOrders}
+{#if orders.length > 0}
 
     <h2 class="category-title">Mes commandes en cours</h2>
 
