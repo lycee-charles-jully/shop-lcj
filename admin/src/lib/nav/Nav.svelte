@@ -39,6 +39,7 @@
 
     <NavCategory label="Accueil">
         <NavLink href="" label="Dashboard"/>
+        <NavLink external href="/account" label="Retour au shop"/>
     </NavCategory>
 
     <NavCategory label="Produits">
