@@ -11,6 +11,6 @@
 
 
 <a class="mt-2 block {pageSelected ? 'text-gray-100' : ''} hover:text-gray-100 duration-200"
-   href="{!external ? '/admin/' : ''}{href}" rel={external ? 'external' : ''}>
+   href="{!external ? '/admin' : ''}{href}" rel={external ? 'external' : ''}>
     {label}
 </a>

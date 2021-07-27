@@ -44,13 +44,13 @@
 
     <NavCategory label="Produits">
         {#each productTypes as { namePluralized: label, _id }}
-            <NavLink {label} href="products/{_id}"/>
+            <NavLink {label} href="/products/{_id}"/>
         {/each}
-        <NavLink href="products/new" label="+ Nouveau type"/>
+        <NavLink href="/products/new" label="+ Nouveau type"/>
     </NavCategory>
 
     <NavCategory label="Commandes">
-        <NavLink href="orders" label="Toutes les commandes"/>
+        <NavLink href="/orders" label="Toutes les commandes"/>
     </NavCategory>
 </header>
 
