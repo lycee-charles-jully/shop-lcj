@@ -65,6 +65,29 @@ export class BackupController {
         return this.DbBackupService.restoreBackup(data);
     }
 
+    @Post('db/restore/file')
+    @HttpCode(200)
+    @ApiResponse({
+        status: 200,
+        description: 'Imports a backup into the database',
+    })
+    @UseInterceptors(FileInterceptor('backup', {
+        fileFilter(req: RequestWithUserEntity, file, cb) {
+            cb(null, file.mimetype === 'application/json');
+        },
+    }))
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        type: RestoreFullBackupDto,
+    })
+    // TODO: Rewrite this shit correctly
+    restoreDbFileBackup(@UploadedFile() backup: Express.Multer.File) {
+        return this.DbBackupService.restoreBackup({
+            backup: JSON.parse(`{"data": ${backup.buffer.toString()}}`),
+            drop: true,
+        });
+    }
+
     @Get('files/get')
     getFilesBackup(@Res() res: Response) {
         const archive = Archiver('zip');
