@@ -45,7 +45,7 @@ export class SitemapService {
 
     private async getCategories() {
         const categories = await this.CategoryModel
-            .find({ $where: 'this.products.length > 0' })
+            .find({ products: { $not: { $size: 0 } } })
             .select([ 'slug' ])
             .exec();
 
