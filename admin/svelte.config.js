@@ -5,7 +5,7 @@ import node from '@sveltejs/adapter-node';
 const config = {
     preprocess: sveltePreprocess(),
     kit: {
-        adapter: node(),
+        adapter: node({ out: 'build' }),
         target: '#svelte',
         appDir: 'admin',
         prerender: {
