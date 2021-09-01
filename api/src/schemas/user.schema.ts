@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { customAlphabet } from 'nanoid';
+import { nanoid, customAlphabet } from 'nanoid';
 import { RoleEnum } from '../auth/enum/role.enum';
 import { Cart, CartSchema } from './cart.schema';
 
@@ -65,6 +65,9 @@ export class User {
         type: mongoose.Schema.Types.Mixed,
     })
     verification?: { code?: string, attempts: number, expires: Date };
+
+    @Prop({ default: () => nanoid(8) })
+    tokenCode: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

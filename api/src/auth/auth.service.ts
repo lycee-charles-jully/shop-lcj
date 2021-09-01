@@ -76,7 +76,7 @@ export class AuthService {
     }
 
     login(user: UserDoc): JwtDataEntity {
-        const payload: JwtPayloadEntity = { sub: user._id };
+        const payload: JwtPayloadEntity = { sub: user._id, code: user.tokenCode };
         return {
             token: this.JwtService.sign(payload),
             expires: dayjs().add(8, 'day').toDate(),
