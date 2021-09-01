@@ -6,6 +6,7 @@ import { EmailService } from '../email/email.service';
 import { UserDoc } from '../schemas/user.schema';
 import { handleMongoError } from '../utils/handleMongoError';
 import { RegisterDto } from '../auth/dto/register.dto';
+import { UpdateAccountDto } from './dto/update-account-dto';
 
 @Injectable()
 export class AccountService {
@@ -32,6 +33,15 @@ export class AccountService {
             },
         );
         return newUser;
+    }
+
+    async updateAccount(userID: string, update: UpdateAccountDto) {
+        return this.UserModel
+            .findByIdAndUpdate(
+                userID,
+                update,
+                { omitUndefined: true, new: true },
+            );
     }
 
     async findUserByEmail(email: string) {

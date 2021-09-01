@@ -43,6 +43,7 @@
 
 <h2 class="category-title">Mon compte</h2>
 
+<AccountLink href="/account/update">Modifier mes informations</AccountLink>
 <AccountLink on:click={() => showDisconnectPopup = true}>Déconnexion</AccountLink>
 {#if $session.user?.role >= 2000}
     <AccountLink href="/admin" target="_self">Page Admin</AccountLink>
