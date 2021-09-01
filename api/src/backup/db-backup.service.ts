@@ -79,7 +79,7 @@ export class DbBackupService {
                 this.UserModel.insertMany(backup.data.users),
             ]);
         } catch (e) {
-            throw new InternalServerErrorException(e.message);
+            throw new InternalServerErrorException((e as Error).message);
         }
         return {
             success: true,
