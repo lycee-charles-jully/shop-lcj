@@ -15,6 +15,6 @@ export function staticImageUrl(img: string, width?: number) {
     if (STATICALLY_CDN) {
         return `${STATICALLY_CDN}${width ? `/w=${width}` : ''}/${img}`;
     } else {
-        return `http://localhost/${img}`;
+        return `/${img}`;
     }
 }
