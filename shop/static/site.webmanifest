@@ -1,26 +1,84 @@
 {
     "name": "Shop LCJ",
     "short_name": "Shop LCJ",
+    "description": "Shop LCJ est le site de réservation en ligne des objets vendus par le Lycée Charles Jully, comme des goodies ou des diffuseurs.",
     "icons": [
         {
             "src": "/android-chrome-192x192.png?v=1",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/maskable-192x192.png?v=1",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
         },
         {
             "src": "/android-chrome-256x256.png?v=1",
             "sizes": "256x256",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         },
         {
             "src": "/android-chrome-512x512.png?v=1",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/maskable-512x512.png?v=1",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
         }
     ],
     "lang": "fr",
     "theme_color": "#d00000",
     "background_color": "#E8ECF0",
     "start_url": "https://shop-lcj.fr/",
-    "display": "standalone"
+    "display": "standalone",
+    "shortcuts": [
+        {
+            "name": "Accueil",
+            "icons": [
+                {
+                    "src": "/icons/home-rounded-192.png",
+                    "sizes": "192x192"
+                }
+            ],
+            "url": "/"
+        },
+        {
+            "name": "Catégories",
+            "icons": [
+                {
+                    "src": "/icons/categories-rounded-192.png",
+                    "sizes": "192x192"
+                }
+            ],
+            "url": "/categories"
+        },
+        {
+            "name": "Panier",
+            "icons": [
+                {
+                    "src": "/icons/cart-rounded-192.png",
+                    "sizes": "192x192"
+                }
+            ],
+            "url": "/cart"
+        },
+        {
+            "name": "Compte",
+            "icons": [
+                {
+                    "src": "/icons/person-rounded-192.png",
+                    "sizes": "192x192"
+                }
+            ],
+            "url": "/account"
+        }
+    ]
 }
