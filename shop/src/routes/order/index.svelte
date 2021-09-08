@@ -11,6 +11,12 @@
 
         const { recommendations, cart, error } = await getDataForOrder(fetch);
 
+        if (cart.length === 0)
+            return {
+                redirect: '/cart',
+                status: 302,
+            };
+
         return {
             props: {
                 recommendations,
