@@ -25,6 +25,7 @@
     const emailBlacklist = [
         'monbureaunumerique.fr',
         'orange.fr',
+        'ac-nancy-metz.fr',
     ];
 
     let user = {

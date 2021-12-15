@@ -26,6 +26,7 @@ export class AuthService {
         const blacklist = [
             'monbureaunumerique.fr',
             'orange.fr',
+            'ac-nancy-metz.fr',
         ];
         const emailDomain = email.split('@')[1];
         if (blacklist.includes(emailDomain))
