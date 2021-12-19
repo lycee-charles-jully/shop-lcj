@@ -30,7 +30,7 @@ export class EmailService {
         );
     }
 
-    sentOrderCompletedEmail(to: string, data: OrderCompletedDataEntity) {
+    sentOrderReadyEmail(to: string, data: OrderCompletedDataEntity) {
         return this.sendEmail(
             'd-c671d986b5df40a3bf833f70b4d8467f',
             to,

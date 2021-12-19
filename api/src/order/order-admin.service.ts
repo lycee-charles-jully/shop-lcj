@@ -136,9 +136,9 @@ export class OrderAdminService {
             .then(res => {
                 const order = res[0]!;
                 const user = order.user as unknown as Omit<UserDoc, 'cart'>;
-                if (order.status === OrderStateEnum.COMPLETED)
+                if (order.status === OrderStateEnum.DELIVERING)
                     this.OrderService.getOrderDetailsForMail(order.items)
-                        .then(({ total, products }) => this.EmailService.sentOrderCompletedEmail(
+                        .then(({ total, products }) => this.EmailService.sentOrderReadyEmail(
                             user.email,
                             {
                                 name: user.firstname,
