@@ -11,11 +11,12 @@
 
         const { recommendations, cart, error } = await getDataForOrder(fetch);
 
-        if (cart.length === 0)
-            return {
-                redirect: '/cart',
-                status: 302,
-            };
+        // TODO: Fix bug where the user is redirected after completing purchase
+        // if (cart.length === 0)
+        //     return {
+        //         redirect: '/cart',
+        //         status: 302,
+        //     };
 
         return {
             props: {
