@@ -69,7 +69,7 @@ export class OrderService {
         };
     }
 
-    async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = []) {
+    async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = [], comment?: string) {
 
         // TODO: limit the number of orders per user
         if (user.cart.length < 1)
@@ -98,6 +98,7 @@ export class OrderService {
                     ...user.cart,
                     ...recommendations,
                 ],
+                comment,
             } as Omit<Order, 'createdAt' | 'modifiedAt' | 'status'>).save(),
             this.ProductModel.updateMany(
                 {

@@ -85,7 +85,7 @@ input, button, textarea {
     font-family: inherit;
 }
 
-input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"], textarea {
     background-color: var(--white);
     padding: var(--spacing);
     margin: var(--spacing) 0;
@@ -94,7 +94,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
     outline: none;
 }
 
-input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus, textarea:focus {
     border: 1px solid var(--primary);
 }
 

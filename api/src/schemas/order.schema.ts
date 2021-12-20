@@ -29,6 +29,9 @@ export class Order {
     @Prop({ required: true, type: [ CartSchema ] })
     items: Cart[];
 
+    @Prop()
+    comment?: string;
+
     @Prop({ default: [], type: [ OrderHistoryElementSchema ] })
     history: OrderHistoryElement[];
 }

@@ -44,6 +44,10 @@
     export let recommendations: Recommendation[];
     export let cart: CartItemPopulated[];
     let validatedRecommendations: CartItemPopulated[] = [];
+    let comment: string | null = null;
+
+    $: if (comment?.trim() === '')
+        comment = null;
 
     type Step = 'RECOMMENDATIONS' | 'CONFIRM_ITEMS' | 'EULA' | 'ORDERING' | 'SUCCESS' | 'ERROR'
 
@@ -59,7 +63,7 @@
 
     function order() {
         step = 'ORDERING';
-        createOrderFromCart(validatedRecommendations)
+        createOrderFromCart(validatedRecommendations, comment)
             .then(({ error: err }) => {
                 if (err)
                     return setError(new Error(err));
@@ -84,6 +88,7 @@
             bind:validatedRecommendations/>
 {:else if step === 'CONFIRM_ITEMS'}
     <CartConfirmation {cart} {validatedRecommendations}
+                      bind:comment
                       on:nextstep={() => step = 'EULA'}/>
 {:else if step === 'EULA'}
     <Eula on:nextstep={order}/>

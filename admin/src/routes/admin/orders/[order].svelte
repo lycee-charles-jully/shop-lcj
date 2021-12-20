@@ -159,6 +159,13 @@
         Numéro Jeun'Est : {orderDetails.user.jeunestNumber}
     </p>
 
+    {#if orderDetails.comment}
+        <h2 class="text-xl font-bold mb-2">Message du client</h2>
+
+        <p class="mb-4">
+            {orderDetails.comment}
+        </p>
+    {/if}
 
     <div class="print:hidden mb-4">
         <h2 class="text-xl font-bold mb-2">Actions</h2>

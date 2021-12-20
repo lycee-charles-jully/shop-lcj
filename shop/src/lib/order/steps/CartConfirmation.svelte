@@ -9,6 +9,7 @@
 
     export let cart: CartItemPopulated[] = [];
     export let validatedRecommendations: CartItemPopulated[] = [];
+    export let comment: string | null;
 
     const dispatch = createEventDispatcher();
 
@@ -50,6 +51,15 @@
     .bold {
         font-weight: bold;
     }
+
+    h4 {
+        margin-top: var(--short-spacing);
+    }
+
+    textarea {
+        width: 100%;
+        margin: 0 0 calc(var(--spacing) * 2);
+    }
 </style>
 
 
@@ -71,7 +81,10 @@
     </div>
 {/each}
 
-<h3>Total : {currencyFormat(totalPrice)}</h3>
+<h4>Total : {currencyFormat(totalPrice)}</h4>
+
+<h3>Ajouter un message sur la commande (facultatif)</h3>
+<textarea bind:value={comment}/>
 
 <Button nomargin on:click={() => dispatch('nextstep')}>
     C'est tout bon !

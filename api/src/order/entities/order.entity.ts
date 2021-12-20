@@ -27,6 +27,12 @@ export class OrderEntity {
     items: CartItemEntity[];
 
     @ApiProperty({
+        description: 'The optional comment the user made on his order',
+        required: false,
+    })
+    comment?: string;
+
+    @ApiProperty({
         description: 'The order\'s creation date',
         example: '2021-01-01T12:00:00.000Z',
     })

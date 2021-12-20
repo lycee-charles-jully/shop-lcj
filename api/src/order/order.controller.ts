@@ -65,8 +65,8 @@ export class OrderController {
         status: 201,
         type: OrderEntity,
     })
-    makeOrder(@User() user: UserDoc, @Body() { recommendations }: OrderFromCartDto) {
-        return this.OrderService.createOrderFromCart(user, recommendations);
+    makeOrder(@User() user: UserDoc, @Body() { recommendations, comment }: OrderFromCartDto) {
+        return this.OrderService.createOrderFromCart(user, recommendations, comment);
     }
 
     @Delete('/me/:order')

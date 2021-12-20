@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsArray, ValidateNested } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { transformTrim } from '../../utils/transformTrim';
 import { OrderRecommendationDto } from './order-recommendation.dto';
 
 export class OrderFromCartDto {
@@ -14,4 +15,14 @@ export class OrderFromCartDto {
         type: [ OrderRecommendationDto ],
     })
     recommendations: OrderRecommendationDto[] = [];
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    @Transform(transformTrim)
+    @ApiProperty({
+        required: false,
+        description: 'The optional comment the user made on his order',
+    })
+    comment?: string;
 }
