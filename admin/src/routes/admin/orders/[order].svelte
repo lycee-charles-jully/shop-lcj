@@ -141,7 +141,7 @@
     <p class="mb-4">Total : {itemCount} produits pour {currencyFormat(itemsTotalPrice)}</p>
 
 
-    <h2 class="text-xl font-bold mb-2">Détail du client</h2>
+    <h2 class="text-xl font-bold mb-2">Détails du client</h2>
 
     <p class="mb-4">
         Identité : {orderDetails.user.firstname} {orderDetails.user.lastname}<br/>
