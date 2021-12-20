@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
+import * as fs from 'fs';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -41,6 +42,8 @@ async function bootstrap() {
             .setVersion('1.0')
             .build();
         const document = SwaggerModule.createDocument(app, config);
+        if (process.env.NODE_ENV === 'development')
+            fs.writeFileSync('./swagger-spec.json', JSON.stringify(document, null, 2));
         SwaggerModule.setup('swagger', app, document, {
             swaggerOptions: { persistAuthorization: true },
             customSiteTitle: 'Shop LCJ API',

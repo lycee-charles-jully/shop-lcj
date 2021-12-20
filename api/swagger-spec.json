@@ -1,0 +1,2251 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentification"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "get": {
+        "operationId": "AuthController_refreshToken",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentification"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentification"
+        ]
+      }
+    },
+    "/api/v1/auth/verify": {
+      "post": {
+        "operationId": "AuthController_verify",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentification"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "get": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Authentification"
+        ]
+      }
+    },
+    "/api/v1/account/me": {
+      "get": {
+        "operationId": "AccountController_getUserData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "AccountController_updateUserData",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Account"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart": {
+      "get": {
+        "operationId": "CartController_getCart",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "CartController_addProductToCart",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/cart/{product}": {
+      "delete": {
+        "operationId": "CartController_removeProductFromCart",
+        "parameters": [
+          {
+            "name": "product",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "CartController_updateCartProduct",
+        "parameters": [
+          {
+            "name": "product",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Cart"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/order/me/pending": {
+      "get": {
+        "operationId": "OrderController_getUserOrders",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A list with the pending user orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/order/me/{order}": {
+      "get": {
+        "operationId": "OrderController_getUserOrder",
+        "parameters": [
+          {
+            "name": "order",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The detailled user's order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "OrderController_cancelOrder",
+        "parameters": [
+          {
+            "name": "order",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelOrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/order/from-cart": {
+      "post": {
+        "operationId": "OrderController_makeOrder",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderFromCartDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/order": {
+      "get": {
+        "operationId": "OrderController_getOrders",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "The maximum amount of orders to query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "The offset",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "states",
+            "required": false,
+            "in": "query",
+            "description": "The states, comma separated. If empty, all the states will be selected",
+            "example": "WAITING_FOR_ACCEPTATION,PREPARATING,DELIVERING",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the selected orders sorted by the createdAt field, with the basic product fields populated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/order/{order}": {
+      "get": {
+        "operationId": "OrderController_getOrderDetails",
+        "parameters": [
+          {
+            "name": "order",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The order details with populated data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/order/{order}/state": {
+      "patch": {
+        "operationId": "OrderController_changeOrderState",
+        "parameters": [
+          {
+            "name": "order",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOrderStateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/product": {
+      "get": {
+        "operationId": "ProductController_getProducts",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "The maximum amount of products to query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 20,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "The offset",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "The sorting order",
+            "schema": {
+              "default": "createdAt",
+              "enum": [
+                "createdAt",
+                "orderCount",
+                "viewCount",
+                "name"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "The slug of the category of the product",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nonAvailable",
+            "required": false,
+            "in": "query",
+            "description": "Include non available products",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the products without all the fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicProductEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      },
+      "post": {
+        "operationId": "ProductController_addProduct",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductWithImagesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/product/home": {
+      "get": {
+        "operationId": "ProductController_getHomeProducts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A list of popular and latest products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeProductsEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/api/v1/product/{slug}": {
+      "get": {
+        "operationId": "ProductController_getProduct",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stat",
+            "required": false,
+            "in": "query",
+            "description": "If the view count of the product should be increased",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The details of the products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/api/v1/product/{id}": {
+      "patch": {
+        "operationId": "ProductController_updateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ProductController_deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The deleted product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/product/{id}/images": {
+      "post": {
+        "operationId": "ProductController_addImagesToProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddImagesToProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/file/{file}": {
+      "get": {
+        "operationId": "FileController_getFile",
+        "parameters": [
+          {
+            "name": "file",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Files"
+        ]
+      }
+    },
+    "/api/v1/announce": {
+      "get": {
+        "operationId": "AnnounceController_getAllAnnounces",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PopulatedAnnounceEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Announce"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "AnnounceController_createAnnounce",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnnounceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PopulatedAnnounceEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Announce"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/category": {
+      "get": {
+        "operationId": "CategoryController_getCategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The list of the available categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryWithProductsEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Category"
+        ]
+      },
+      "post": {
+        "operationId": "CategoryController_addCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Category"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/category/{slug}": {
+      "get": {
+        "operationId": "CategoryController_getCategory",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The resolved category, without the products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Category"
+        ]
+      }
+    },
+    "/api/v1/category/{id}": {
+      "patch": {
+        "operationId": "CategoryController_updateCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Category"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/product-type": {
+      "get": {
+        "operationId": "ProductTypeController_getProductType",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A list of the differents available product types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductTypeEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product type"
+        ]
+      },
+      "post": {
+        "operationId": "ProductTypeController_addProductType",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductTypeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created product type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductTypeEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product type"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/product-type/{id}": {
+      "patch": {
+        "operationId": "ProductTypeController_updateProductType",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductTypeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The newly updated product type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductTypeEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product type"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/recommendation": {
+      "get": {
+        "operationId": "RecommendationController_getUserCartRecommendations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The list of recommendations for the user's cart",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRecommendationEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Recommendation"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "RecommendationController_createRecommendation",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRecommendationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created recommendation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Recommendation"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/db/get": {
+      "get": {
+        "operationId": "BackupController_getDbBackup",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get the database backup"
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/db/create": {
+      "get": {
+        "operationId": "BackupController_createDbBackup",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Create a database backup that is stored on the server"
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/db/restore": {
+      "post": {
+        "operationId": "BackupController_restoreDbBackup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RestoreDbBackupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Imports a backup into the database"
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/db/restore/file": {
+      "post": {
+        "operationId": "BackupController_restoreDbFileBackup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RestoreFullBackupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Imports a backup into the database"
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/files/get": {
+      "get": {
+        "operationId": "BackupController_getFilesBackup",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/get": {
+      "get": {
+        "operationId": "BackupController_getFullBackup",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/backup/restore": {
+      "post": {
+        "operationId": "BackupController_restoreFullBackup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/RestoreFullBackupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Backup"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/sitemap.xml": {
+      "get": {
+        "operationId": "SitemapController_getSitemap",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Sitemap"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Shop LCJ",
+    "description": "",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "elon.musk@tesla.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "P@ssw0rd"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user's email",
+            "example": "elon.musk@tesla.com"
+          },
+          "firstname": {
+            "type": "string",
+            "description": "The user's firstname",
+            "example": "Elon"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "The user's lastname",
+            "example": "Musk"
+          },
+          "password": {
+            "type": "string",
+            "description": "The user's password. It must be minimum eight characters, have at least one letter and one number",
+            "example": "P@ssw0rd"
+          },
+          "grade": {
+            "type": "string",
+            "description": "The user's grade",
+            "example": "TG1"
+          },
+          "jeunestNumber": {
+            "type": "string",
+            "description": "The user's Jeun'est card number",
+            "example": "12345"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The mobile phone number",
+            "example": "06.12.34.56.78"
+          }
+        },
+        "required": [
+          "email",
+          "firstname",
+          "lastname",
+          "password",
+          "grade",
+          "jeunestNumber",
+          "phone"
+        ]
+      },
+      "VerifyDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The verification code",
+            "minLength": 6,
+            "maxLength": 6,
+            "example": "123456"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "UpdateAccountDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "description": "The new user's firstname"
+          },
+          "lastname": {
+            "type": "string",
+            "description": "The new user's lastname"
+          },
+          "grade": {
+            "type": "string",
+            "description": "The new user's grade"
+          },
+          "jeunestNumber": {
+            "type": "string",
+            "description": "The new user's Jeun'est card number"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The new mobile phone number"
+          }
+        }
+      },
+      "AddProductDto": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "The product ID"
+          },
+          "count": {
+            "type": "number",
+            "description": "The product count to add",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "imagesUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CartItemEntity": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "The product ID"
+          },
+          "count": {
+            "type": "number",
+            "description": "The product count",
+            "default": 1
+          }
+        },
+        "required": [
+          "product",
+          "count"
+        ]
+      },
+      "OrderEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The order's ID"
+          },
+          "user": {
+            "type": "string",
+            "description": "The ID of the user that issued the order"
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the order",
+            "enum": [
+              "WAITING_FOR_ACCEPTATION",
+              "PREPARATING",
+              "DELIVERING",
+              "COMPLETED",
+              "USER_CANCELLED",
+              "ADMIN_CANCELLED"
+            ],
+            "example": "WAITING_FOR_ACCEPTATION"
+          },
+          "items": {
+            "description": "The list of the products in the order",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItemEntity"
+            }
+          },
+          "comment": {
+            "type": "string",
+            "description": "The optional comment the user made on his order"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The order's creation date",
+            "example": "2021-01-01T12:00:00.000Z"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "description": "The order's last update date",
+            "example": null
+          }
+        },
+        "required": [
+          "_id",
+          "user",
+          "status",
+          "items",
+          "createdAt"
+        ]
+      },
+      "OrderRecommendationDto": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "The ID of the product"
+          },
+          "count": {
+            "type": "number",
+            "description": "The number of products",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 1
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "OrderFromCartDto": {
+        "type": "object",
+        "properties": {
+          "recommendations": {
+            "description": "A list containing the chosen recommended products IDs and their count",
+            "default": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderRecommendationDto"
+            }
+          },
+          "comment": {
+            "type": "string",
+            "description": "The optional comment the user made on his order"
+          }
+        }
+      },
+      "CancelOrderDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "The reason of the cancellation"
+          }
+        }
+      },
+      "ChangeOrderStateDto": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "description": "The new state",
+            "enum": [
+              "WAITING_FOR_ACCEPTATION",
+              "PREPARATING",
+              "DELIVERING",
+              "COMPLETED",
+              "USER_CANCELLED",
+              "ADMIN_CANCELLED"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "description": "A small comment about the state change"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "BasicProductEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "available": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "slug",
+          "coverImageUrl",
+          "price",
+          "available"
+        ]
+      },
+      "BasicAnnounceEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "HOME"
+            ]
+          }
+        },
+        "required": [
+          "_id",
+          "message",
+          "position"
+        ]
+      },
+      "HomeProductsEntity": {
+        "type": "object",
+        "properties": {
+          "popular": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BasicProductEntity"
+            }
+          },
+          "latest": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BasicProductEntity"
+            }
+          },
+          "announces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BasicAnnounceEntity"
+            }
+          }
+        },
+        "required": [
+          "popular",
+          "latest",
+          "announces"
+        ]
+      },
+      "ProductTypeEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "namePluralized": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "namePluralized"
+        ]
+      },
+      "CategoryEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "productType": {
+            "$ref": "#/components/schemas/ProductTypeEntity"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "slug",
+          "productType"
+        ]
+      },
+      "ProductEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "coverImageUrl": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "imagesUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "$ref": "#/components/schemas/CategoryEntity"
+          },
+          "stockCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "slug",
+          "coverImageUrl",
+          "price",
+          "available",
+          "description",
+          "imagesUrls",
+          "category",
+          "stockCount"
+        ]
+      },
+      "DeleteProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product to delete. Used as a confirmation"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "AddImagesToProductDto": {
+        "type": "object",
+        "properties": {
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "description": "A list images to add at the end of the images URLs list."
+          }
+        },
+        "required": [
+          "images"
+        ]
+      },
+      "AddProductWithImagesDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The product's name"
+          },
+          "description": {
+            "type": "string",
+            "description": "The product's description"
+          },
+          "price": {
+            "type": "number",
+            "description": "The product's price"
+          },
+          "category": {
+            "type": "string",
+            "description": "The ID of the associated category"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "description": "A list of the product images. The first one will be used as the cover image."
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "price",
+          "category",
+          "images"
+        ]
+      },
+      "PopulatedAnnounceEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "HOME"
+            ]
+          },
+          "createdBy": {
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "_id",
+          "message",
+          "position",
+          "createdBy",
+          "createdAt",
+          "active"
+        ]
+      },
+      "CreateAnnounceDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string",
+            "enum": [
+              "HOME"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "message",
+          "position"
+        ]
+      },
+      "CategoryWithProductsEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "productType": {
+            "$ref": "#/components/schemas/ProductTypeEntity"
+          },
+          "product": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "_id",
+          "name",
+          "slug",
+          "productType",
+          "product"
+        ]
+      },
+      "AddCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The category's name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "The category's slug to display in the URL"
+          },
+          "productType": {
+            "type": "string",
+            "description": "The ID of the corresponding product type"
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "productType"
+        ]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        }
+      },
+      "AddProductTypeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The product type's name"
+          },
+          "namePluralized": {
+            "type": "string",
+            "description": "The product type's name pluralized"
+          }
+        },
+        "required": [
+          "name",
+          "namePluralized"
+        ]
+      },
+      "UpdateProductTypeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "namePluralized": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRecommendationEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recommendedProduct": {
+            "$ref": "#/components/schemas/BasicProductEntity"
+          }
+        },
+        "required": [
+          "_id",
+          "message",
+          "recommendedProduct"
+        ]
+      },
+      "CreateRecommendationDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the recommendation"
+          },
+          "message": {
+            "type": "string",
+            "description": "The message shown when the product is recommended"
+          },
+          "recommendedProduct": {
+            "type": "string",
+            "description": "The recommended product ID"
+          },
+          "onProducts": {
+            "default": [],
+            "description": "Products that triggers the recommendation",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "onCategories": {
+            "default": [],
+            "description": "Categories that triggers the recommendation",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "onProductTypes": {
+            "default": [],
+            "description": "Product types that triggers the recommendation",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "message",
+          "recommendedProduct"
+        ]
+      },
+      "RecommendationEntity": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recommendedProduct": {
+            "type": "string"
+          },
+          "onProducts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "onCategories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "onProductTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "message",
+          "recommendedProduct",
+          "onProducts",
+          "onCategories",
+          "onProductTypes"
+        ]
+      },
+      "BackupEntity": {
+        "type": "object",
+        "properties": {}
+      },
+      "RestoreDbBackupDto": {
+        "type": "object",
+        "properties": {
+          "backup": {
+            "description": "The backup data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BackupEntity"
+              }
+            ]
+          },
+          "drop": {
+            "type": "boolean",
+            "description": "If true, a backup of the current data will be issued and the database will be dropped before insertion",
+            "default": false
+          }
+        },
+        "required": [
+          "backup"
+        ]
+      },
+      "RestoreFullBackupDto": {
+        "type": "object",
+        "properties": {
+          "backup": {
+            "type": "string",
+            "format": "binary",
+            "description": "The zip file containing a backup"
+          }
+        },
+        "required": [
+          "backup"
+        ]
+      }
+    }
+  }
+}
