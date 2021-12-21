@@ -43,7 +43,6 @@
 <script lang="ts">
     import InputContainer from '$lib/InputContainer.svelte';
     import { goto } from '$app/navigation';
-    import EditProductImages from '$lib/EditProductImages.svelte';
 
     export let oldProduct;
     export let error: string | null = null;
@@ -131,6 +130,4 @@
 
         <button class="btn w-full mt-4" disabled={loading || !canUpdate}>Mettre à jour</button>
     </form>
-
-    <EditProductImages {oldProduct}/>
 {/if}

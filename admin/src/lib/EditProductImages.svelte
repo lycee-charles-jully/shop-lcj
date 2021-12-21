@@ -4,9 +4,9 @@
     import { processApiError } from '$lib/process-api-error';
     import { goto } from '$app/navigation';
 
-    export let oldProduct;
+    export let product;
+    export let error: string | null = null;
 
-    let error: string | null = null;
     let images: File[] = [];
     let initialImages: File[] = [];
     let loadingImagesUpdate = false;
@@ -40,7 +40,7 @@
                 body.append('images', img);
             });
 
-            const newImagesNames = await fetch(`${REMOTE_ENDPOINT}/v1/product/${oldProduct._id}/images`, {
+            const newImagesNames = await fetch(`${REMOTE_ENDPOINT}/v1/product/${product._id}/images`, {
                 method: 'POST',
                 body,
             })
@@ -80,7 +80,7 @@
         let imagesNames = imagesList.map(img => img.name);
 
         // Reorder images
-        await fetch(`${REMOTE_ENDPOINT}/v1/product/${oldProduct._id}`, {
+        await fetch(`${REMOTE_ENDPOINT}/v1/product/${product._id}`, {
             method: 'PATCH',
             body: JSON.stringify({
                 coverImageUrl: imagesNames[0],
@@ -106,16 +106,10 @@
 </script>
 
 
-<h2 class="text-xl font-bold mt-8 mb-4">Mettre à jour les images</h2>
-
-{#if error}
-    <p class="text-red-500 mb-2">{error}</p>
-{/if}
-
 <form on:submit|preventDefault={updateImages}>
     <ImagesPicker bind:images
                   disabled={loadingImagesUpdate || !initialImagesLoaded}
-                  initialImages={oldProduct.images.map(src => `${REMOTE_ENDPOINT}/v1/file/${src}`)}
+                  initialImages={product.images.map(src => `${REMOTE_ENDPOINT}/v1/file/${src}`)}
                   on:error={err => error = err?.detail?.main}
                   on:initialload={handleInitialImagesLoad}
                   required/>

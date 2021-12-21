@@ -155,10 +155,17 @@
                 commandé {product.orderCount} fois
             </div>
 
-            <button class="bg-blue-500 text-white w-full px-4 py-2 rounded mb-1"
-                    on:click={() => goto(`./${product.slug}/edit`)}>
-                Modifier
-            </button>
+            <a href="./{product.slug}/edit-info">
+                <button class="bg-blue-500 text-white w-full px-4 py-2 rounded mb-1">
+                    Modifier les informations
+                </button>
+            </a>
+
+            <a href="./{product.slug}/edit-images">
+                <button class="bg-blue-500 text-white w-full px-4 py-2 rounded mb-1">
+                    Modifier les images
+                </button>
+            </a>
 
             <button class="{product.available ? 'bg-red-500' : 'bg-green-500'} text-white w-full px-4 py-2 rounded mb-1"
                     on:click={toggleProductAvailability}>
