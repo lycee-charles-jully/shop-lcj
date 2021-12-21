@@ -36,7 +36,6 @@
 
 <script lang="ts">
     import ProductImages from '$lib/ProductImages.svelte';
-    import { sanitize } from '$lib/sanitize';
     import { currencyFormat } from '$lib/currency-format';
     import dayjs from 'dayjs';
     import { goto } from '$app/navigation';
@@ -126,8 +125,8 @@
     <div class="grid lg:grid-cols-2 gap-4">
         <ProductImages images={[product.coverImageUrl, ...product.imagesUrls]}/>
         <div>
-            <div class="mb-4">
-                {@html sanitize(product.description).replace(/\n/g, '<br/>')}
+            <div class="mb-4 whitespace-pre-wrap">
+                {product.description}
             </div>
             <div class="mb-1">
                 Prix : {currencyFormat(product.price)}
