@@ -46,8 +46,8 @@ export class Product {
     @Prop({ default: true })
     available: boolean;
 
-    @Prop({ default: -1 })
-    stockCount: number;
+    @Prop({ default: null, type: mongoose.Schema.Types.Mixed })
+    stockCount: number | null;
 }
 
 

@@ -145,7 +145,7 @@
                 Ajouté le {dayjs(product.createdAt).format('DD/MM/YYYY à HH:mm')}
             </div>
             <div class="mb-1">
-                {#if product.stockCount === -1}
+                {#if product.stockCount === null}
                     Gestion du stock désactivée
                 {:else}
                     Gestion du stock activée, {product.stockCount} restant
