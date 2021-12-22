@@ -14,7 +14,6 @@
         border-radius: var(--round);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 
     .card picture {
@@ -25,8 +24,11 @@
 
     .card span {
         text-align: center;
-        display: block;
         margin: var(--short-spacing) var(--spacing);
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 
