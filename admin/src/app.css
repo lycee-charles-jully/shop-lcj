@@ -45,4 +45,8 @@
     main {
         margin: 0 1cm 1cm 1cm !important;
     }
+
+    * {
+        @apply text-black;
+    }
 }

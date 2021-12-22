@@ -8,7 +8,7 @@
 
 <style>
     .labelled {
-        @apply rounded px-2 py-1 whitespace-nowrap text-gray-800 ;
+        @apply rounded px-2 py-1 whitespace-nowrap ;
     }
 
     .pellet {
@@ -29,5 +29,5 @@
 </style>
 
 
-<div class="labelled {shrink ? 'hidden md:inline-block' : ''} {background}">{label}</div>
+<div class="labelled text-gray-800 print:text-black {shrink ? 'hidden md:inline-block' : ''} {background}">{label}</div>
 <div class="pellet {shrink ? 'md:hidden' : 'hidden'} {background}"/>

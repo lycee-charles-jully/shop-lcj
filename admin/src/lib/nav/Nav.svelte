@@ -65,7 +65,7 @@
      on:click={() => showMobileHeader = false}/>
 
 
-<div class="hidden print:flex px-4 justify-between items-center" id="print-header">
+<div class="hidden print:flex justify-between items-center" id="print-header">
     <div class="flex items-center">
         <img class="h-8 w-8 inline mr-2" height="100" src={staticImageUrl('shop-icon-v1.png')} width="100"/>
         <span class="text-xl">Shop LCJ</span>
