@@ -150,4 +150,30 @@ export class OrderAdminService {
             });
     }
 
+
+    async getOrdersFromProduct(productID: string | mongoose.Types.ObjectId) {
+        const orders = await this.OrderModel.find({
+            items: {
+                $elemMatch: {
+                    product: productID,
+                },
+            },
+        })
+            .populate(
+                'user',
+                [ 'firstname', 'lastname' ],
+                this.UserModel,
+            )
+            .sort('-createdAt')
+            .select([ 'user', 'status', 'createdAt', 'modifiedAt', 'items' ])
+            .limit(20);
+
+        // Remove the whole cart and only returns the number of times the product is present in the cart
+        return orders.map(order => ({
+            ...order.toObject(),
+            items: undefined,
+            count: order.items.find(i => i.product.toString() == productID)?.count,
+        }));
+    }
+
 }

@@ -37,6 +37,7 @@
 <script lang="ts">
     import ProductImages from '$lib/ProductImages.svelte';
     import { currencyFormat } from '$lib/currency-format';
+    import ProductOrders from '$lib/ProductOrders.svelte';
     import dayjs from 'dayjs';
     import { goto } from '$app/navigation';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
@@ -177,6 +178,11 @@
             </button>
         </div>
     </div>
+
+    {#if product.orderCount > 0}
+        <h2 class="text-xl font-bold mt-4 mb-2">Dernières commandes du produit</h2>
+        <ProductOrders productID={product._id}/>
+    {/if}
 {/if}
 
 

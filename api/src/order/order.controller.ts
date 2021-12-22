@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Body,
     Controller,
     Delete,
@@ -22,6 +23,7 @@ import { ChangeOrderStateDto } from './dto/change-order-state.dto';
 import { GetOrdersFilterDto } from './dto/get-orders-filter.dto';
 import { OrderFromCartDto } from './dto/order-from-cart.dto';
 import { OrderEntity } from './entities/order.entity';
+import { ProductOrderEntity } from './entities/product-order.entity';
 import { OrderAdminService } from './order-admin.service';
 import { OrderService } from './order.service';
 
@@ -107,6 +109,20 @@ export class OrderController {
         @User('_id') user: string,
     ) {
         return this.OrderAdminService.updateOrderState(order, state, user, comment);
+    }
+
+    @Get('/product/:product')
+    @Auth(RoleEnum.PREPARATOR)
+    @ApiResponse({
+        status: 200,
+        description: 'A list of the last 20 orders for a certain product',
+        type: [ ProductOrderEntity ],
+    })
+    getProductOrders(@Param('product') product: string) {
+        if (!mongoose.isValidObjectId(product))
+            throw new BadRequestException('The product ID is not valid');
+
+        return this.OrderAdminService.getOrdersFromProduct(product);
     }
 
 }

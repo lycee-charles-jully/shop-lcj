@@ -539,6 +539,44 @@
         ]
       }
     },
+    "/api/v1/order/product/{product}": {
+      "get": {
+        "operationId": "OrderController_getProductOrders",
+        "parameters": [
+          {
+            "name": "product",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the last 20 orders for a certain product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductOrderEntity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "security": [
+          {
+            "cookie": []
+          }
+        ]
+      }
+    },
     "/api/v1/product": {
       "get": {
         "operationId": "ProductController_getProducts",
@@ -1716,6 +1754,54 @@
         },
         "required": [
           "state"
+        ]
+      },
+      "ProductOrderEntity": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The order ID",
+            "example": "60bbe561064e56d8c95cbe7d"
+          },
+          "status": {
+            "type": "string",
+            "description": "The order status",
+            "enum": [
+              "WAITING_FOR_ACCEPTATION",
+              "PREPARATING",
+              "DELIVERING",
+              "COMPLETED",
+              "USER_CANCELLED",
+              "ADMIN_CANCELLED"
+            ]
+          },
+          "user": {
+            "type": "object",
+            "description": "The ID, firstname and lastname of the user"
+          },
+          "count": {
+            "type": "number",
+            "description": "The number of units of the product in the order"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The order creation date",
+            "example": "2021-12-24T23:59:59.999Z"
+          },
+          "modifiedAt": {
+            "type": "string",
+            "description": "The order last modification date",
+            "example": "2021-12-24T23:59:59.999Z"
+          }
+        },
+        "required": [
+          "_id",
+          "status",
+          "user",
+          "count",
+          "createdAt",
+          "modifiedAt"
         ]
       },
       "BasicProductEntity": {
