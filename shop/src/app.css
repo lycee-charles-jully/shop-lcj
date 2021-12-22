@@ -39,7 +39,7 @@
 body, html {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: Quicksand, sans-serif;
     color: var(--black);
     background-color: var(--dark-gray);
     overflow: hidden;
@@ -93,6 +93,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
     border: 1px solid transparent;
     border-radius: var(--round);
     outline: none;
+    font-family: Montserrat, sans-serif;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus, textarea:focus {
@@ -111,6 +112,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     outline: none;
     cursor: pointer;
     font-size: 1rem;
+    font-weight: bold;
 }
 
 .btn-secondary {
@@ -124,6 +126,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     outline: none;
     cursor: pointer;
     font-size: 1rem;
+    font-weight: bold;
 }
 
 .disabled {
