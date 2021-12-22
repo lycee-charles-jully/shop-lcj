@@ -6,7 +6,7 @@
     export let external;
 
     let pageSelected;
-    $: pageSelected = $page.path === `/admin/${href}` || `${$page.path}/` === `/admin/${href}`;
+    $: pageSelected = $page.path === `/admin${href}` || `${$page.path}/` === `/admin${href}`;
 </script>
 
 
