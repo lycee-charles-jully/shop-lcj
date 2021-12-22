@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    import OrderStatus from '$lib/OrderStatus.svelte';
+    import OrderStatus from '$lib/order-status/OrderStatus.svelte';
     import Item from '$lib/Item.svelte';
     import NextStatus from '$lib/NextStatus.svelte';
     import InputContainer from '$lib/InputContainer.svelte';

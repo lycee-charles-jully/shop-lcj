@@ -1,6 +1,6 @@
 <script lang="ts">
     import Item from '$lib/Item.svelte';
-    import OrderStatus from '$lib/OrderStatus.svelte';
+    import OrderStatus from '$lib/order-status/OrderStatus.svelte';
     import OrderModeSelect from '$lib/OrderModeSelect.svelte';
     import { REMOTE_ENDPOINT } from '$lib/api-url';
     import { page } from '$app/stores';
@@ -112,7 +112,7 @@
                     Commande de {order.user.firstname} {order.user.lastname}
                     du {dayjs(order.createdAt).format('DD/MM à HH:mm')}
                 </span>
-                <OrderStatus status={order.status}/>
+                <OrderStatus status={order.status} shrink/>
             </div>
         </Item>
     {/each}

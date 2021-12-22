@@ -1,6 +1,6 @@
 <script>
     import { API_URL } from '$lib/api-url';
-    import OrderStatus from '$lib/OrderStatus.svelte';
+    import OrderStatus from '$lib/order-status/OrderStatus.svelte';
     import dayjs from 'dayjs';
     import { onMount } from 'svelte';
 
@@ -41,9 +41,7 @@
             <b>{order.count}x</b> de {order.user.firstname} {order.user.lastname}
                 le {dayjs(order.createdAt).format('DD/MM/YY')}
             </span>
-            <div class="hidden sm:block">
-                <OrderStatus status={order.status}/>
-            </div>
+            <OrderStatus status={order.status} shrink/>
         </a>
     {/each}
 {/if}
