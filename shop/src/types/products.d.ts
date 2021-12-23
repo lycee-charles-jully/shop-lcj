@@ -7,6 +7,7 @@ export interface BasicProduct {
     coverImageUrl: string;
     price: number;
     available: boolean;
+    stockCount: number | null;
 }
 
 export interface Product extends BasicProduct {

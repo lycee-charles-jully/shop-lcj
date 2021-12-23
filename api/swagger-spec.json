@@ -1824,6 +1824,10 @@
           },
           "available": {
             "type": "boolean"
+          },
+          "stockCount": {
+            "type": "number",
+            "nullable": true
           }
         },
         "required": [
@@ -1832,7 +1836,8 @@
           "slug",
           "coverImageUrl",
           "price",
-          "available"
+          "available",
+          "stockCount"
         ]
       },
       "BasicAnnounceEntity": {
@@ -1948,6 +1953,10 @@
           "available": {
             "type": "boolean"
           },
+          "stockCount": {
+            "type": "number",
+            "nullable": true
+          },
           "description": {
             "type": "string"
           },
@@ -1959,9 +1968,6 @@
           },
           "category": {
             "$ref": "#/components/schemas/CategoryEntity"
-          },
-          "stockCount": {
-            "type": "number"
           }
         },
         "required": [
@@ -1971,10 +1977,10 @@
           "coverImageUrl",
           "price",
           "available",
+          "stockCount",
           "description",
           "imagesUrls",
-          "category",
-          "stockCount"
+          "category"
         ]
       },
       "DeleteProductDto": {

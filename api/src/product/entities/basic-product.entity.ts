@@ -18,6 +18,12 @@ export class BasicProductEntity {
 
     @ApiProperty()
     available: boolean;
+
+    @ApiProperty({
+        type: Number,
+        nullable: true,
+    })
+    stockCount: number | null;
 }
 
-export const basicProductFields = [ '_id', 'name', 'slug', 'coverImageUrl', 'price', 'available' ];
+export const basicProductFields = [ '_id', 'name', 'slug', 'coverImageUrl', 'price', 'available', 'stockCount' ];
