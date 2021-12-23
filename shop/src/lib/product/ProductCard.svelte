@@ -102,7 +102,7 @@
     {#if product.stockCount !== null && product.stockCount <= 5}
         <div class="stock-display">
             {#if product.stockCount <= 0}
-                Ruptude de stock
+                Rupture de stock
             {:else}
                 {product.stockCount} restant{product.stockCount > 1 ? 's' : ''}
             {/if}
