@@ -89,7 +89,9 @@
 
     <p>
         Quantité :
-        <QuantitySelector bind:quantity disabled={process}/>
+        <QuantitySelector bind:quantity
+                          disabled={process}
+                          max={product.stockCount && product.stockCount < 10 ? product.stockCount : 10}/>
     </p>
 
     <p>Prix total : {currencyFormat(product.price * quantity)}</p>

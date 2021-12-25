@@ -138,7 +138,9 @@
         <div class="quantity-select" style="transform: translateY(-2px)">
                 <span>
                     Quantité :
-                    <QuantitySelector bind:quantity={count} on:update={updateProductCount}/>
+                    <QuantitySelector bind:quantity={count}
+                                      max={product.stockCount && product.stockCount < 10 ? product.stockCount : 10}
+                                      on:update={updateProductCount}/>
                 </span>
             <img class="trash-icon" height="24" on:click={deleteItem} src="/icons/trash-highlight.svg" width="24"/>
         </div>
