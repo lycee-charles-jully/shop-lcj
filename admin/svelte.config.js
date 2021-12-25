@@ -11,6 +11,11 @@ const config = {
         prerender: {
             enabled: false,
         },
+    },
+    onwarn(warning, defaultHandler) {
+        if (warning.message === 'A11y: <img> element should have an alt attribute')
+            return;
+        defaultHandler(warning);
     }
 };
 

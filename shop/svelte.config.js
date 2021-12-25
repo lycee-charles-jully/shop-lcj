@@ -7,6 +7,11 @@ const config = {
     kit: {
         adapter: node({ out: 'build' }),
         target: '#svelte',
+    },
+    onwarn(warning, defaultHandler) {
+        if (warning.message === 'A11y: <img> element should have an alt attribute')
+            return;
+        defaultHandler(warning);
     }
 };
 
