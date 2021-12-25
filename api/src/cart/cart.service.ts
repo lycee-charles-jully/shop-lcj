@@ -9,7 +9,7 @@ import { Model, PopulateOptions } from 'mongoose';
 import { basicProductFields } from '../product/entities/basic-product.entity';
 import { ProductDoc } from '../schemas/product.schema';
 import { UserDoc } from '../schemas/user.schema';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { UpdateCartProductDto } from './dto/update-cart-product.dto';
 
 @Injectable()
 export class CartService {
@@ -82,7 +82,7 @@ export class CartService {
 
     }
 
-    async updateItem(user: UserDoc, product: string, update: UpdateProductDto) {
+    async updateItem(user: UserDoc, product: string, update: UpdateCartProductDto) {
 
         if (!await this.ProductModel.exists({ _id: product }))
             throw new NotFoundException('Product not found');

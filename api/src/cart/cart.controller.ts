@@ -5,8 +5,8 @@ import { User } from '../auth/decorators/user.decorator';
 import { RoleEnum } from '../auth/enum/role.enum';
 import { UserDoc } from '../schemas/user.schema';
 import { CartService } from './cart.service';
-import { AddProductDto } from './dto/add-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { AddCartProductDto } from './dto/add-cart-product.dto';
+import { UpdateCartProductDto } from './dto/update-cart-product.dto';
 
 @ApiTags('Cart')
 @Controller('cart')
@@ -23,7 +23,7 @@ export class CartController {
 
     @Post()
     @Auth(RoleEnum.USER)
-    addProductToCart(@User() user: UserDoc, @Body() { product, count }: AddProductDto) {
+    addProductToCart(@User() user: UserDoc, @Body() { product, count }: AddCartProductDto) {
         return this.CartService.addItemToCart(user, product, count);
     }
 
@@ -38,7 +38,7 @@ export class CartController {
     updateCartProduct(
         @User() user: UserDoc,
         @Param('product') product: string,
-        @Body() update: UpdateProductDto,
+        @Body() update: UpdateCartProductDto,
     ) {
         return this.CartService.updateItem(user, product, update);
     }

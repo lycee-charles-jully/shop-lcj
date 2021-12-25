@@ -2,7 +2,7 @@ import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsMongoId, IsNumber, Max, Min } from 'class-validator';
 
-export class AddProductDto {
+export class AddCartProductDto {
     @IsMongoId()
     @ApiProperty({
         description: 'The product ID',
