@@ -1,6 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PopulateOptions } from 'mongoose';
+import { basicProductFields } from '../product/entities/basic-product.entity';
 import { ProductDoc } from '../schemas/product.schema';
 import { UserDoc } from '../schemas/user.schema';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -20,7 +21,7 @@ export class CartService {
             .populate({
                 path: 'cart.product',
                 model: this.ProductModel,
-                select: [ '_id', 'name', 'price', 'slug', 'coverImageUrl' ],
+                select: basicProductFields,
             } as PopulateOptions)
             .exec()
             .then(user => user?.cart);
