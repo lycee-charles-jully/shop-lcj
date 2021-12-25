@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+    ConflictException,
+    ForbiddenException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PopulateOptions } from 'mongoose';
 import { basicProductFields } from '../product/entities/basic-product.entity';
@@ -27,12 +32,17 @@ export class CartService {
             .then(user => user?.cart);
     }
 
-    async addItemToCart(user: UserDoc, product: string, count = 1) {
+    async addItemToCart(user: UserDoc, productID: string, count = 1) {
 
-        if (!await this.ProductModel.exists({ _id: product }))
+        const product = await this.ProductModel.findById(productID);
+
+        if (!product)
             throw new NotFoundException('Product not found');
 
-        if (user.cart.find(c => c.product.toHexString() === product))
+        if (!product.available)
+            throw new ForbiddenException('Product is not available');
+
+        if (user.cart.find(c => c.product.toHexString() === productID))
             throw new ConflictException('Product already in cart');
 
         return this.UserModel.findOneAndUpdate(
@@ -40,7 +50,7 @@ export class CartService {
             {
                 $push: {
                     cart: {
-                        product,
+                        product: productID,
                         count,
                     },
                 },
