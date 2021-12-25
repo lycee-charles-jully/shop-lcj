@@ -42,8 +42,14 @@ export class CartService {
         if (!product.available)
             throw new ForbiddenException('Product is not available');
 
+        if (product.stockCount === 0)
+            throw new ForbiddenException('Product is out of stock');
+
         if (user.cart.find(c => c.product.toHexString() === productID))
             throw new ConflictException('Product already in cart');
+
+        if (typeof product.stockCount === 'number' && count > product.stockCount)
+            throw new ForbiddenException('Cannot add more items than there is in stock');
 
         return this.UserModel.findOneAndUpdate(
             { _id: user._id },
@@ -82,24 +88,34 @@ export class CartService {
 
     }
 
-    async updateItem(user: UserDoc, product: string, update: UpdateCartProductDto) {
+    async updateItem(user: UserDoc, productID: string, update: UpdateCartProductDto) {
 
-        if (!await this.ProductModel.exists({ _id: product }))
+        const product = await this.ProductModel.findById(productID);
+
+        if (!product)
             throw new NotFoundException('Product not found');
+
+        if (product.stockCount === 0)
+            throw new ForbiddenException('Product is out of stock');
+
+        // If the new count is greater than the stock, put the new count at the stock count
+        let newCount = update.count;
+        if (newCount && typeof product.stockCount === 'number' && newCount > product.stockCount)
+            newCount = product.stockCount;
 
         return this.UserModel.findOneAndUpdate(
             { _id: user._id },
-            { 'cart.$[item].count': update.count },
+            { 'cart.$[item].count': newCount },
             {
                 arrayFilters: [
-                    { 'item.product': product },
+                    { 'item.product': productID },
                 ],
                 new: true,
                 omitUndefined: true,
             },
         )
             .exec()
-            .then(usr => usr?.cart?.find(i => i.product.toHexString() === product))
+            .then(usr => usr?.cart?.find(i => i.product.toHexString() === productID))
             .then(item => {
                 if (!item)
                     throw new NotFoundException('Product is not in cart');
