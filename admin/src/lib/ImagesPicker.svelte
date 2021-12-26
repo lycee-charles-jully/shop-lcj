@@ -6,7 +6,6 @@
     export let disabled = false;
     export let required = false;
     export let allowDuplicates = false;
-    export let id;
     export let initialImages = [];
 
     const dispatch = createEventDispatcher();
