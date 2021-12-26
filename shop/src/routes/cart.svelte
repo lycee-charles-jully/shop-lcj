@@ -35,6 +35,12 @@
     export let items: CartItemPopulated[] = [];
 
     let error: string | null = null;
+
+    let isCartValid;
+    $: isCartValid = items.every(item =>
+        item.product.available
+        && !(typeof item.product.stockCount === 'number' && item.count > item.product.stockCount),
+    );
 </script>
 
 
@@ -58,7 +64,7 @@
                   on:error={ev => error = ev.detail?.message || ev.details}
                   on:delete={ev => items = items.filter(i => i.product._id !== ev.detail)}/>
     {/each}
-    <Button on:click={() => goto('/order')}>
+    <Button on:click={() => isCartValid && goto('/order')} disabled={!isCartValid}>
         Commander ({currencyFormat(items.reduce((prev, val) => prev + val.product.price * val.count, 0))})
     </Button>
 

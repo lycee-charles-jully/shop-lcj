@@ -14,6 +14,17 @@
     export let count = 1;
 
 
+    let invalidItemMessage: null | string;
+    $: if (!product.available)
+        invalidItemMessage = 'Ce produit n\'est plus disponible. Veuillez le retirer de votre panier.';
+    else if (product.stockCount === 0)
+        invalidItemMessage = 'Ce produit est en rupture de stock. Veuillez le retirer de votre panier.';
+    else if (typeof product.stockCount === 'number' && product.stockCount < count)
+        invalidItemMessage = `Il ne reste que ${product.stockCount} exemplaire${product.stockCount > 1 ? 's' : ''} de ce produit. Veuillez réduire la quantité.`;
+    else
+        invalidItemMessage = null;
+
+
     const dispatch = createEventDispatcher();
 
 
@@ -66,6 +77,10 @@
 
 
 <style>
+    p.error-message {
+        margin: var(--spacing) 0 3px;
+    }
+
     .card {
         --card-height: 100px;
         width: 100%;
@@ -74,6 +89,10 @@
         margin: 0 0 var(--spacing);
         border-radius: var(--round);
         display: flex;
+    }
+
+    .card.invalid-item {
+        outline: 2px solid red;
     }
 
     .thumbnail {
@@ -122,7 +141,11 @@
 </style>
 
 
-<div class="card" class:disabled={deletingItem}>
+{#if invalidItemMessage}
+    <p class="error-message">{invalidItemMessage}</p>
+{/if}
+
+<div class="card" class:disabled={deletingItem} class:invalid-item={invalidItemMessage}>
     <a class="thumbnail" href="/product/{product.slug}">
         <picture class="product-img" use:imgload>
             <img height="200" src={imageUrl(product.coverImageUrl, 200)} width="200"/>
@@ -140,6 +163,7 @@
                     Quantité :
                     <QuantitySelector bind:quantity={count}
                                       max={product.stockCount && product.stockCount < 10 ? product.stockCount : 10}
+                                      disabled={!product.available}
                                       on:update={updateProductCount}/>
                 </span>
             <img class="trash-icon" height="24" on:click={deleteItem} src="/icons/trash-highlight.svg" width="24"/>
