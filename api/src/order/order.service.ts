@@ -70,6 +70,7 @@ export class OrderService {
         };
     }
 
+
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = [], comment?: string) {
 
         if (user.cart.length < 1)
@@ -86,6 +87,36 @@ export class OrderService {
                 .then(docs => docs.map(doc => doc.recommendedProduct.toHexString()));
             recommendations = recommendations.filter(r => recommendableProducts.includes(r.product));
         }
+
+        // Get the full details of the product the user has chosen
+        const orderProducts = await this.ProductModel.find({
+            _id: {
+                $in: [
+                    ...user.cart.map(i => i.product),
+                    ...recommendations.map(i => i.product),
+                ],
+            },
+        }).exec();
+
+        // Link the detailled products with the quantity they are requested with
+        const orderProductsWithCount = orderProducts.map(product => {
+            // Find the quantity requested inside the cart
+            const { count } = ([ ...user.cart, ...recommendations ] as OrderRecommendationDto[])
+                .find(p => String(p.product) === String(product._id))!;
+            return { product, count };
+        });
+
+        // Verifies if the cart is valid
+        orderProductsWithCount.forEach(({ product, count }) => {
+            if (!product.available)
+                throw new ForbiddenException(`${product.name} (${product.slug}) is not available`);
+
+            if (product.stockCount === 0)
+                throw new ForbiddenException(`${product.name} (${product.slug}) is out of stock`);
+
+            if (typeof product.stockCount === 'number' && count > product.stockCount)
+                throw new ForbiddenException(`${product.name} (${product.slug}) is not in sufficient stock (${count} requested, ${product.stockCount} available)`);
+        });
 
         return Promise.all([
             this.UserModel.findByIdAndUpdate(user._id, {
@@ -140,6 +171,7 @@ export class OrderService {
                 throw new InternalServerErrorException('Unable to create order');
             });
     }
+
 
     getOrder(orderID: string | mongoose.Types.ObjectId, sendPrivateData = false) {
 
