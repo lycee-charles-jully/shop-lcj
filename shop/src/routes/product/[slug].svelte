@@ -85,6 +85,10 @@
 {#if $session.user?.cart?.find(item => item.product === product._id)}
     <!-- TODO: more control (view and change count, remove) -->
     <p>Ce produit est déja dans <a href="/cart">votre panier</a>.</p>
+{:else if !product.available}
+    <p>Ce produit n'est pas disponible.</p>
+{:else if product.stockCount === 0}
+    <p>Ce produit est en rupture de stock.</p>
 {:else}
     <Button on:click={() => $session.user
         ? showBuyPopup = true
