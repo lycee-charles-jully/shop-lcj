@@ -58,6 +58,10 @@
 
     textarea {
         width: 100%;
+        min-height: 50px;
+        height: 100px;
+        max-height: 300px;
+        resize: vertical;
         margin: 0 0 calc(var(--spacing) * 2);
     }
 </style>
