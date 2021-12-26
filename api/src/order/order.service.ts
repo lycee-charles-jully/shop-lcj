@@ -71,6 +71,25 @@ export class OrderService {
     }
 
 
+    async populateOrderItems(order: { product: string | mongoose.Types.ObjectId, count: number }[]) {
+        // Get the full details of the product the user has chosen
+        const orderProducts = await this.ProductModel.find({
+            _id: {
+                $in: [
+                    ...order.map(i => i.product),
+                ],
+            },
+        }).exec();
+
+        // Link the detailled products with the quantity they are requested with
+        return orderProducts.map(product => {
+            // Find the quantity requested inside the cart
+            const { count } = order.find(p => String(p.product) === String(product._id))!;
+            return { product, count };
+        });
+    }
+
+
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = [], comment?: string) {
 
         if (user.cart.length < 1)
@@ -88,23 +107,8 @@ export class OrderService {
             recommendations = recommendations.filter(r => recommendableProducts.includes(r.product));
         }
 
-        // Get the full details of the product the user has chosen
-        const orderProducts = await this.ProductModel.find({
-            _id: {
-                $in: [
-                    ...user.cart.map(i => i.product),
-                    ...recommendations.map(i => i.product),
-                ],
-            },
-        }).exec();
-
         // Link the detailled products with the quantity they are requested with
-        const orderProductsWithCount = orderProducts.map(product => {
-            // Find the quantity requested inside the cart
-            const { count } = ([ ...user.cart, ...recommendations ] as OrderRecommendationDto[])
-                .find(p => String(p.product) === String(product._id))!;
-            return { product, count };
-        });
+        const orderProductsWithCount = await this.populateOrderItems([ ...user.cart, ...recommendations ]);
 
         // Verifies if the cart is valid
         orderProductsWithCount.forEach(({ product, count }) => {
@@ -134,19 +138,12 @@ export class OrderService {
                 ],
                 comment,
             } as Omit<Order, 'createdAt' | 'modifiedAt' | 'status'>).save(),
-            this.ProductModel.updateMany(
-                {
-                    _id: {
-                        $in: [
-                            ...user.cart.map(i => i.product),
-                            ...recommendations.map(i => i.product),
-                        ],
-                    },
+            ...orderProductsWithCount.map(({ product, count }) => product.updateOne({
+                $inc: {
+                    orderCount: 1,
+                    ...(typeof product.stockCount === 'number' ? { stockCount: -1 * count } : {}), // Decrease stock if present
                 },
-                {
-                    $inc: { orderCount: 1 },
-                },
-            ).exec(),
+            })),
         ])
             .then(res => {
                 this.getOrderDetailsForMail([ ...(user.cart as Cart[]), ...(recommendations as unknown as Cart[]) ])
@@ -220,6 +217,8 @@ export class OrderService {
         if (order.createdAt.getTime() + (86400 * 1000 * 2) < Date.now())
             throw new UnauthorizedException('You cannot cancel an order that is older than 2 days');
 
+        const orderItems = await this.populateOrderItems(order.items);
+
         return Promise.all([
             this.OrderModel.findByIdAndUpdate(orderID, {
                 status: OrderStateEnum.USER_CANCELLED,
@@ -252,6 +251,12 @@ export class OrderService {
                     pendingOrders: -1,
                 },
             }).exec(),
+            ...orderItems.map(({ product, count }) => product.updateOne({
+                $inc: {
+                    orderCount: -1,
+                    ...(typeof product.stockCount === 'number' ? { stockCount: count } : {}), // Increase stock if present
+                },
+            })),
         ])
             .then(res => res[0]);
     }

@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
-import { Model, PopulateOptions } from 'mongoose';
+import mongoose, { Model, PopulateOptions } from 'mongoose';
 import { EmailService } from '../email/email.service';
 import { basicProductFields } from '../product/entities/basic-product.entity';
 import { OrderHistoryElement } from '../schemas/order-history-element.schema';
@@ -10,7 +9,7 @@ import { ProductDoc } from '../schemas/product.schema';
 import { RecommendationDoc } from '../schemas/recommendation.schema';
 import { UserDoc } from '../schemas/user.schema';
 import { GetOrdersFilterDto } from './dto/get-orders-filter.dto';
-import { OrderStateEnum, pendingStates } from './enum/order-state.enum';
+import { OrderStateEnum } from './enum/order-state.enum';
 import { OrderService } from './order.service';
 
 @Injectable()
@@ -83,7 +82,7 @@ export class OrderAdminService {
     async updateOrderState(orderID: string | mongoose.Types.ObjectId, state: OrderStateEnum, user: string | mongoose.Types.ObjectId, comment?: string) {
         const order = await this.OrderModel
             .findById(orderID)
-            .select([ 'status', 'user' ])
+            .select([ 'status', 'user', state === OrderStateEnum.ADMIN_CANCELLED && 'items' ])
             .exec();
 
         if (!order)
@@ -92,6 +91,11 @@ export class OrderAdminService {
         const { status: currentState, user: orderUser } = order;
 
         OrderAdminService.checkCanUpdateState(currentState, state);
+
+        // If the order is cancelled, get the items to put them back in stock
+        let orderItems;
+        if (state === OrderStateEnum.ADMIN_CANCELLED)
+            orderItems = await this.OrderService.populateOrderItems(order.items);
 
         return Promise.all([
             this.OrderModel
@@ -132,6 +136,16 @@ export class OrderAdminService {
                     },
                 })
                 : null,
+            // Put back the stock
+            ...((state === OrderStateEnum.ADMIN_CANCELLED && orderItems)
+                    ? orderItems.map(({ product, count }) => product.updateOne({
+                        $inc: {
+                            orderCount: -1,
+                            ...(typeof product.stockCount === 'number' ? { stockCount: count } : {}), // Increase stock if present
+                        },
+                    }))
+                    : []
+            ),
         ])
             .then(res => {
                 const order = res[0]!;
