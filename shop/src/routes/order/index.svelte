@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+    import type { User } from '$types/user';
     import type { Load } from '@sveltejs/kit/types/page';
     import { getDataForOrder } from '$lib/api/orders/get-data-for-order';
 
@@ -19,9 +20,10 @@
         //     };
 
         const isCartValid = cart.every(item =>
-            item.product.available
-            && !(typeof item.product.stockCount === 'number' && item.count > item.product.stockCount),
-        );
+                item.product.available
+                && !(typeof item.product.stockCount === 'number' && item.count > item.product.stockCount),
+            )
+            && (session.user as User).pendingOrders < 5;
         if (!isCartValid)
             return {
                 redirect: '/cart',

@@ -31,6 +31,7 @@
     import { session } from '$app/stores';
     import { goto } from '$app/navigation';
     import { currencyFormat } from '$lib/helpers/currency-format';
+    import type { User } from '$types/user';
 
     export let items: CartItemPopulated[] = [];
 
@@ -38,14 +39,26 @@
 
     let isCartValid;
     $: isCartValid = items.every(item =>
-        item.product.available
-        && !(typeof item.product.stockCount === 'number' && item.count > item.product.stockCount),
-    );
+            item.product.available
+            && !(typeof item.product.stockCount === 'number' && item.count > item.product.stockCount),
+        )
+        && ($session.user as User).pendingOrders < 5;
 </script>
+
+
+<style>
+    p.error-message:first-of-type {
+        margin-top: 0;
+    }
+</style>
 
 
 <Meta noindex title="Panier"/>
 
+
+{#if $session.user.pendingOrders >= 5}
+    <p class="error-message">Vous avez déjà 5 commandes en cours, impossible d'en faire plus pour le moment.</p>
+{/if}
 
 {#if error}<p class="error-message">{error}</p>{/if}
 

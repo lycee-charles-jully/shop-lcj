@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -71,9 +72,11 @@ export class OrderService {
 
     async createOrderFromCart(user: UserDoc, recommendations: OrderRecommendationDto[] = [], comment?: string) {
 
-        // TODO: limit the number of orders per user
         if (user.cart.length < 1)
             throw new UnauthorizedException('Cannot create an order, your cart is empty');
+
+        if (user.pendingOrders >= 5)
+            throw new ForbiddenException('Cannot have more than 5 concurrent orders');
 
         if (recommendations.length > 0) {
             const recommendableProducts = await this.RecommendationModel
