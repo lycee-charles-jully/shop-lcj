@@ -77,8 +77,12 @@ export class RecommendationService {
     }
 
 
+    /**
+     * Get the products IDs, categories IDs and products types IDs for the items in the cart
+     */
     private resolveCartProductDeps(cart: Cart[]): Promise<ResolvedDep> {
         return this.ProductModel
+            // Get products in cart
             .find({
                 _id: {
                     $in: cart.reduce(
@@ -88,12 +92,14 @@ export class RecommendationService {
                 },
             })
             .select([ '_id', 'category' ])
+            // Populate categories to get product type
             .populate({
                 path: 'category',
                 model: this.CategoryModel,
                 select: [ '_id', 'productType' ],
             } as PopulateOptions)
             .exec()
+            // Extract the products IDs, categories IDs and products types IDs
             .then(docs => docs.reduce(
                 (prev, doc) => ({
                     products: [
@@ -111,6 +117,7 @@ export class RecommendationService {
                 }),
                 { products: [], categories: [], productTypes: [] } as ResolvedDep,
             ))
+            // Make each ID per category unique and cast them back to ObjectId
             .then(deps => ({
                 products: [ ...new Set(deps.products.map(id => id.toHexString())) ]
                     .map(id => new Types.ObjectId(id)),
