@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PopulateOptions, Types } from 'mongoose';
-import { basicProductFields } from '../product/entities/basic-product.entity';
+import { EnforceDocument, Model, PopulateOptions, Types } from 'mongoose';
+import { BasicProductEntity, basicProductFields } from '../product/entities/basic-product.entity';
 import { Cart } from '../schemas/cart.schema';
 import { CategoryDoc } from '../schemas/category.schema';
 import { ProductTypeDoc } from '../schemas/product-type.schema';
@@ -12,7 +12,8 @@ import { getInvalidIDs } from '../utils/get-invalid-ids';
 import { CreateRecommendationDto } from './dto/create-recommendation.dto';
 
 
-type ResolvedDep = { products: Types.ObjectId[], categories: Types.ObjectId[], productTypes: Types.ObjectId[] }
+type ResolvedDep = { products: Types.ObjectId[], categories: Types.ObjectId[], productTypes: Types.ObjectId[] };
+type Recommendation = Pick<RecommendationDoc, '_id' | 'message'> & { recommendedProduct: BasicProductEntity };
 
 
 @Injectable()
@@ -54,6 +55,7 @@ export class RecommendationService {
         return new this.RecommendationModel(recommendation).save();
     }
 
+
     async userRecommendations(user: UserDoc) {
         const cartDeps = await this.resolveCartProductDeps(user.cart);
 
@@ -73,7 +75,14 @@ export class RecommendationService {
                 path: 'recommendedProduct',
                 model: this.ProductModel,
                 select: basicProductFields,
-            } as PopulateOptions);
+            } as PopulateOptions)
+            .exec()
+            // Filter out recommendations with unavailable or out of stock products
+            .then((recommendations: EnforceDocument<Recommendation, any>[]) =>
+                recommendations.filter(({ recommendedProduct: product }: Recommendation) =>
+                    product.available && product.stockCount !== 0,
+                ),
+            );
     }
 
 
