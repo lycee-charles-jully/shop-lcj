@@ -18,6 +18,16 @@
         //         status: 302,
         //     };
 
+        const isCartValid = cart.every(item =>
+            item.product.available
+            && !(typeof item.product.stockCount === 'number' && item.count > item.product.stockCount),
+        );
+        if (!isCartValid)
+            return {
+                redirect: '/cart',
+                status: 302,
+            };
+
         return {
             props: {
                 recommendations,
