@@ -12,19 +12,24 @@
 
     let count = 0;
 
+    const product = recommendation.recommendedProduct;
+    const maxSelectionCount = typeof product.stockCount === 'number' && product.stockCount < 10
+        ? product.stockCount
+        : 10;
+
 
     function addProduct() {
         count = 1;
         validatedRecommendations = [
             ...validatedRecommendations,
-            { count, product: recommendation.recommendedProduct },
+            { count, product: product },
         ];
     }
 
     function removeProduct() {
         count = 0;
         validatedRecommendations = validatedRecommendations
-            .filter(({ product }: CartItemPopulated) => product._id !== recommendation.recommendedProduct._id);
+            .filter(({ product: cardProduct }: CartItemPopulated) => cardProduct._id !== product._id);
     }
 
     function increaseCount() {
@@ -39,7 +44,7 @@
 
     function updateCount() {
         validatedRecommendations = validatedRecommendations.map(item => {
-            if (item.product._id !== recommendation.recommendedProduct._id)
+            if (item.product._id !== product._id)
                 return item;
             item.count = count;
             return item;
@@ -105,11 +110,11 @@
     <span>{recommendation.message}</span>
     <div class="product">
         <picture class="product-img" use:imgload>
-            <img height="200" src={imageUrl(recommendation.recommendedProduct.coverImageUrl, 200)} width="200"/>
+            <img height="200" src={imageUrl(product.coverImageUrl, 200)} width="200"/>
         </picture>
         <div class="product-info">
-            <span>{recommendation.recommendedProduct.name}</span>
-            <span>{currencyFormat(recommendation.recommendedProduct.price)} l'unité</span>
+            <span>{product.name}</span>
+            <span>{currencyFormat(product.price)} l'unité</span>
         </div>
     </div>
     <div class="btn-container">
@@ -120,7 +125,8 @@
                 Quantité :
                 <QuantitySelector
                         on:increase={increaseCount}
-                        on:decrease={decreaseCount}/>
+                        on:decrease={decreaseCount}
+                        max={maxSelectionCount}/>
             </div>
             <img src="/icons/trash-highlight.svg" height="22" width="22" class="trash" on:click={removeProduct}/>
         {/if}
