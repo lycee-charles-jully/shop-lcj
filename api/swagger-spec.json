@@ -1983,6 +1983,12 @@
           "available": {
             "type": "boolean"
           },
+          "stockCount": {
+            "type": "number",
+            "nullable": true,
+            "minimum": 0,
+            "maximum": 500
+          },
           "coverImageUrl": {
             "type": "string"
           },
