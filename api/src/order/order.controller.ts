@@ -68,6 +68,8 @@ export class OrderController {
         type: OrderEntity,
     })
     makeOrder(@User() user: UserDoc, @Body() { recommendations, comment }: OrderFromCartDto) {
+        // !!!!! TEMPORARY ORDER DISABLE !!!!!
+        throw new UnauthorizedException('Orders are currently not available');
         return this.OrderService.createOrderFromCart(user, recommendations, comment);
     }
 

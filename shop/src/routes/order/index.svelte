@@ -4,6 +4,13 @@
     import { getDataForOrder } from '$lib/api/orders/get-data-for-order';
 
     export const load: Load = async ({ session, fetch }) => {
+
+        // !!!!! TEMPORARY ORDER DISABLE !!!!!
+        return {
+            redirect: '/',
+            status: 302,
+        };
+
         if (!session.user)
             return {
                 redirect: `/login?r=/order`,
