@@ -21,7 +21,7 @@
   "dependencies": {
     "@sentry/browser": "6.16.1",
     "@sentry/tracing": "6.16.1",
-    "axios": "0.24.0",
+    "axios": "1.6.0",
     "cookie": "^0.4.1",
     "dayjs": "1.10.7"
   }
